@@ -140,7 +140,7 @@ imageChooseBtn.addEventListener("click", () => imageInput.click());
 
 imageDropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
-  uploadLabel.style.borderColor = "var(--cyan)";
+  uploadLabel.style.borderColor = "var(--gold)";
 });
 imageDropZone.addEventListener("dragleave", () => { uploadLabel.style.borderColor = ""; });
 imageDropZone.addEventListener("drop", (e) => {
@@ -187,7 +187,7 @@ audioInput.addEventListener("change", () => {
 
 audioDropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
-  audioUploadLabel.style.borderColor = "var(--cyan)";
+  audioUploadLabel.style.borderColor = "var(--gold)";
 });
 audioDropZone.addEventListener("dragleave", () => { audioUploadLabel.style.borderColor = ""; });
 audioDropZone.addEventListener("drop", (e) => {
