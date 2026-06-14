@@ -211,11 +211,13 @@ audioInput.addEventListener("change", () => {
     audioUploadLabel.value = "";
     currentAudioDuration = null;
     matchAudio.checked = false;
+    document.querySelector("#promptEnhance").checked = false;
     applyMatchAudio();
     return;
   }
   audioUploadLabel.value = file.name;
   matchAudio.checked = true;
+  document.querySelector("#promptEnhance").checked = true;
   loadAudioDuration(URL.createObjectURL(file));
 });
 
@@ -234,6 +236,7 @@ audioDropZone.addEventListener("drop", (e) => {
     audioInput.files = dt.files;
     audioUploadLabel.value = file.name;
     matchAudio.checked = true;
+    document.querySelector("#promptEnhance").checked = true;
     loadAudioDuration(URL.createObjectURL(file));
   }
 });
