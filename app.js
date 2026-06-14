@@ -49,7 +49,8 @@ function loadAudioDuration(src) {
   }, { once: true });
 }
 
-// Load default audio duration on startup
+// Load default audio duration on startup; disable slider immediately since toggle is ON
+durationField.classList.add("disabled");
 loadAudioDuration(DEFAULT_AUDIO);
 
 // Show default image preview on load
