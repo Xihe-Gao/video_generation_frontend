@@ -188,7 +188,11 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 1.2s ease;
 }
+
+.hero-video-a { z-index: 0; opacity: 1; }
+.hero-video-b { z-index: 1; opacity: 0; }
 
 .hero-scrim {
   background:

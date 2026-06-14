@@ -13,7 +13,8 @@ const logOutput = document.querySelector("#logOutput");
 const videoPreview = document.querySelector("#videoPreview");
 const downloadVideo = document.querySelector("#downloadVideo");
 const promptInput = document.querySelector("#prompt");
-const heroVideo = document.querySelector("#heroVideo");
+const heroVideoA = document.querySelector("#heroVideoA");
+const heroVideoB = document.querySelector("#heroVideoB");
 const resolutionPreset = document.querySelector("#resolutionPreset");
 const widthInput = document.querySelector("#width");
 const heightInput = document.querySelector("#height");
@@ -118,12 +119,41 @@ const heroVideoClips = [
   "./videos/clip_4.mp4",
 ];
 let currentHeroClip = 0;
+// front = currently visible layer, back = hidden layer being preloaded
+let heroFront = heroVideoA;
+let heroBack  = heroVideoB;
+let heroCrossfading = false;
 
-heroVideo.addEventListener("ended", () => {
+function crossfadeToNext() {
+  if (heroCrossfading) return;
+  heroCrossfading = true;
   currentHeroClip = (currentHeroClip + 1) % heroVideoClips.length;
-  heroVideo.src = heroVideoClips[currentHeroClip];
-  heroVideo.play().catch(() => {});
-});
+  heroBack.src = heroVideoClips[currentHeroClip];
+  heroBack.style.zIndex = "1";
+  heroBack.play().then(() => {
+    heroBack.style.opacity = "1";
+    heroFront.style.opacity = "0";
+    setTimeout(() => {
+      heroFront.style.zIndex = "0";
+      [heroFront, heroBack] = [heroBack, heroFront];
+      heroCrossfading = false;
+      attachHeroListeners(heroFront);
+    }, 1300);
+  }).catch(() => { heroCrossfading = false; });
+}
+
+function attachHeroListeners(video) {
+  function onTimeUpdate() {
+    if (video.duration > 0 && video.duration - video.currentTime < 1.5) {
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      crossfadeToNext();
+    }
+  }
+  video.addEventListener("timeupdate", onTimeUpdate);
+  video.addEventListener("ended", crossfadeToNext, { once: true });
+}
+
+attachHeroListeners(heroVideoA);
 
 
 document.querySelectorAll(".example-card video").forEach((video) => {
