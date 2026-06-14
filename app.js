@@ -110,7 +110,7 @@ form.addEventListener("submit", async (event) => {
     setStatus("running", "Preparing request", "Encoding media...");
     const imageBase64 = file ? await fileToBase64(file) : await urlToBase64(DEFAULT_IMAGE);
     const audioBase64 = audioFile ? await fileToBase64(audioFile) : await urlToBase64(DEFAULT_AUDIO);
-    const apiEndpoint = trimTrailingSlash(getValue("apiEndpoint"));
+    const apiEndpoint = "https://ltx-gateway.fly.dev";
     const passcode = getValue("passcode");
     const payload = buildPayload(imageBase64, audioBase64);
 
@@ -290,9 +290,6 @@ function getOptionalNumber(id) {
   return value === "" ? null : Number(value);
 }
 
-function trimTrailingSlash(value) {
-  return value.replace(/\/+$/, "");
-}
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
