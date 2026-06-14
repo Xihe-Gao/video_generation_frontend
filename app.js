@@ -14,6 +14,9 @@ const videoPreview = document.querySelector("#videoPreview");
 const downloadVideo = document.querySelector("#downloadVideo");
 const promptInput = document.querySelector("#prompt");
 const heroVideo = document.querySelector("#heroVideo");
+const resolutionPreset = document.querySelector("#resolutionPreset");
+const widthInput = document.querySelector("#width");
+const heightInput = document.querySelector("#height");
 const matchAudio = document.querySelector("#matchAudio");
 const durationRange = document.querySelector("#durationRange");
 const durationNum = document.querySelector("#duration");
@@ -49,6 +52,25 @@ function loadAudioDuration(src) {
     applyMatchAudio();
   }, { once: true });
 }
+
+const RESOLUTION_PRESETS = {
+  landscape: { w: 1280, h: 720 },
+  portrait:  { w: 720,  h: 1280 },
+};
+
+resolutionPreset.addEventListener("change", () => {
+  const val = resolutionPreset.value;
+  if (val === "custom") {
+    widthInput.removeAttribute("readonly");
+    heightInput.removeAttribute("readonly");
+  } else {
+    const { w, h } = RESOLUTION_PRESETS[val];
+    widthInput.value = w;
+    heightInput.value = h;
+    widthInput.setAttribute("readonly", "");
+    heightInput.setAttribute("readonly", "");
+  }
+});
 
 // Show default image preview on load
 (async () => {

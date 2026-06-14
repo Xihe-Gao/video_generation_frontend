@@ -178,15 +178,21 @@
             </div>
           </div>
 
+          <div class="field">
+            <span>Resolution</span>
+            <div class="resolution-row">
+              <select id="resolutionPreset">
+                <option value="landscape">Landscape 1280 × 720</option>
+                <option value="portrait">Portrait 720 × 1280</option>
+                <option value="custom">Custom</option>
+              </select>
+              <input id="width" type="number" value="1280" min="256" step="8" class="res-dim" readonly />
+              <span class="res-x">×</span>
+              <input id="height" type="number" value="720" min="256" step="8" class="res-dim" readonly />
+            </div>
+          </div>
+
           <div class="settings-grid">
-            <label class="field">
-              <span>Width</span>
-              <input id="width" type="number" value="1280" min="256" step="8" />
-            </label>
-            <label class="field">
-              <span>Height</span>
-              <input id="height" type="number" value="720" min="256" step="8" />
-            </label>
             <label class="field">
               <span>FPS</span>
               <input id="fps" type="number" value="24" min="1" />
