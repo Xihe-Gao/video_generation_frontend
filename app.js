@@ -10,9 +10,7 @@ const audioChooseBtn = document.querySelector("#audioChooseBtn");
 const submitButton = document.querySelector("#submitButton");
 const statusBadge = document.querySelector("#statusBadge");
 const logOutput = document.querySelector("#logOutput");
-const imagePreview = document.querySelector("#imagePreview");
 const videoPreview = document.querySelector("#videoPreview");
-const emptyState = document.querySelector("#emptyState");
 const downloadVideo = document.querySelector("#downloadVideo");
 const promptInput = document.querySelector("#prompt");
 const heroVideo = document.querySelector("#heroVideo");
@@ -26,9 +24,6 @@ let currentImageUrl = "";
 (async () => {
   try {
     currentImageUrl = DEFAULT_IMAGE;
-    imagePreview.src = DEFAULT_IMAGE;
-    imagePreview.hidden = false;
-    emptyState.hidden = true;
   } catch {}
 })();
 const heroVideoClips = [
@@ -81,19 +76,13 @@ imageInput.addEventListener("change", () => {
     uploadLabel.value = "";
     if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
     currentImageUrl = DEFAULT_IMAGE;
-    imagePreview.src = DEFAULT_IMAGE;
+    uploadLabel.value = "";
     return;
   }
 
   uploadLabel.value = file.name;
   if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
   currentImageUrl = URL.createObjectURL(file);
-  videoPreview.removeAttribute("src");
-  videoPreview.load();
-  imagePreview.src = currentImageUrl;
-  imagePreview.hidden = false;
-  videoPreview.hidden = true;
-  emptyState.hidden = true;
 });
 
 audioUploadLabel.addEventListener("click", () => audioInput.click());
@@ -233,11 +222,7 @@ async function pollUntilComplete(apiEndpoint, jobId, passcode) {
 }
 
 function showCompletedVideo(videoUrl) {
-  imagePreview.removeAttribute("src");
   videoPreview.src = videoUrl;
-  videoPreview.hidden = false;
-  imagePreview.hidden = true;
-  emptyState.hidden = true;
 
   downloadVideo.href = videoUrl;
   downloadVideo.classList.remove("disabled");
