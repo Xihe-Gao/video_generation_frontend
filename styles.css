@@ -102,20 +102,20 @@ video {
   width: 36px;
   height: 36px;
   place-items: center;
-  border: 1px solid var(--line-strong);
+  border: 1px solid rgba(212, 175, 106, 0.38);
   border-radius: 9px;
-  background: linear-gradient(145deg, #ffffff, #b6f1ff);
-  color: #050505;
+  background: linear-gradient(145deg, #1d1508 0%, #0c0a06 100%);
+  color: var(--gold);
 }
 
 .brand-mark svg {
-  width: 25px;
-  height: 25px;
+  width: 26px;
+  height: 26px;
   fill: none;
   stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2.4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-width: 2;
 }
 
 .brand-name {
