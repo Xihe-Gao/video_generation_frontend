@@ -130,10 +130,9 @@ form.addEventListener("submit", async (event) => {
   resetVideoLinks();
 
   try {
-    const hasAudio = true; // always ia2v (default song.mp3 if no file)
     setStatus("running", "Running");
-    const imageBase64 = file ? await fileToBase64(file) : await urlToBase64(DEFAULT_IMAGE);
-    const audioBase64 = audioFile ? await fileToBase64(audioFile) : await urlToBase64(DEFAULT_AUDIO);
+    const imageBase64 = file ? await fileToBase64(file) : null;
+    const audioBase64 = audioFile ? await fileToBase64(audioFile) : null;
     const apiEndpoint = "https://ltx-gateway.fly.dev";
     const passcode = getValue("passcode");
     const payload = buildPayload(imageBase64, audioBase64);
@@ -185,8 +184,8 @@ function buildPayload(imageBase64, audioBase64) {
     width: getNumber("width"),
     fps: getNumber("fps"),
     seed: getOptionalNumber("seed"),
-    image_base64: imageBase64,
-    audio_base64: audioBase64,
+    ...(imageBase64 ? { image_base64: imageBase64 } : {}),
+    ...(audioBase64 ? { audio_base64: audioBase64 } : {}),
     verbose: true,
   };
 }
