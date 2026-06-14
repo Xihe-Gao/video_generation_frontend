@@ -172,7 +172,7 @@ main {
 .hero {
   position: relative;
   display: grid;
-  min-height: calc(100vh - 69px);
+  min-height: calc(100vh / 0.8 - 69px);
   place-items: center;
   overflow: hidden;
   padding: 86px 18px 72px;
