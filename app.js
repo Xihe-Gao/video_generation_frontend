@@ -49,11 +49,13 @@ function applyMatchAudio() {
 }
 
 function loadAudioDuration(src) {
-  const a = new Audio(src);
+  const a = new Audio();
+  a.preload = "metadata";
   a.addEventListener("loadedmetadata", () => {
     currentAudioDuration = a.duration;
     applyMatchAudio();
   }, { once: true });
+  a.src = src;
 }
 
 let _progressTimer = null;
@@ -244,6 +246,22 @@ form.addEventListener("submit", async (event) => {
 
   const file = imageInput.files?.[0];
   const audioFile = audioInput.files?.[0];
+
+  // If audio is selected but duration hasn't loaded yet, wait for it (up to 3s)
+  if (audioFile && currentAudioDuration === null) {
+    await new Promise((resolve) => {
+      const a = new Audio();
+      a.preload = "metadata";
+      a.addEventListener("loadedmetadata", () => {
+        currentAudioDuration = a.duration;
+        applyMatchAudio();
+        resolve();
+      }, { once: true });
+      a.addEventListener("error", resolve, { once: true });
+      a.src = URL.createObjectURL(audioFile);
+      setTimeout(resolve, 3000);
+    });
+  }
 
   setBusy(true);
   resetVideoLinks();
