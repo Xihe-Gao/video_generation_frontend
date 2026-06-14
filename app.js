@@ -33,25 +33,22 @@ durationNum.addEventListener("input", () => { durationRange.value = durationNum.
 matchAudio.addEventListener("change", applyMatchAudio);
 
 function applyMatchAudio() {
-  if (matchAudio.checked && currentAudioDuration) {
+  const hasAudio = currentAudioDuration !== null;
+  if (matchAudio.checked && hasAudio) {
     const capped = Math.min(currentAudioDuration, 15);
     durationRange.value = capped;
     durationNum.value = parseFloat(capped.toFixed(1));
   }
-  durationField.classList.toggle("disabled", matchAudio.checked);
+  durationField.classList.toggle("disabled", matchAudio.checked && hasAudio);
 }
 
 function loadAudioDuration(src) {
   const a = new Audio(src);
   a.addEventListener("loadedmetadata", () => {
     currentAudioDuration = a.duration;
-    if (matchAudio.checked) applyMatchAudio();
+    applyMatchAudio();
   }, { once: true });
 }
-
-// Load default audio duration on startup; disable slider immediately since toggle is ON
-durationField.classList.add("disabled");
-loadAudioDuration(DEFAULT_AUDIO);
 
 // Show default image preview on load
 (async () => {
@@ -125,7 +122,8 @@ audioInput.addEventListener("change", () => {
   const file = audioInput.files?.[0];
   if (!file) {
     audioUploadLabel.value = "";
-    loadAudioDuration(DEFAULT_AUDIO);
+    currentAudioDuration = null;
+    applyMatchAudio();
     return;
   }
   audioUploadLabel.value = file.name;
