@@ -1,6 +1,7 @@
 const form = document.querySelector("#generationForm");
 const imageInput = document.querySelector("#imageInput");
 const uploadLabel = document.querySelector("#uploadLabel");
+const imageThumb = document.querySelector("#imageThumb");
 const audioInput = document.querySelector("#audioInput");
 const audioUploadLabel = document.querySelector("#audioUploadLabel");
 const submitButton = document.querySelector("#submitButton");
@@ -60,6 +61,7 @@ imageInput.addEventListener("change", () => {
     uploadLabel.textContent = "song.png · default";
     if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
     currentImageUrl = DEFAULT_IMAGE;
+    imageThumb.src = DEFAULT_IMAGE;
     imagePreview.src = DEFAULT_IMAGE;
     return;
   }
@@ -67,6 +69,7 @@ imageInput.addEventListener("change", () => {
   uploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
   if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
   currentImageUrl = URL.createObjectURL(file);
+  imageThumb.src = currentImageUrl;
   videoPreview.removeAttribute("src");
   videoPreview.load();
   imagePreview.src = currentImageUrl;

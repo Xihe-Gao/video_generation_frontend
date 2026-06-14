@@ -663,6 +663,14 @@ select:focus {
   font-size: 14px;
 }
 
+.upload-box img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
 .settings-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
