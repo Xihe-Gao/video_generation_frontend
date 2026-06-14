@@ -210,10 +210,12 @@ audioInput.addEventListener("change", () => {
   if (!file) {
     audioUploadLabel.value = "";
     currentAudioDuration = null;
+    matchAudio.checked = false;
     applyMatchAudio();
     return;
   }
   audioUploadLabel.value = file.name;
+  matchAudio.checked = true;
   loadAudioDuration(URL.createObjectURL(file));
 });
 
@@ -231,6 +233,7 @@ audioDropZone.addEventListener("drop", (e) => {
     dt.items.add(file);
     audioInput.files = dt.files;
     audioUploadLabel.value = file.name;
+    matchAudio.checked = true;
     loadAudioDuration(URL.createObjectURL(file));
   }
 });
