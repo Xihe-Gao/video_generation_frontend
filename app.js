@@ -44,12 +44,6 @@ heroVideo.addEventListener("ended", () => {
   heroVideo.play().catch(() => {});
 });
 
-document.querySelectorAll("[data-prompt]").forEach((button) => {
-  button.addEventListener("click", () => {
-    promptInput.value = button.dataset.prompt;
-    promptInput.focus();
-  });
-});
 
 document.querySelectorAll(".example-card video").forEach((video) => {
   const card = video.closest(".example-card");
