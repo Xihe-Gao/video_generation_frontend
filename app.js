@@ -1,6 +1,8 @@
 const form = document.querySelector("#generationForm");
 const imageInput = document.querySelector("#imageInput");
 const uploadLabel = document.querySelector("#uploadLabel");
+const audioInput = document.querySelector("#audioInput");
+const audioUploadLabel = document.querySelector("#audioUploadLabel");
 const submitButton = document.querySelector("#submitButton");
 const statusDot = document.querySelector("#statusDot");
 const statusTitle = document.querySelector("#statusTitle");
@@ -15,7 +17,19 @@ const promptInput = document.querySelector("#prompt");
 const heroVideo = document.querySelector("#heroVideo");
 
 const pollIntervalMs = 5000;
+const DEFAULT_IMAGE = "./materials/song.png";
+const DEFAULT_AUDIO = "./materials/song.mp3";
 let currentImageUrl = "";
+
+// Show default image preview on load
+(async () => {
+  try {
+    currentImageUrl = DEFAULT_IMAGE;
+    imagePreview.src = DEFAULT_IMAGE;
+    imagePreview.hidden = false;
+    emptyState.hidden = true;
+  } catch {}
+})();
 const heroVideoClips = [
   "./videos/clip_1.mp4",
   "./videos/clip_2.mp4",
@@ -48,12 +62,16 @@ document.querySelectorAll(".example-card video").forEach((video) => {
 
 imageInput.addEventListener("change", () => {
   const file = imageInput.files?.[0];
-  if (!file) return;
+  if (!file) {
+    uploadLabel.textContent = "song.png · default";
+    if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
+    currentImageUrl = DEFAULT_IMAGE;
+    imagePreview.src = DEFAULT_IMAGE;
+    return;
+  }
 
   uploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
-  if (currentImageUrl) {
-    URL.revokeObjectURL(currentImageUrl);
-  }
+  if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
   currentImageUrl = URL.createObjectURL(file);
   videoPreview.removeAttribute("src");
   videoPreview.load();
@@ -63,31 +81,45 @@ imageInput.addEventListener("change", () => {
   emptyState.hidden = true;
 });
 
+audioInput.addEventListener("change", () => {
+  const file = audioInput.files?.[0];
+  if (!file) {
+    audioUploadLabel.textContent = "song.mp3 · default (enables ia2v)";
+    return;
+  }
+  audioUploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
+});
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  if (getValue("passcode") !== "kevin") {
-    setStatus("error", "Passcode error", "The passcode is incorrect.");
-    appendLog("\nError: passcode incorrect");
+  if (!getValue("passcode")) {
+    setStatus("error", "Passcode error", "Please enter an API key.");
+    appendLog("\nError: API key missing");
     return;
   }
 
   const file = imageInput.files?.[0];
+  const audioFile = audioInput.files?.[0];
 
   setBusy(true);
   resetVideoLinks();
 
   try {
-    setStatus("running", "Preparing request", file ? "Encoding reference image..." : "Submitting prompt-only generation...");
-    const imageBase64 = file ? await fileToBase64(file) : null;
+    const hasAudio = true; // always ia2v (default song.mp3 if no file)
+    setStatus("running", "Preparing request", "Encoding media...");
+    const imageBase64 = file ? await fileToBase64(file) : await urlToBase64(DEFAULT_IMAGE);
+    const audioBase64 = audioFile ? await fileToBase64(audioFile) : await urlToBase64(DEFAULT_AUDIO);
     const apiEndpoint = trimTrailingSlash(getValue("apiEndpoint"));
-    const payload = buildPayload(imageBase64);
+    const passcode = getValue("passcode");
+    const payload = buildPayload(imageBase64, audioBase64);
 
-    writeLog("POST /v2/generate", payload);
-    const createResponse = await fetch(`${apiEndpoint}/v2/generate`, {
+    writeLog("POST /v1/videos/generate", payload);
+    const createResponse = await fetch(`${apiEndpoint}/v1/videos/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-Key": passcode,
       },
       body: JSON.stringify(payload),
     });
@@ -105,7 +137,7 @@ form.addEventListener("submit", async (event) => {
     setStatus("running", "Generation queued", `Job ID: ${jobId}`);
     appendLog(`\njob_id: ${jobId}\n`);
 
-    const result = await pollUntilComplete(apiEndpoint, jobId);
+    const result = await pollUntilComplete(apiEndpoint, jobId, passcode);
     showCompletedVideo(result.url);
   } catch (error) {
     const message = normalizeFetchError(error);
@@ -116,7 +148,7 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-function buildPayload(imageBase64) {
+function buildPayload(imageBase64, audioBase64) {
   const duration = getNumber("duration");
   if (duration > 15) {
     throw new Error("Duration must be 15 seconds or less.");
@@ -129,20 +161,22 @@ function buildPayload(imageBase64) {
     width: getNumber("width"),
     fps: getNumber("fps"),
     seed: getOptionalNumber("seed"),
-    image_url: null,
     image_base64: imageBase64,
+    audio_base64: audioBase64,
     verbose: document.querySelector("#verbose").checked,
   };
 }
 
-async function pollUntilComplete(apiEndpoint, jobId) {
+async function pollUntilComplete(apiEndpoint, jobId, passcode) {
   while (true) {
     await wait(pollIntervalMs);
 
-    const response = await fetch(`${apiEndpoint}/status/${encodeURIComponent(jobId)}`);
+    const response = await fetch(`${apiEndpoint}/v1/videos/${encodeURIComponent(jobId)}`, {
+      headers: { "X-API-Key": passcode },
+    });
     const data = await readJson(response);
 
-    writeLog(`GET /status/${jobId}`, data);
+    writeLog(`GET /v1/videos/${jobId}`, data);
 
     if (!response.ok) {
       throw new Error(data.error || `Status request failed: ${response.status}`);
@@ -150,7 +184,7 @@ async function pollUntilComplete(apiEndpoint, jobId) {
 
     if (data.status === "completed") {
       if (!data.url) {
-        throw new Error("Completed response did not include url.");
+        throw new Error(data.error || "Completed response did not include url.");
       }
       return data;
     }
@@ -210,7 +244,14 @@ function redactImage(value) {
   return {
     ...value,
     image_base64: value.image_base64 ? `[base64:${value.image_base64.length} chars]` : value.image_base64,
+    audio_base64: value.audio_base64 ? `[base64:${value.audio_base64.length} chars]` : value.audio_base64,
   };
+}
+
+async function urlToBase64(url) {
+  const resp = await fetch(url);
+  const blob = await resp.blob();
+  return fileToBase64(blob);
 }
 
 async function readJson(response) {

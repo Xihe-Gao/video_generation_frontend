@@ -140,7 +140,7 @@
             <input
               id="apiEndpoint"
               type="url"
-              value="https://kathy-q-gogh--ltx-worker-api.modal.run"
+              value="https://ltx-gateway.fly.dev"
               required
             />
           </label>
@@ -150,8 +150,7 @@
             <textarea
               id="prompt"
               rows="5"
-              required
-            >A serene mountain lake at golden hour, camera slowly panning right</textarea>
+            >a man singing with groove, gentle motion, photorealistic</textarea>
           </label>
 
           <div class="prompt-pills" aria-label="Prompt templates">
@@ -164,7 +163,14 @@
             <input id="imageInput" type="file" accept="image/*" />
             <span class="upload-icon">＋</span>
             <span class="upload-title">Upload reference frame</span>
-            <span class="upload-copy" id="uploadLabel">Optional JPG, PNG, or WebP</span>
+            <span class="upload-copy" id="uploadLabel">song.png · default</span>
+          </label>
+
+          <label class="upload-box" for="audioInput">
+            <input id="audioInput" type="file" accept="audio/*" />
+            <span class="upload-icon">♪</span>
+            <span class="upload-title">Upload audio</span>
+            <span class="upload-copy" id="audioUploadLabel">song.mp3 · default (enables ia2v)</span>
           </label>
 
           <div class="settings-grid">
@@ -178,11 +184,11 @@
             </label>
             <label class="field">
               <span>Duration</span>
-              <input id="duration" type="number" value="10" min="1" max="15" step="1" />
+              <input id="duration" type="number" value="9" min="1" max="15" step="1" />
             </label>
             <label class="field">
               <span>FPS</span>
-              <input id="fps" type="number" value="25" min="1" />
+              <input id="fps" type="number" value="24" min="1" />
             </label>
             <label class="field">
               <span>Seed</span>
@@ -199,7 +205,7 @@
             Generate video
           </button>
           <p class="form-note">
-            Browser requests require CORS on your Modal endpoint.
+            Audio upload enables ia2v mode; defaults to song.mp3 if none selected.
           </p>
         </form>
 
@@ -225,7 +231,7 @@
           </div>
           <div class="result-actions">
             <a class="button primary disabled" id="openVideo" href="#" target="_blank" rel="noreferrer">Open video</a>
-            <a class="button secondary disabled" id="downloadVideo" href="#" download="output.mp4">Download</a>
+            <a class="button secondary disabled" id="downloadVideo" href="#" download="output_ia2v.mp4">Download</a>
           </div>
           <pre class="log-output" id="logOutput">Waiting for request...</pre>
         </aside>
