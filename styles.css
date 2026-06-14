@@ -107,8 +107,9 @@ video {
 }
 
 .brand-name {
+  font-family: 'Cinzel', serif;
   font-size: 17px;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
 }
 
 .nav-links {
