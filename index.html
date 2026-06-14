@@ -144,22 +144,16 @@
           </label>
 
 
-          <div class="upload-box media-upload-box" id="imageDropZone">
+          <div class="field" id="imageDropZone">
+            <span>Image URL</span>
+            <input id="uploadLabel" type="text" readonly value="./materials/song.png" />
             <input id="imageInput" type="file" accept="image/*" />
-            <div class="upload-file-row">
-              <span class="upload-filename" id="uploadLabel">song.png</span>
-              <button type="button" class="choose-btn" id="imageChooseBtn">Choose…</button>
-            </div>
-            <p class="upload-hint"><strong>Hint:</strong> Drag and drop image files. Accepted: jpg, jpeg, png, webp, gif, avif.</p>
           </div>
 
-          <div class="upload-box media-upload-box" id="audioDropZone">
+          <div class="field" id="audioDropZone">
+            <span>Audio URL</span>
+            <input id="audioUploadLabel" type="text" readonly value="./materials/song.mp3" />
             <input id="audioInput" type="file" accept="audio/*" />
-            <div class="upload-file-row">
-              <span class="upload-filename" id="audioUploadLabel">song.mp3</span>
-              <button type="button" class="choose-btn" id="audioChooseBtn">Choose…</button>
-            </div>
-            <p class="upload-hint"><strong>Hint:</strong> Drag and drop audio files. Accepted: mp3, wav, ogg, m4a, aac.</p>
           </div>
 
           <div class="settings-grid">

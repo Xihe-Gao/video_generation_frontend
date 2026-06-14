@@ -2,11 +2,9 @@ const form = document.querySelector("#generationForm");
 const imageInput = document.querySelector("#imageInput");
 const uploadLabel = document.querySelector("#uploadLabel");
 const imageDropZone = document.querySelector("#imageDropZone");
-const imageChooseBtn = document.querySelector("#imageChooseBtn");
 const audioInput = document.querySelector("#audioInput");
 const audioUploadLabel = document.querySelector("#audioUploadLabel");
 const audioDropZone = document.querySelector("#audioDropZone");
-const audioChooseBtn = document.querySelector("#audioChooseBtn");
 const submitButton = document.querySelector("#submitButton");
 const statusDot = document.querySelector("#statusDot");
 const statusTitle = document.querySelector("#statusTitle");
@@ -58,16 +56,16 @@ document.querySelectorAll(".example-card video").forEach((video) => {
   });
 });
 
-imageChooseBtn.addEventListener("click", () => imageInput.click());
+uploadLabel.addEventListener("click", () => imageInput.click());
 
 imageDropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
-  imageDropZone.classList.add("drag-over");
+  uploadLabel.style.borderColor = "var(--cyan)";
 });
-imageDropZone.addEventListener("dragleave", () => imageDropZone.classList.remove("drag-over"));
+imageDropZone.addEventListener("dragleave", () => uploadLabel.style.borderColor = "");
 imageDropZone.addEventListener("drop", (e) => {
   e.preventDefault();
-  imageDropZone.classList.remove("drag-over");
+  uploadLabel.style.borderColor = "";
   const file = e.dataTransfer.files?.[0];
   if (file) {
     const dt = new DataTransfer();
@@ -80,14 +78,14 @@ imageDropZone.addEventListener("drop", (e) => {
 imageInput.addEventListener("change", () => {
   const file = imageInput.files?.[0];
   if (!file) {
-    uploadLabel.textContent = "song.png";
+    uploadLabel.value = "./materials/song.png";
     if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
     currentImageUrl = DEFAULT_IMAGE;
     imagePreview.src = DEFAULT_IMAGE;
     return;
   }
 
-  uploadLabel.textContent = file.name;
+  uploadLabel.value = file.name;
   if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
   currentImageUrl = URL.createObjectURL(file);
   videoPreview.removeAttribute("src");
@@ -98,31 +96,31 @@ imageInput.addEventListener("change", () => {
   emptyState.hidden = true;
 });
 
-audioChooseBtn.addEventListener("click", () => audioInput.click());
+audioUploadLabel.addEventListener("click", () => audioInput.click());
 
 audioInput.addEventListener("change", () => {
   const file = audioInput.files?.[0];
   if (!file) {
-    audioUploadLabel.textContent = "song.mp3";
+    audioUploadLabel.value = "./materials/song.mp3";
     return;
   }
-  audioUploadLabel.textContent = file.name;
+  audioUploadLabel.value = file.name;
 });
 
 audioDropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
-  audioDropZone.classList.add("drag-over");
+  audioUploadLabel.style.borderColor = "var(--cyan)";
 });
-audioDropZone.addEventListener("dragleave", () => audioDropZone.classList.remove("drag-over"));
+audioDropZone.addEventListener("dragleave", () => audioUploadLabel.style.borderColor = "");
 audioDropZone.addEventListener("drop", (e) => {
   e.preventDefault();
-  audioDropZone.classList.remove("drag-over");
+  audioUploadLabel.style.borderColor = "";
   const file = e.dataTransfer.files?.[0];
   if (file) {
     const dt = new DataTransfer();
     dt.items.add(file);
     audioInput.files = dt.files;
-    audioUploadLabel.textContent = file.name;
+    audioUploadLabel.value = file.name;
   }
 });
 
