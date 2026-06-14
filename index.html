@@ -144,20 +144,22 @@
           </label>
 
 
-          <label class="upload-box" for="imageInput">
+          <div class="upload-box media-upload-box" id="imageDropZone">
             <input id="imageInput" type="file" accept="image/*" />
-            <img id="imageThumb" src="./materials/song.png" alt="" />
-            <span class="upload-copy" id="uploadLabel">song.png · default</span>
-          </label>
+            <div class="upload-file-row">
+              <span class="upload-filename" id="uploadLabel">song.png</span>
+              <button type="button" class="choose-btn" id="imageChooseBtn">Choose…</button>
+            </div>
+            <p class="upload-hint"><strong>Hint:</strong> Drag and drop image files. Accepted: jpg, jpeg, png, webp, gif, avif.</p>
+          </div>
 
-          <div class="upload-box audio-upload-box" id="audioDropZone">
+          <div class="upload-box media-upload-box" id="audioDropZone">
             <input id="audioInput" type="file" accept="audio/*" />
             <div class="upload-file-row">
-              <span class="upload-copy" id="audioUploadLabel">song.mp3 · default</span>
+              <span class="upload-filename" id="audioUploadLabel">song.mp3</span>
               <button type="button" class="choose-btn" id="audioChooseBtn">Choose…</button>
             </div>
-            <p class="upload-hint">Drag &amp; drop an audio file, or click Choose. Accepts mp3, wav, ogg, m4a, aac.</p>
-            <audio id="audioPlayer" src="./materials/song.mp3" controls></audio>
+            <p class="upload-hint"><strong>Hint:</strong> Drag and drop audio files. Accepted: mp3, wav, ogg, m4a, aac.</p>
           </div>
 
           <div class="settings-grid">

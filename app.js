@@ -1,10 +1,10 @@
 const form = document.querySelector("#generationForm");
 const imageInput = document.querySelector("#imageInput");
 const uploadLabel = document.querySelector("#uploadLabel");
-const imageThumb = document.querySelector("#imageThumb");
+const imageDropZone = document.querySelector("#imageDropZone");
+const imageChooseBtn = document.querySelector("#imageChooseBtn");
 const audioInput = document.querySelector("#audioInput");
 const audioUploadLabel = document.querySelector("#audioUploadLabel");
-const audioPlayer = document.querySelector("#audioPlayer");
 const audioDropZone = document.querySelector("#audioDropZone");
 const audioChooseBtn = document.querySelector("#audioChooseBtn");
 const submitButton = document.querySelector("#submitButton");
@@ -58,21 +58,38 @@ document.querySelectorAll(".example-card video").forEach((video) => {
   });
 });
 
+imageChooseBtn.addEventListener("click", () => imageInput.click());
+
+imageDropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  imageDropZone.classList.add("drag-over");
+});
+imageDropZone.addEventListener("dragleave", () => imageDropZone.classList.remove("drag-over"));
+imageDropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  imageDropZone.classList.remove("drag-over");
+  const file = e.dataTransfer.files?.[0];
+  if (file) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    imageInput.files = dt.files;
+    imageInput.dispatchEvent(new Event("change"));
+  }
+});
+
 imageInput.addEventListener("change", () => {
   const file = imageInput.files?.[0];
   if (!file) {
-    uploadLabel.textContent = "song.png · default";
+    uploadLabel.textContent = "song.png";
     if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
     currentImageUrl = DEFAULT_IMAGE;
-    imageThumb.src = DEFAULT_IMAGE;
     imagePreview.src = DEFAULT_IMAGE;
     return;
   }
 
-  uploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
+  uploadLabel.textContent = file.name;
   if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
   currentImageUrl = URL.createObjectURL(file);
-  imageThumb.src = currentImageUrl;
   videoPreview.removeAttribute("src");
   videoPreview.load();
   imagePreview.src = currentImageUrl;
@@ -86,11 +103,10 @@ audioChooseBtn.addEventListener("click", () => audioInput.click());
 audioInput.addEventListener("change", () => {
   const file = audioInput.files?.[0];
   if (!file) {
-    audioPlayer.src = DEFAULT_AUDIO;
-    audioUploadLabel.textContent = "song.mp3 · default";
+    audioUploadLabel.textContent = "song.mp3";
     return;
   }
-  applyAudioFile(file);
+  audioUploadLabel.textContent = file.name;
 });
 
 audioDropZone.addEventListener("dragover", (e) => {
@@ -106,16 +122,9 @@ audioDropZone.addEventListener("drop", (e) => {
     const dt = new DataTransfer();
     dt.items.add(file);
     audioInput.files = dt.files;
-    applyAudioFile(file);
+    audioUploadLabel.textContent = file.name;
   }
 });
-
-function applyAudioFile(file) {
-  const url = URL.createObjectURL(file);
-  audioPlayer.src = url;
-  audioPlayer.load();
-  audioUploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
-}
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
