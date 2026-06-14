@@ -14,11 +14,43 @@ const videoPreview = document.querySelector("#videoPreview");
 const downloadVideo = document.querySelector("#downloadVideo");
 const promptInput = document.querySelector("#prompt");
 const heroVideo = document.querySelector("#heroVideo");
+const matchAudio = document.querySelector("#matchAudio");
+const durationRange = document.querySelector("#durationRange");
+const durationNum = document.querySelector("#duration");
+const durationField = document.querySelector("#durationField");
 
 const pollIntervalMs = 5000;
 const DEFAULT_IMAGE = "./materials/song.png";
 const DEFAULT_AUDIO = "./materials/song.mp3";
 let currentImageUrl = "";
+let currentAudioDuration = null;
+
+// Sync range ↔ number input
+durationRange.addEventListener("input", () => { durationNum.value = durationRange.value; });
+durationNum.addEventListener("input", () => { durationRange.value = durationNum.value; });
+
+// Match Audio Length toggle
+matchAudio.addEventListener("change", applyMatchAudio);
+
+function applyMatchAudio() {
+  if (matchAudio.checked && currentAudioDuration) {
+    const capped = Math.min(currentAudioDuration, 15);
+    durationRange.value = capped;
+    durationNum.value = parseFloat(capped.toFixed(1));
+  }
+  durationField.classList.toggle("disabled", matchAudio.checked);
+}
+
+function loadAudioDuration(src) {
+  const a = new Audio(src);
+  a.addEventListener("loadedmetadata", () => {
+    currentAudioDuration = a.duration;
+    if (matchAudio.checked) applyMatchAudio();
+  }, { once: true });
+}
+
+// Load default audio duration on startup
+loadAudioDuration(DEFAULT_AUDIO);
 
 // Show default image preview on load
 (async () => {
@@ -92,9 +124,11 @@ audioInput.addEventListener("change", () => {
   const file = audioInput.files?.[0];
   if (!file) {
     audioUploadLabel.value = "";
+    loadAudioDuration(DEFAULT_AUDIO);
     return;
   }
   audioUploadLabel.value = file.name;
+  loadAudioDuration(URL.createObjectURL(file));
 });
 
 audioDropZone.addEventListener("dragover", (e) => {
@@ -111,6 +145,7 @@ audioDropZone.addEventListener("drop", (e) => {
     dt.items.add(file);
     audioInput.files = dt.files;
     audioUploadLabel.value = file.name;
+    loadAudioDuration(URL.createObjectURL(file));
   }
 });
 
