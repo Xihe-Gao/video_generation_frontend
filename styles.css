@@ -839,6 +839,40 @@ select:focus {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 10px;
+}
+
+.progress-track {
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: linear-gradient(90deg,
+    var(--cyan) 0%,
+    #e0fbff 45%,
+    var(--cyan) 55%,
+    #7de8ff 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+  box-shadow: 0 0 8px rgba(154, 230, 255, 0.55);
+  transition: width 0.4s ease-out, background-color 0.4s;
+}
+
+.progress-fill.done {
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(85, 227, 142, 0.45);
+  animation: none;
 }
 
 .result-label {

@@ -17,6 +17,8 @@ const heroVideo = document.querySelector("#heroVideo");
 const resolutionPreset = document.querySelector("#resolutionPreset");
 const widthInput = document.querySelector("#width");
 const heightInput = document.querySelector("#height");
+const progressTrack = document.querySelector("#progressTrack");
+const progressFill = document.querySelector("#progressFill");
 const matchAudio = document.querySelector("#matchAudio");
 const durationRange = document.querySelector("#durationRange");
 const durationNum = document.querySelector("#duration");
@@ -51,6 +53,37 @@ function loadAudioDuration(src) {
     currentAudioDuration = a.duration;
     applyMatchAudio();
   }, { once: true });
+}
+
+let _progressTimer = null;
+
+function startProgress(estimatedSeconds) {
+  clearInterval(_progressTimer);
+  progressFill.classList.remove("done");
+  progressFill.style.width = "0%";
+  progressTrack.hidden = false;
+  const start = Date.now();
+  const ms = estimatedSeconds * 1000;
+  _progressTimer = setInterval(() => {
+    const t = (Date.now() - start) / ms;
+    // easeOut: 90 * (1 - e^(-3t)), approaches 90% asymptotically
+    const pct = 90 * (1 - Math.exp(-3 * t));
+    progressFill.style.width = `${Math.min(pct, 90)}%`;
+  }, 300);
+}
+
+function completeProgress() {
+  clearInterval(_progressTimer);
+  progressFill.classList.add("done");
+  progressFill.style.width = "100%";
+  setTimeout(() => { progressTrack.hidden = true; progressFill.style.width = "0%"; progressFill.classList.remove("done"); }, 1200);
+}
+
+function resetProgress() {
+  clearInterval(_progressTimer);
+  progressTrack.hidden = true;
+  progressFill.style.width = "0%";
+  progressFill.classList.remove("done");
 }
 
 const RESOLUTION_PRESETS = {
@@ -184,6 +217,7 @@ form.addEventListener("submit", async (event) => {
 
   setBusy(true);
   resetVideoLinks();
+  resetProgress();
 
   try {
     setStatus("running", "Running");
@@ -213,6 +247,7 @@ form.addEventListener("submit", async (event) => {
       throw new Error("Generate response did not include job_id.");
     }
 
+    startProgress(createData.estimated_s || 120);
     setStatus("running", "Running");
     appendLog(`\njob_id: ${jobId}\n`);
 
@@ -221,6 +256,7 @@ form.addEventListener("submit", async (event) => {
   } catch (error) {
     const message = normalizeFetchError(error);
     setStatus("error", "Error");
+    resetProgress();
     appendLog(`\nError: ${message}`);
   } finally {
     setBusy(false);
@@ -282,6 +318,7 @@ function showCompletedVideo(videoUrl) {
   downloadVideo.href = videoUrl;
   downloadVideo.classList.remove("disabled");
 
+  completeProgress();
   setStatus("done", "Done");
   appendLog(`\nvideo_url: ${videoUrl}`);
 }
