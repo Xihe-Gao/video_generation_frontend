@@ -150,12 +150,15 @@
             <span class="upload-copy" id="uploadLabel">song.png · default</span>
           </label>
 
-          <label class="upload-box" for="audioInput">
+          <div class="upload-box audio-upload-box" id="audioDropZone">
             <input id="audioInput" type="file" accept="audio/*" />
-            <span class="upload-icon">♪</span>
-            <span class="upload-title">Upload audio</span>
-            <span class="upload-copy" id="audioUploadLabel">song.mp3 · default (enables ia2v)</span>
-          </label>
+            <div class="upload-file-row">
+              <span class="upload-copy" id="audioUploadLabel">song.mp3 · default</span>
+              <button type="button" class="choose-btn" id="audioChooseBtn">Choose…</button>
+            </div>
+            <p class="upload-hint">Drag &amp; drop an audio file, or click Choose. Accepts mp3, wav, ogg, m4a, aac.</p>
+            <audio id="audioPlayer" src="./materials/song.mp3" controls></audio>
+          </div>
 
           <div class="settings-grid">
             <label class="field">

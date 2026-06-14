@@ -4,6 +4,9 @@ const uploadLabel = document.querySelector("#uploadLabel");
 const imageThumb = document.querySelector("#imageThumb");
 const audioInput = document.querySelector("#audioInput");
 const audioUploadLabel = document.querySelector("#audioUploadLabel");
+const audioPlayer = document.querySelector("#audioPlayer");
+const audioDropZone = document.querySelector("#audioDropZone");
+const audioChooseBtn = document.querySelector("#audioChooseBtn");
 const submitButton = document.querySelector("#submitButton");
 const statusDot = document.querySelector("#statusDot");
 const statusTitle = document.querySelector("#statusTitle");
@@ -78,14 +81,41 @@ imageInput.addEventListener("change", () => {
   emptyState.hidden = true;
 });
 
+audioChooseBtn.addEventListener("click", () => audioInput.click());
+
 audioInput.addEventListener("change", () => {
   const file = audioInput.files?.[0];
   if (!file) {
-    audioUploadLabel.textContent = "song.mp3 · default (enables ia2v)";
+    audioPlayer.src = DEFAULT_AUDIO;
+    audioUploadLabel.textContent = "song.mp3 · default";
     return;
   }
-  audioUploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
+  applyAudioFile(file);
 });
+
+audioDropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  audioDropZone.classList.add("drag-over");
+});
+audioDropZone.addEventListener("dragleave", () => audioDropZone.classList.remove("drag-over"));
+audioDropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  audioDropZone.classList.remove("drag-over");
+  const file = e.dataTransfer.files?.[0];
+  if (file) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    audioInput.files = dt.files;
+    applyAudioFile(file);
+  }
+});
+
+function applyAudioFile(file) {
+  const url = URL.createObjectURL(file);
+  audioPlayer.src = url;
+  audioPlayer.load();
+  audioUploadLabel.textContent = `${file.name} · ${formatBytes(file.size)}`;
+}
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
