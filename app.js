@@ -345,13 +345,33 @@ async function pollUntilComplete(apiEndpoint, jobId, passcode) {
 function showCompletedVideo(videoUrl) {
   videoPreview.src = videoUrl;
 
-  downloadVideo.href = videoUrl;
+  downloadVideo.dataset.src = videoUrl;
   downloadVideo.classList.remove("disabled");
 
   completeProgress();
   setStatus("done", "Done");
   appendLog(`\nvideo_url: ${videoUrl}`);
 }
+
+downloadVideo.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const src = downloadVideo.dataset.src;
+  if (!src || downloadVideo.classList.contains("disabled")) return;
+  try {
+    const resp = await fetch(src);
+    const blob = await resp.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = "output_ia2v.mp4";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 30000);
+  } catch {
+    window.open(src, "_blank");
+  }
+});
 
 function setStatus(kind, label) {
   statusBadge.className = `result-badge ${kind}`;
@@ -364,7 +384,7 @@ function setBusy(isBusy) {
 }
 
 function resetVideoLinks() {
-  downloadVideo.href = "#";
+  delete downloadVideo.dataset.src;
   downloadVideo.classList.add("disabled");
 }
 
