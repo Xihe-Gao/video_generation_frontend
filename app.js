@@ -41,7 +41,7 @@ matchAudio.addEventListener("change", applyMatchAudio);
 function applyMatchAudio() {
   const hasAudio = currentAudioDuration !== null;
   if (matchAudio.checked && hasAudio) {
-    const capped = Math.min(currentAudioDuration, 15);
+    const capped = Math.min(currentAudioDuration, 20);
     durationRange.value = capped;
     durationNum.value = parseFloat(capped.toFixed(1));
   }
@@ -295,8 +295,8 @@ form.addEventListener("submit", async (event) => {
 
 function buildPayload(imageBase64, audioBase64) {
   const duration = getNumber("duration");
-  if (duration > 15) {
-    throw new Error("Duration must be 15 seconds or less.");
+  if (duration > 20) {
+    throw new Error("Duration must be 20 seconds or less.");
   }
 
   return {
