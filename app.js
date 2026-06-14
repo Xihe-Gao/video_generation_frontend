@@ -187,7 +187,7 @@ function buildPayload(imageBase64, audioBase64) {
     seed: getOptionalNumber("seed"),
     image_base64: imageBase64,
     audio_base64: audioBase64,
-    verbose: document.querySelector("#verbose").checked,
+    verbose: true,
   };
 }
 
