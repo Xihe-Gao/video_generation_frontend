@@ -145,14 +145,20 @@
 
 
           <div class="field" id="imageDropZone">
-            <span>Image URL</span>
-            <input id="uploadLabel" type="text" readonly value="./materials/song.png" />
+            <span>Image URL <span class="opt">(optional)</span></span>
+            <div class="field-row">
+              <input id="uploadLabel" type="text" readonly placeholder="Click Choose or drag an image" />
+              <button type="button" class="choose-btn" id="imageChooseBtn">Choose…</button>
+            </div>
             <input id="imageInput" type="file" accept="image/*" />
           </div>
 
           <div class="field" id="audioDropZone">
-            <span>Audio URL</span>
-            <input id="audioUploadLabel" type="text" readonly value="./materials/song.mp3" />
+            <span>Audio URL <span class="opt">(optional)</span></span>
+            <div class="field-row">
+              <input id="audioUploadLabel" type="text" readonly placeholder="Click Choose or drag an audio file" />
+              <button type="button" class="choose-btn" id="audioChooseBtn">Choose…</button>
+            </div>
             <input id="audioInput" type="file" accept="audio/*" />
           </div>
 
