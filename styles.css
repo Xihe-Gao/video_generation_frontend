@@ -186,7 +186,7 @@ main {
 .eyebrow {
   margin: 0 0 14px;
   color: var(--cyan);
-  font-size: 12px;
+  font-size: 24px;
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
