@@ -199,30 +199,32 @@
         </form>
 
         <aside class="result-panel">
-          <div class="section-heading compact">
-            <p class="eyebrow">Live job</p>
-            <h2>Preview</h2>
-          </div>
-          <div class="status-card" id="statusCard">
-            <span class="status-dot idle" id="statusDot"></span>
-            <div>
-              <strong id="statusTitle">Ready</strong>
-              <p id="statusMessage">Upload an image and start a generation.</p>
+          <div class="result-header">
+            <div class="result-title-row">
+              <strong class="result-label">Result</strong>
+              <span class="result-badge" id="statusBadge">Idle</span>
             </div>
           </div>
+
           <div class="media-result" id="mediaResult">
             <video id="videoPreview" controls playsinline hidden></video>
-            <img id="imagePreview" alt="Uploaded preview" hidden />
+            <img id="imagePreview" alt="" hidden />
             <div class="empty-state" id="emptyState">
-              <span>16:9</span>
-              <p>Your reference image and generated video appear here.</p>
+              <p>Your generated video will appear here.</p>
             </div>
           </div>
-          <div class="result-actions">
-            <a class="button primary disabled" id="openVideo" href="#" target="_blank" rel="noreferrer">Open video</a>
-            <a class="button secondary disabled" id="downloadVideo" href="#" download="output_ia2v.mp4">Download</a>
+
+          <div class="result-footer">
+            <p class="result-next">What would you like to do next?</p>
+            <a class="result-download disabled" id="downloadVideo" href="#" download="output_ia2v.mp4">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                <path d="M7.5 1v8.5M3.5 6.5l4 4 4-4M1.5 13.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Download
+            </a>
           </div>
-          <pre class="log-output" id="logOutput">Waiting for request...</pre>
+
+          <pre class="log-output" id="logOutput" hidden></pre>
         </aside>
       </section>
 

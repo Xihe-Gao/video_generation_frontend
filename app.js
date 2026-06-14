@@ -8,14 +8,11 @@ const audioUploadLabel = document.querySelector("#audioUploadLabel");
 const audioDropZone = document.querySelector("#audioDropZone");
 const audioChooseBtn = document.querySelector("#audioChooseBtn");
 const submitButton = document.querySelector("#submitButton");
-const statusDot = document.querySelector("#statusDot");
-const statusTitle = document.querySelector("#statusTitle");
-const statusMessage = document.querySelector("#statusMessage");
+const statusBadge = document.querySelector("#statusBadge");
 const logOutput = document.querySelector("#logOutput");
 const imagePreview = document.querySelector("#imagePreview");
 const videoPreview = document.querySelector("#videoPreview");
 const emptyState = document.querySelector("#emptyState");
-const openVideo = document.querySelector("#openVideo");
 const downloadVideo = document.querySelector("#downloadVideo");
 const promptInput = document.querySelector("#prompt");
 const heroVideo = document.querySelector("#heroVideo");
@@ -132,7 +129,7 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   if (!getValue("passcode")) {
-    setStatus("error", "Passcode error", "Please enter an API key.");
+    setStatus("error", "Error");
     appendLog("\nError: API key missing");
     return;
   }
@@ -145,7 +142,7 @@ form.addEventListener("submit", async (event) => {
 
   try {
     const hasAudio = true; // always ia2v (default song.mp3 if no file)
-    setStatus("running", "Preparing request", "Encoding media...");
+    setStatus("running", "Running");
     const imageBase64 = file ? await fileToBase64(file) : await urlToBase64(DEFAULT_IMAGE);
     const audioBase64 = audioFile ? await fileToBase64(audioFile) : await urlToBase64(DEFAULT_AUDIO);
     const apiEndpoint = "https://ltx-gateway.fly.dev";
@@ -172,14 +169,14 @@ form.addEventListener("submit", async (event) => {
       throw new Error("Generate response did not include job_id.");
     }
 
-    setStatus("running", "Generation queued", `Job ID: ${jobId}`);
+    setStatus("running", "Running");
     appendLog(`\njob_id: ${jobId}\n`);
 
     const result = await pollUntilComplete(apiEndpoint, jobId, passcode);
     showCompletedVideo(result.url);
   } catch (error) {
     const message = normalizeFetchError(error);
-    setStatus("error", "Request blocked", message);
+    setStatus("error", "Error");
     appendLog(`\nError: ${message}`);
   } finally {
     setBusy(false);
@@ -231,7 +228,7 @@ async function pollUntilComplete(apiEndpoint, jobId, passcode) {
       throw new Error(data.error || "Remote job failed.");
     }
 
-    setStatus("running", "Generating video", formatJobStatus(data.status));
+    setStatus("running", "Running");
   }
 }
 
@@ -242,30 +239,25 @@ function showCompletedVideo(videoUrl) {
   imagePreview.hidden = true;
   emptyState.hidden = true;
 
-  openVideo.href = videoUrl;
   downloadVideo.href = videoUrl;
-  openVideo.classList.remove("disabled");
   downloadVideo.classList.remove("disabled");
 
-  setStatus("done", "Video ready", "The generated video is available below.");
+  setStatus("done", "Done");
   appendLog(`\nvideo_url: ${videoUrl}`);
 }
 
-function setStatus(kind, title, message) {
-  statusDot.className = `status-dot ${kind}`;
-  statusTitle.textContent = title;
-  statusMessage.textContent = message;
+function setStatus(kind, label) {
+  statusBadge.className = `result-badge ${kind}`;
+  statusBadge.textContent = label;
 }
 
 function setBusy(isBusy) {
   submitButton.disabled = isBusy;
-  submitButton.textContent = isBusy ? "Generating..." : "Generate";
+  submitButton.textContent = isBusy ? "Generating..." : "Generate video";
 }
 
 function resetVideoLinks() {
-  openVideo.href = "#";
   downloadVideo.href = "#";
-  openVideo.classList.add("disabled");
   downloadVideo.classList.add("disabled");
 }
 
