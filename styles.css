@@ -834,6 +834,46 @@ select:focus {
   pointer-events: none;
 }
 
+.advanced-settings {
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.advanced-settings summary {
+  cursor: pointer;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.advanced-settings summary::-webkit-details-marker { display: none; }
+
+.advanced-settings summary::before {
+  content: '›';
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.2s;
+  display: inline-block;
+  color: var(--gold);
+}
+
+.advanced-settings[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.advanced-body {
+  padding: 12px 14px 4px;
+  border-top: 1px solid var(--line);
+}
+
 .submit-button {
   width: 100%;
   min-height: 50px;

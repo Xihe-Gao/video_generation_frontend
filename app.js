@@ -331,6 +331,7 @@ function buildPayload(imageBase64, audioBase64) {
     fps: getNumber("fps"),
     seed: getOptionalNumber("seed"),
     prompt_enhance:   document.querySelector("#promptEnhance").checked,
+    negative_prompt:  getValue("negativePrompt"),
     end_frame_guide:  !!(imageBase64 && audioBase64),
     ...(imageBase64 ? { image_base64: imageBase64 } : {}),
     ...(audioBase64 ? { audio_base64: audioBase64 } : {}),
