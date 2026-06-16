@@ -460,6 +460,20 @@ function showCompletedVideo(videoUrl) {
   appendLog(`\nvideo_url: ${videoUrl}`);
 }
 
+document.querySelector("#saveLog").addEventListener("click", () => {
+  const text = logOutput.textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `frameforge_log_${new Date().toISOString().replace(/[:.]/g, "-")}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+});
+
 downloadVideo.addEventListener("click", async (e) => {
   e.preventDefault();
   const src = downloadVideo.dataset.src;
