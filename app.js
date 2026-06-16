@@ -351,6 +351,12 @@ async function handleSubmit(mode, event) {
   const file = imageInput.files?.[0];
   const audioFile = audioInput?.files?.[0];
 
+  if (mode === "avatar" && !audioFile) {
+    setStatus("error", "Error");
+    appendLog("\nError: Avatar mode requires an audio file");
+    return;
+  }
+
   // If audio is selected but duration hasn't loaded yet, wait for it (up to 3s)
   if (audioFile && state[mode].audioDuration === null) {
     await new Promise((resolve) => {
