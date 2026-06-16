@@ -306,7 +306,7 @@ function setupFormMode(mode, { hasAudio }) {
   });
 }
 
-setupFormMode("general", { hasAudio: false });
+setupFormMode("general", { hasAudio: true });
 setupFormMode("avatar",  { hasAudio: true });
 
 // ---------------------------------------------------------------------------
@@ -326,15 +326,14 @@ function buildPayload(mode, imageBase64, audioBase64) {
     fps: getNumber(mode, "fps"),
     seed: getOptionalNumber(mode, "seed"),
     negative_prompt: getValue(mode, "negativePrompt"),
+    workflow: mode,
     verbose: true,
     ...(imageBase64 ? { image_base64: imageBase64 } : {}),
   };
 
-  if (mode === "avatar") {
-    payload.prompt_enhance = getChecked(mode, "promptEnhance");
-    payload.end_frame_guide = !!(imageBase64 && audioBase64);
-    if (audioBase64) payload.audio_base64 = audioBase64;
-  }
+  payload.prompt_enhance = getChecked(mode, "promptEnhance");
+  payload.end_frame_guide = !!(imageBase64 && audioBase64);
+  if (audioBase64) payload.audio_base64 = audioBase64;
 
   return payload;
 }
@@ -349,7 +348,7 @@ async function handleSubmit(mode, event) {
   }
 
   const imageInput = el(mode, "imageInput");
-  const audioInput = mode === "avatar" ? el(mode, "audioInput") : null;
+  const audioInput = el(mode, "audioInput");
   const file = imageInput.files?.[0];
   const audioFile = audioInput?.files?.[0];
 

@@ -142,6 +142,14 @@
               >A serene mountain lake at golden hour, camera slowly panning right, cinematic natural light, realistic reflections</textarea>
             </label>
 
+            <div class="toggle-field">
+              <span class="toggle-label-text">Prompt Enhance</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="promptEnhance-general" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
             <div class="field" id="imageDropZone-general">
               <span>Image URL <span class="opt">(optional)</span></span>
               <div class="field-row">
@@ -149,6 +157,23 @@
                 <button type="button" class="choose-btn" id="imageChooseBtn-general">Choose…</button>
               </div>
               <input id="imageInput-general" type="file" accept="image/*" />
+            </div>
+
+            <div class="field" id="audioDropZone-general">
+              <span>Audio URL <span class="opt">(optional)</span></span>
+              <div class="field-row">
+                <input id="audioUploadLabel-general" type="text" readonly placeholder="Click Choose or drag an audio file" />
+                <button type="button" class="choose-btn" id="audioChooseBtn-general">Choose…</button>
+              </div>
+              <input id="audioInput-general" type="file" accept="audio/*" />
+            </div>
+
+            <div class="toggle-field">
+              <span class="toggle-label-text">Match Audio Length</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="matchAudio-general" />
+                <span class="toggle-track"></span>
+              </label>
             </div>
 
             <div class="slider-field" id="durationField-general">
