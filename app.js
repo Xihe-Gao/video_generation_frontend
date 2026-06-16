@@ -332,7 +332,6 @@ function buildPayload(mode, imageBase64, audioBase64) {
   };
 
   payload.prompt_enhance = getChecked(mode, "promptEnhance");
-  payload.end_frame_guide = !!(imageBase64 && audioBase64);
   if (audioBase64) payload.audio_base64 = audioBase64;
 
   return payload;
