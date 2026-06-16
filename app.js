@@ -275,13 +275,11 @@ function setupFormMode(mode, { hasAudio }) {
       audioUploadLabel.value = "";
       state[mode].audioDuration = null;
       matchAudio.checked = false;
-      promptEnhance.checked = false;
       applyMatchAudio();
       return;
     }
     audioUploadLabel.value = file.name;
     matchAudio.checked = true;
-    promptEnhance.checked = true;
     loadAudioDuration(URL.createObjectURL(file));
   });
 
@@ -300,7 +298,6 @@ function setupFormMode(mode, { hasAudio }) {
       audioInput.files = dt.files;
       audioUploadLabel.value = file.name;
       matchAudio.checked = true;
-      promptEnhance.checked = true;
       loadAudioDuration(URL.createObjectURL(file));
     }
   });
