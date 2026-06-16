@@ -142,14 +142,6 @@
               >A serene mountain lake at golden hour, camera slowly panning right, cinematic natural light, realistic reflections</textarea>
             </label>
 
-            <div class="toggle-field">
-              <span class="toggle-label-text">Prompt Enhance</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="promptEnhance-general" />
-                <span class="toggle-track"></span>
-              </label>
-            </div>
-
             <div class="field" id="imageDropZone-general">
               <span>Image URL <span class="opt">(optional)</span></span>
               <div class="field-row">
@@ -198,20 +190,28 @@
               </div>
             </div>
 
-            <div class="settings-grid">
-              <label class="field">
-                <span>FPS</span>
-                <input id="fps-general" type="number" value="24" min="1" />
-              </label>
-              <label class="field">
-                <span>Seed</span>
-                <input id="seed-general" type="number" value="42" />
-              </label>
-            </div>
-
             <details class="advanced-settings">
               <summary>Advanced Settings</summary>
               <div class="advanced-body">
+                <div class="toggle-field">
+                  <span class="toggle-label-text">Prompt Enhance</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="promptEnhance-general" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+
+                <div class="settings-grid">
+                  <label class="field">
+                    <span>FPS</span>
+                    <input id="fps-general" type="number" value="24" min="1" />
+                  </label>
+                  <label class="field">
+                    <span>Seed</span>
+                    <input id="seed-general" type="number" value="42" />
+                  </label>
+                </div>
+
                 <label class="field">
                   <span>Negative Prompt</span>
                   <textarea id="negativePrompt-general" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
@@ -243,14 +243,6 @@
                 rows="5"
               >a man singing, same scene, close-up portrait, static camera, no camera movement, minimal head movement, subtle lip sync, no drinks, no phone</textarea>
             </label>
-
-            <div class="toggle-field">
-              <span class="toggle-label-text">Prompt Enhance</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="promptEnhance-avatar" />
-                <span class="toggle-track"></span>
-              </label>
-            </div>
 
             <div class="field" id="imageDropZone-avatar">
               <span>Image URL <span class="opt">(optional)</span></span>
@@ -300,20 +292,28 @@
               </div>
             </div>
 
-            <div class="settings-grid">
-              <label class="field">
-                <span>FPS</span>
-                <input id="fps-avatar" type="number" value="24" min="1" />
-              </label>
-              <label class="field">
-                <span>Seed</span>
-                <input id="seed-avatar" type="number" value="42" />
-              </label>
-            </div>
-
             <details class="advanced-settings">
               <summary>Advanced Settings</summary>
               <div class="advanced-body">
+                <div class="toggle-field">
+                  <span class="toggle-label-text">Prompt Enhance</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="promptEnhance-avatar" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+
+                <div class="settings-grid">
+                  <label class="field">
+                    <span>FPS</span>
+                    <input id="fps-avatar" type="number" value="24" min="1" />
+                  </label>
+                  <label class="field">
+                    <span>Seed</span>
+                    <input id="seed-avatar" type="number" value="42" />
+                  </label>
+                </div>
+
                 <label class="field">
                   <span>Negative Prompt</span>
                   <textarea id="negativePrompt-avatar" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
