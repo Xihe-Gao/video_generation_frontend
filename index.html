@@ -110,112 +110,197 @@
       </section>
 
       <section class="workspace" id="generator">
-        <form class="generator" id="generationForm">
-          <div class="section-heading compact">
-            <p class="eyebrow">Playground</p>
-            <h2></h2>
-          </div>
-
-          <label class="field">
-            <span>Passcode</span>
-            <input
-              id="passcode"
-              type="password"
-              autocomplete="off"
-              placeholder="Required"
-              required
-            />
-          </label>
-
-          <label class="field">
-            <span>Prompt</span>
-            <textarea
-              id="prompt"
-              rows="5"
-            >a man singing, same scene, close-up portrait, static camera, no camera movement, minimal head movement, subtle lip sync, no drinks, no phone</textarea>
-          </label>
-
-          <div class="toggle-field">
-            <span class="toggle-label-text">Prompt Enhance</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="promptEnhance" />
-              <span class="toggle-track"></span>
-            </label>
-          </div>
-
-          <div class="field" id="imageDropZone">
-            <span>Image URL <span class="opt">(optional)</span></span>
-            <div class="field-row">
-              <input id="uploadLabel" type="text" readonly placeholder="Click Choose or drag an image" />
-              <button type="button" class="choose-btn" id="imageChooseBtn">Choose…</button>
+        <div class="generator-col">
+          <div class="workspace-heading">
+            <div class="section-heading compact">
+              <p class="eyebrow">Playground</p>
+              <h2></h2>
             </div>
-            <input id="imageInput" type="file" accept="image/*" />
-          </div>
-
-          <div class="field" id="audioDropZone">
-            <span>Audio URL <span class="opt">(optional)</span></span>
-            <div class="field-row">
-              <input id="audioUploadLabel" type="text" readonly placeholder="Click Choose or drag an audio file" />
-              <button type="button" class="choose-btn" id="audioChooseBtn">Choose…</button>
-            </div>
-            <input id="audioInput" type="file" accept="audio/*" />
-          </div>
-
-          <div class="toggle-field">
-            <span class="toggle-label-text">Match Audio Length</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="matchAudio" />
-              <span class="toggle-track"></span>
-            </label>
-          </div>
-
-          <div class="slider-field" id="durationField">
-            <span class="slider-label-text">Video Duration in Seconds</span>
-            <div class="slider-row">
-              <input type="range" id="durationRange" min="1" max="20" value="9" step="0.5" />
-              <input type="number" id="duration" min="1" max="20" value="9" step="0.5" class="duration-num" />
+            <div class="mode-tabs" role="tablist" aria-label="Generation mode">
+              <button type="button" class="mode-tab active" data-mode="general" role="tab" aria-selected="true">General</button>
+              <button type="button" class="mode-tab" data-mode="avatar" role="tab" aria-selected="false">Avatar</button>
             </div>
           </div>
 
-          <div class="field">
-            <span>Resolution</span>
-            <div class="resolution-row">
-              <select id="resolutionPreset">
-                <option value="landscape">Landscape 16:9</option>
-                <option value="portrait">Portrait 9:16</option>
-                <option value="custom">Custom</option>
-              </select>
-              <input id="width" type="number" value="1024" min="256" step="8" class="res-dim" readonly />
-              <span class="res-x">×</span>
-              <input id="height" type="number" value="576" min="256" step="8" class="res-dim" readonly />
-            </div>
-          </div>
-
-          <div class="settings-grid">
+          <form class="generator" id="generalForm" data-mode-panel="general">
             <label class="field">
-              <span>FPS</span>
-              <input id="fps" type="number" value="24" min="1" />
+              <span>Passcode</span>
+              <input
+                id="passcode-general"
+                type="password"
+                autocomplete="off"
+                placeholder="Required"
+                required
+              />
             </label>
-            <label class="field">
-              <span>Seed</span>
-              <input id="seed" type="number" value="42" />
-            </label>
-          </div>
 
-          <details class="advanced-settings">
-            <summary>Advanced Settings</summary>
-            <div class="advanced-body">
+            <label class="field">
+              <span>Prompt</span>
+              <textarea
+                id="prompt-general"
+                rows="5"
+              >A serene mountain lake at golden hour, camera slowly panning right, cinematic natural light, realistic reflections</textarea>
+            </label>
+
+            <div class="field" id="imageDropZone-general">
+              <span>Image URL <span class="opt">(optional)</span></span>
+              <div class="field-row">
+                <input id="uploadLabel-general" type="text" readonly placeholder="Click Choose or drag an image" />
+                <button type="button" class="choose-btn" id="imageChooseBtn-general">Choose…</button>
+              </div>
+              <input id="imageInput-general" type="file" accept="image/*" />
+            </div>
+
+            <div class="slider-field" id="durationField-general">
+              <span class="slider-label-text">Video Duration in Seconds</span>
+              <div class="slider-row">
+                <input type="range" id="durationRange-general" min="1" max="20" value="5" step="0.5" />
+                <input type="number" id="duration-general" min="1" max="20" value="5" step="0.5" class="duration-num" />
+              </div>
+            </div>
+
+            <div class="field">
+              <span>Resolution</span>
+              <div class="resolution-row">
+                <select id="resolutionPreset-general">
+                  <option value="landscape">Landscape 16:9</option>
+                  <option value="portrait">Portrait 9:16</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <input id="width-general" type="number" value="1024" min="256" step="8" class="res-dim" readonly />
+                <span class="res-x">×</span>
+                <input id="height-general" type="number" value="576" min="256" step="8" class="res-dim" readonly />
+              </div>
+            </div>
+
+            <div class="settings-grid">
               <label class="field">
-                <span>Negative Prompt</span>
-                <textarea id="negativePrompt" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
+                <span>FPS</span>
+                <input id="fps-general" type="number" value="24" min="1" />
+              </label>
+              <label class="field">
+                <span>Seed</span>
+                <input id="seed-general" type="number" value="42" />
               </label>
             </div>
-          </details>
 
-          <button class="submit-button" id="submitButton" type="submit">
-            Generate video
-          </button>
-        </form>
+            <details class="advanced-settings">
+              <summary>Advanced Settings</summary>
+              <div class="advanced-body">
+                <label class="field">
+                  <span>Negative Prompt</span>
+                  <textarea id="negativePrompt-general" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
+                </label>
+              </div>
+            </details>
+
+            <button class="submit-button" id="submitButton-general" type="submit">
+              Generate video
+            </button>
+          </form>
+
+          <form class="generator" id="avatarForm" data-mode-panel="avatar" hidden>
+            <label class="field">
+              <span>Passcode</span>
+              <input
+                id="passcode-avatar"
+                type="password"
+                autocomplete="off"
+                placeholder="Required"
+                required
+              />
+            </label>
+
+            <label class="field">
+              <span>Prompt</span>
+              <textarea
+                id="prompt-avatar"
+                rows="5"
+              >a man singing, same scene, close-up portrait, static camera, no camera movement, minimal head movement, subtle lip sync, no drinks, no phone</textarea>
+            </label>
+
+            <div class="toggle-field">
+              <span class="toggle-label-text">Prompt Enhance</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="promptEnhance-avatar" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="field" id="imageDropZone-avatar">
+              <span>Image URL <span class="opt">(optional)</span></span>
+              <div class="field-row">
+                <input id="uploadLabel-avatar" type="text" readonly placeholder="Click Choose or drag an image" />
+                <button type="button" class="choose-btn" id="imageChooseBtn-avatar">Choose…</button>
+              </div>
+              <input id="imageInput-avatar" type="file" accept="image/*" />
+            </div>
+
+            <div class="field" id="audioDropZone-avatar">
+              <span>Audio URL <span class="opt">(optional)</span></span>
+              <div class="field-row">
+                <input id="audioUploadLabel-avatar" type="text" readonly placeholder="Click Choose or drag an audio file" />
+                <button type="button" class="choose-btn" id="audioChooseBtn-avatar">Choose…</button>
+              </div>
+              <input id="audioInput-avatar" type="file" accept="audio/*" />
+            </div>
+
+            <div class="toggle-field">
+              <span class="toggle-label-text">Match Audio Length</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="matchAudio-avatar" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="slider-field" id="durationField-avatar">
+              <span class="slider-label-text">Video Duration in Seconds</span>
+              <div class="slider-row">
+                <input type="range" id="durationRange-avatar" min="1" max="20" value="9" step="0.5" />
+                <input type="number" id="duration-avatar" min="1" max="20" value="9" step="0.5" class="duration-num" />
+              </div>
+            </div>
+
+            <div class="field">
+              <span>Resolution</span>
+              <div class="resolution-row">
+                <select id="resolutionPreset-avatar">
+                  <option value="landscape">Landscape 16:9</option>
+                  <option value="portrait">Portrait 9:16</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <input id="width-avatar" type="number" value="1024" min="256" step="8" class="res-dim" readonly />
+                <span class="res-x">×</span>
+                <input id="height-avatar" type="number" value="576" min="256" step="8" class="res-dim" readonly />
+              </div>
+            </div>
+
+            <div class="settings-grid">
+              <label class="field">
+                <span>FPS</span>
+                <input id="fps-avatar" type="number" value="24" min="1" />
+              </label>
+              <label class="field">
+                <span>Seed</span>
+                <input id="seed-avatar" type="number" value="42" />
+              </label>
+            </div>
+
+            <details class="advanced-settings">
+              <summary>Advanced Settings</summary>
+              <div class="advanced-body">
+                <label class="field">
+                  <span>Negative Prompt</span>
+                  <textarea id="negativePrompt-avatar" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
+                </label>
+              </div>
+            </details>
+
+            <button class="submit-button" id="submitButton-avatar" type="submit">
+              Generate video
+            </button>
+          </form>
+        </div>
 
         <aside class="result-panel">
           <div class="result-header">
@@ -255,6 +340,6 @@
       </section>
     </main>
 
-    <script src="./app.js?v=20260512-optional-image" defer></script>
+    <script src="./app.js?v=20260616-mode-tabs" defer></script>
   </body>
 </html>

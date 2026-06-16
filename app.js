@@ -1,63 +1,81 @@
-const form = document.querySelector("#generationForm");
-const imageInput = document.querySelector("#imageInput");
-const uploadLabel = document.querySelector("#uploadLabel");
-const imageDropZone = document.querySelector("#imageDropZone");
-const imageChooseBtn = document.querySelector("#imageChooseBtn");
-const audioInput = document.querySelector("#audioInput");
-const audioUploadLabel = document.querySelector("#audioUploadLabel");
-const audioDropZone = document.querySelector("#audioDropZone");
-const audioChooseBtn = document.querySelector("#audioChooseBtn");
-const submitButton = document.querySelector("#submitButton");
+const apiEndpoint = "https://ltx-gateway.fly.dev";
+const pollIntervalMs = 5000;
+const DEFAULT_IMAGE = "./materials/song.png";
+const DEFAULT_AUDIO = "./materials/song.mp3";
+
 const statusBadge = document.querySelector("#statusBadge");
 const logOutput = document.querySelector("#logOutput");
 const videoPreview = document.querySelector("#videoPreview");
 const downloadVideo = document.querySelector("#downloadVideo");
-const promptInput = document.querySelector("#prompt");
-const heroVideoA = document.querySelector("#heroVideoA");
-const heroVideoB = document.querySelector("#heroVideoB");
-const resolutionPreset = document.querySelector("#resolutionPreset");
-const widthInput = document.querySelector("#width");
-const heightInput = document.querySelector("#height");
 const progressTrack = document.querySelector("#progressTrack");
 const progressFill = document.querySelector("#progressFill");
-const matchAudio = document.querySelector("#matchAudio");
-const durationRange = document.querySelector("#durationRange");
-const durationNum = document.querySelector("#duration");
-const durationField = document.querySelector("#durationField");
+const heroVideoA = document.querySelector("#heroVideoA");
+const heroVideoB = document.querySelector("#heroVideoB");
 
-const pollIntervalMs = 5000;
-const DEFAULT_IMAGE = "./materials/song.png";
-const DEFAULT_AUDIO = "./materials/song.mp3";
-let currentImageUrl = "";
-let currentAudioDuration = null;
+const RESOLUTION_PRESETS = {
+  landscape: { w: 1024, h: 576 },
+  portrait:  { w: 576,  h: 1024 },
+};
 
-// Sync range ↔ number input
-durationRange.addEventListener("input", () => { durationNum.value = durationRange.value; });
-durationNum.addEventListener("input", () => { durationRange.value = durationNum.value; });
+// ---------------------------------------------------------------------------
+// Mode tabs (General / Avatar)
+// ---------------------------------------------------------------------------
+let activeMode = "general";
+const modeTabs = document.querySelectorAll(".mode-tab");
+const modePanels = {
+  general: document.querySelector('[data-mode-panel="general"]'),
+  avatar:  document.querySelector('[data-mode-panel="avatar"]'),
+};
 
-// Match Audio Length toggle
-matchAudio.addEventListener("change", applyMatchAudio);
+modeTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const mode = tab.dataset.mode;
+    if (mode === activeMode) return;
+    activeMode = mode;
+    modeTabs.forEach((t) => {
+      const isActive = t.dataset.mode === mode;
+      t.classList.toggle("active", isActive);
+      t.setAttribute("aria-selected", String(isActive));
+    });
+    Object.entries(modePanels).forEach(([m, panel]) => {
+      panel.hidden = m !== mode;
+    });
+  });
+});
 
-function applyMatchAudio() {
-  const hasAudio = currentAudioDuration !== null;
-  if (matchAudio.checked && hasAudio) {
-    const capped = Math.min(currentAudioDuration, 20);
-    durationRange.value = capped;
-    durationNum.value = parseFloat(capped.toFixed(1));
-  }
-  durationField.classList.toggle("disabled", matchAudio.checked && hasAudio);
+// ---------------------------------------------------------------------------
+// Per-mode state (image/audio object URLs, audio duration)
+// ---------------------------------------------------------------------------
+const state = {
+  general: { imageUrl: DEFAULT_IMAGE, audioDuration: null },
+  avatar:  { imageUrl: DEFAULT_IMAGE, audioDuration: null },
+};
+
+function el(mode, id) {
+  return document.querySelector(`#${id}-${mode}`);
 }
 
-function loadAudioDuration(src) {
-  const a = new Audio();
-  a.preload = "metadata";
-  a.addEventListener("loadedmetadata", () => {
-    currentAudioDuration = a.duration;
-    applyMatchAudio();
-  }, { once: true });
-  a.src = src;
+function getValue(mode, id) {
+  return el(mode, id).value.trim();
 }
 
+function getNumber(mode, id) {
+  return Number(el(mode, id).value);
+}
+
+function getOptionalNumber(mode, id) {
+  const value = el(mode, id).value.trim();
+  return value === "" ? null : Number(value);
+}
+
+function getChecked(mode, id) {
+  const node = el(mode, id);
+  return node ? node.checked : false;
+}
+
+// ---------------------------------------------------------------------------
+// Progress bar (shared)
+// ---------------------------------------------------------------------------
 let _progressTimer = null;
 
 function startProgress(estimatedSeconds) {
@@ -89,31 +107,9 @@ function resetProgress() {
   progressFill.classList.remove("done");
 }
 
-const RESOLUTION_PRESETS = {
-  landscape: { w: 1024, h: 576 },
-  portrait:  { w: 576,  h: 1024 },
-};
-
-resolutionPreset.addEventListener("change", () => {
-  const val = resolutionPreset.value;
-  if (val === "custom") {
-    widthInput.removeAttribute("readonly");
-    heightInput.removeAttribute("readonly");
-  } else {
-    const { w, h } = RESOLUTION_PRESETS[val];
-    widthInput.value = w;
-    heightInput.value = h;
-    widthInput.setAttribute("readonly", "");
-    heightInput.setAttribute("readonly", "");
-  }
-});
-
-// Show default image preview on load
-(async () => {
-  try {
-    currentImageUrl = DEFAULT_IMAGE;
-  } catch {}
-})();
+// ---------------------------------------------------------------------------
+// Hero video crossfade (unchanged)
+// ---------------------------------------------------------------------------
 const heroVideoClips = [
   "./videos/clip_1.mp4",
   "./videos/clip_2.mp4",
@@ -121,7 +117,6 @@ const heroVideoClips = [
   "./videos/clip_4.mp4",
 ];
 let currentHeroClip = 0;
-// front = currently visible layer, back = hidden layer being preloaded
 let heroFront = heroVideoA;
 let heroBack  = heroVideoB;
 let heroCrossfading = false;
@@ -157,7 +152,6 @@ function attachHeroListeners(video) {
 
 attachHeroListeners(heroVideoA);
 
-
 document.querySelectorAll(".example-card video").forEach((video) => {
   const card = video.closest(".example-card");
   card.addEventListener("mouseenter", () => video.play().catch(() => {}));
@@ -167,100 +161,205 @@ document.querySelectorAll(".example-card video").forEach((video) => {
   });
 });
 
-uploadLabel.addEventListener("click", () => imageInput.click());
-imageChooseBtn.addEventListener("click", () => imageInput.click());
-
-imageDropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  uploadLabel.style.borderColor = "var(--gold)";
+document.querySelectorAll(".example-card[data-prompt]").forEach((card) => {
+  card.addEventListener("click", () => {
+    const promptField = el("general", "prompt");
+    if (promptField) promptField.value = card.dataset.prompt;
+  });
 });
-imageDropZone.addEventListener("dragleave", () => { uploadLabel.style.borderColor = ""; });
-imageDropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  uploadLabel.style.borderColor = "";
-  const file = e.dataTransfer.files?.[0];
-  if (file) {
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    imageInput.files = dt.files;
-    imageInput.dispatchEvent(new Event("change"));
+
+// ---------------------------------------------------------------------------
+// Per-mode wiring: duration slider, resolution preset, image/audio upload
+// ---------------------------------------------------------------------------
+function setupFormMode(mode, { hasAudio }) {
+  const durationRange = el(mode, "durationRange");
+  const durationNum = el(mode, "duration");
+  durationRange.addEventListener("input", () => { durationNum.value = durationRange.value; });
+  durationNum.addEventListener("input", () => { durationRange.value = durationNum.value; });
+
+  const resolutionPreset = el(mode, "resolutionPreset");
+  const widthInput = el(mode, "width");
+  const heightInput = el(mode, "height");
+  resolutionPreset.addEventListener("change", () => {
+    const val = resolutionPreset.value;
+    if (val === "custom") {
+      widthInput.removeAttribute("readonly");
+      heightInput.removeAttribute("readonly");
+    } else {
+      const { w, h } = RESOLUTION_PRESETS[val];
+      widthInput.value = w;
+      heightInput.value = h;
+      widthInput.setAttribute("readonly", "");
+      heightInput.setAttribute("readonly", "");
+    }
+  });
+
+  const imageInput = el(mode, "imageInput");
+  const uploadLabel = el(mode, "uploadLabel");
+  const imageDropZone = el(mode, "imageDropZone");
+  const imageChooseBtn = el(mode, "imageChooseBtn");
+
+  uploadLabel.addEventListener("click", () => imageInput.click());
+  imageChooseBtn.addEventListener("click", () => imageInput.click());
+
+  imageDropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadLabel.style.borderColor = "var(--gold)";
+  });
+  imageDropZone.addEventListener("dragleave", () => { uploadLabel.style.borderColor = ""; });
+  imageDropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadLabel.style.borderColor = "";
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      imageInput.files = dt.files;
+      imageInput.dispatchEvent(new Event("change"));
+    }
+  });
+
+  imageInput.addEventListener("change", () => {
+    const file = imageInput.files?.[0];
+    const s = state[mode];
+    if (!file) {
+      uploadLabel.value = "";
+      if (s.imageUrl && s.imageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(s.imageUrl);
+      s.imageUrl = DEFAULT_IMAGE;
+      return;
+    }
+    uploadLabel.value = file.name;
+    if (s.imageUrl && s.imageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(s.imageUrl);
+    s.imageUrl = URL.createObjectURL(file);
+  });
+
+  if (!hasAudio) return;
+
+  // Avatar-only: audio upload, match-audio toggle, prompt-enhance auto-check
+  const audioInput = el(mode, "audioInput");
+  const audioUploadLabel = el(mode, "audioUploadLabel");
+  const audioDropZone = el(mode, "audioDropZone");
+  const audioChooseBtn = el(mode, "audioChooseBtn");
+  const matchAudio = el(mode, "matchAudio");
+  const durationField = el(mode, "durationField");
+  const promptEnhance = el(mode, "promptEnhance");
+
+  function applyMatchAudio() {
+    const hasAudioLoaded = state[mode].audioDuration !== null;
+    if (matchAudio.checked && hasAudioLoaded) {
+      const capped = Math.min(state[mode].audioDuration, 20);
+      durationRange.value = capped;
+      durationNum.value = parseFloat(capped.toFixed(1));
+    }
+    durationField.classList.toggle("disabled", matchAudio.checked && hasAudioLoaded);
   }
-});
 
-imageInput.addEventListener("change", () => {
-  const file = imageInput.files?.[0];
-  if (!file) {
-    uploadLabel.value = "";
-    if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
-    currentImageUrl = DEFAULT_IMAGE;
-    uploadLabel.value = "";
-    return;
+  function loadAudioDuration(src) {
+    const a = new Audio();
+    a.preload = "metadata";
+    a.addEventListener("loadedmetadata", () => {
+      state[mode].audioDuration = a.duration;
+      applyMatchAudio();
+    }, { once: true });
+    a.src = src;
   }
 
-  uploadLabel.value = file.name;
-  if (currentImageUrl && currentImageUrl !== DEFAULT_IMAGE) URL.revokeObjectURL(currentImageUrl);
-  currentImageUrl = URL.createObjectURL(file);
-});
+  matchAudio.addEventListener("change", applyMatchAudio);
 
-audioUploadLabel.addEventListener("click", () => audioInput.click());
-audioChooseBtn.addEventListener("click", () => audioInput.click());
+  audioUploadLabel.addEventListener("click", () => audioInput.click());
+  audioChooseBtn.addEventListener("click", () => audioInput.click());
 
-audioInput.addEventListener("change", () => {
-  const file = audioInput.files?.[0];
-  if (!file) {
-    audioUploadLabel.value = "";
-    currentAudioDuration = null;
-    matchAudio.checked = false;
-    document.querySelector("#promptEnhance").checked = false;
-    applyMatchAudio();
-    return;
-  }
-  audioUploadLabel.value = file.name;
-  matchAudio.checked = true;
-  document.querySelector("#promptEnhance").checked = true;
-  loadAudioDuration(URL.createObjectURL(file));
-});
-
-audioDropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  audioUploadLabel.style.borderColor = "var(--gold)";
-});
-audioDropZone.addEventListener("dragleave", () => { audioUploadLabel.style.borderColor = ""; });
-audioDropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  audioUploadLabel.style.borderColor = "";
-  const file = e.dataTransfer.files?.[0];
-  if (file) {
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    audioInput.files = dt.files;
+  audioInput.addEventListener("change", () => {
+    const file = audioInput.files?.[0];
+    if (!file) {
+      audioUploadLabel.value = "";
+      state[mode].audioDuration = null;
+      matchAudio.checked = false;
+      promptEnhance.checked = false;
+      applyMatchAudio();
+      return;
+    }
     audioUploadLabel.value = file.name;
     matchAudio.checked = true;
-    document.querySelector("#promptEnhance").checked = true;
+    promptEnhance.checked = true;
     loadAudioDuration(URL.createObjectURL(file));
-  }
-});
+  });
 
-form.addEventListener("submit", async (event) => {
+  audioDropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    audioUploadLabel.style.borderColor = "var(--gold)";
+  });
+  audioDropZone.addEventListener("dragleave", () => { audioUploadLabel.style.borderColor = ""; });
+  audioDropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    audioUploadLabel.style.borderColor = "";
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      audioInput.files = dt.files;
+      audioUploadLabel.value = file.name;
+      matchAudio.checked = true;
+      promptEnhance.checked = true;
+      loadAudioDuration(URL.createObjectURL(file));
+    }
+  });
+}
+
+setupFormMode("general", { hasAudio: false });
+setupFormMode("avatar",  { hasAudio: true });
+
+// ---------------------------------------------------------------------------
+// Submit handling (shared logic, parameterized by mode)
+// ---------------------------------------------------------------------------
+function buildPayload(mode, imageBase64, audioBase64) {
+  const duration = getNumber(mode, "duration");
+  if (duration > 20) {
+    throw new Error("Duration must be 20 seconds or less.");
+  }
+
+  const payload = {
+    prompt: getValue(mode, "prompt"),
+    duration,
+    height: getNumber(mode, "height"),
+    width: getNumber(mode, "width"),
+    fps: getNumber(mode, "fps"),
+    seed: getOptionalNumber(mode, "seed"),
+    negative_prompt: getValue(mode, "negativePrompt"),
+    verbose: true,
+    ...(imageBase64 ? { image_base64: imageBase64 } : {}),
+  };
+
+  if (mode === "avatar") {
+    payload.prompt_enhance = getChecked(mode, "promptEnhance");
+    payload.end_frame_guide = !!(imageBase64 && audioBase64);
+    if (audioBase64) payload.audio_base64 = audioBase64;
+  }
+
+  return payload;
+}
+
+async function handleSubmit(mode, event) {
   event.preventDefault();
 
-  if (!getValue("passcode")) {
+  if (!getValue(mode, "passcode")) {
     setStatus("error", "Error");
     appendLog("\nError: API key missing");
     return;
   }
 
+  const imageInput = el(mode, "imageInput");
+  const audioInput = mode === "avatar" ? el(mode, "audioInput") : null;
   const file = imageInput.files?.[0];
-  const audioFile = audioInput.files?.[0];
+  const audioFile = audioInput?.files?.[0];
 
   // If audio is selected but duration hasn't loaded yet, wait for it (up to 3s)
-  if (audioFile && currentAudioDuration === null) {
+  if (audioFile && state[mode].audioDuration === null) {
     await new Promise((resolve) => {
       const a = new Audio();
       a.preload = "metadata";
       a.addEventListener("loadedmetadata", () => {
-        currentAudioDuration = a.duration;
-        applyMatchAudio();
+        state[mode].audioDuration = a.duration;
         resolve();
       }, { once: true });
       a.addEventListener("error", resolve, { once: true });
@@ -269,7 +368,7 @@ form.addEventListener("submit", async (event) => {
     });
   }
 
-  setBusy(true);
+  setBusy(mode, true);
   resetVideoLinks();
   resetProgress();
 
@@ -277,9 +376,8 @@ form.addEventListener("submit", async (event) => {
     setStatus("running", "Running");
     const imageBase64 = file ? await fileToBase64(file) : null;
     const audioBase64 = audioFile ? await fileToBase64(audioFile) : null;
-    const apiEndpoint = "https://ltx-gateway.fly.dev";
-    const passcode = getValue("passcode");
-    const payload = buildPayload(imageBase64, audioBase64);
+    const passcode = getValue(mode, "passcode");
+    const payload = buildPayload(mode, imageBase64, audioBase64);
 
     writeLog("POST /v1/videos/generate", payload);
     const createResponse = await fetch(`${apiEndpoint}/v1/videos/generate`, {
@@ -313,31 +411,12 @@ form.addEventListener("submit", async (event) => {
     resetProgress();
     appendLog(`\nError: ${message}`);
   } finally {
-    setBusy(false);
+    setBusy(mode, false);
   }
-});
-
-function buildPayload(imageBase64, audioBase64) {
-  const duration = getNumber("duration");
-  if (duration > 20) {
-    throw new Error("Duration must be 20 seconds or less.");
-  }
-
-  return {
-    prompt: getValue("prompt"),
-    duration,
-    height: getNumber("height"),
-    width: getNumber("width"),
-    fps: getNumber("fps"),
-    seed: getOptionalNumber("seed"),
-    prompt_enhance:   document.querySelector("#promptEnhance").checked,
-    negative_prompt:  getValue("negativePrompt"),
-    end_frame_guide:  !!(imageBase64 && audioBase64),
-    ...(imageBase64 ? { image_base64: imageBase64 } : {}),
-    ...(audioBase64 ? { audio_base64: audioBase64 } : {}),
-    verbose: true,
-  };
 }
+
+document.querySelector("#generalForm").addEventListener("submit", (e) => handleSubmit("general", e));
+document.querySelector("#avatarForm").addEventListener("submit", (e) => handleSubmit("avatar", e));
 
 async function pollUntilComplete(apiEndpoint, jobId, passcode) {
   while (true) {
@@ -405,7 +484,8 @@ function setStatus(kind, label) {
   statusBadge.textContent = label;
 }
 
-function setBusy(isBusy) {
+function setBusy(mode, isBusy) {
+  const submitButton = el(mode, "submitButton");
   submitButton.disabled = isBusy;
   submitButton.textContent = isBusy ? "Generating..." : "Generate video";
 }
@@ -460,20 +540,6 @@ function fileToBase64(file) {
     reader.readAsDataURL(file);
   });
 }
-
-function getValue(id) {
-  return document.querySelector(`#${id}`).value.trim();
-}
-
-function getNumber(id) {
-  return Number(document.querySelector(`#${id}`).value);
-}
-
-function getOptionalNumber(id) {
-  const value = document.querySelector(`#${id}`).value.trim();
-  return value === "" ? null : Number(value);
-}
-
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
