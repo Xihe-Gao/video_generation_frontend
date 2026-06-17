@@ -13,8 +13,8 @@ const heroVideoA = document.querySelector("#heroVideoA");
 const heroVideoB = document.querySelector("#heroVideoB");
 
 const RESOLUTION_PRESETS = {
-  landscape: { w: 1024, h: 576 },
-  portrait:  { w: 576,  h: 1024 },
+  landscape: { w: 1280, h: 720 },
+  portrait:  { w: 720,  h: 1280 },
 };
 
 // ---------------------------------------------------------------------------
