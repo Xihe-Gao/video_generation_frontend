@@ -406,11 +406,13 @@ async function handleSubmit(mode, event) {
 
     const result = await pollUntilComplete(apiEndpoint, jobId, passcode);
     showCompletedVideo(result.url);
+    enableSaveLog();
   } catch (error) {
     const message = normalizeFetchError(error);
     setStatus("error", "Error");
     resetProgress();
     appendLog(`\nError: ${message}`);
+    enableSaveLog();
   } finally {
     setBusy(mode, false);
   }
@@ -460,7 +462,14 @@ function showCompletedVideo(videoUrl) {
   appendLog(`\nvideo_url: ${videoUrl}`);
 }
 
-document.querySelector("#saveLog").addEventListener("click", () => {
+const saveLogBtn = document.querySelector("#saveLog");
+
+function enableSaveLog() {
+  saveLogBtn.disabled = false;
+  saveLogBtn.classList.remove("disabled");
+}
+
+saveLogBtn.addEventListener("click", () => {
   const text = logOutput.textContent;
   if (!text) return;
   const blob = new Blob([text], { type: "text/plain" });
