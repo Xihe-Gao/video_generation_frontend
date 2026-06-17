@@ -465,11 +465,12 @@ function showCompletedVideo(videoUrl) {
 const saveLogBtn = document.querySelector("#saveLog");
 
 function enableSaveLog() {
+  if (!saveLogBtn) return;
   saveLogBtn.disabled = false;
   saveLogBtn.classList.remove("disabled");
 }
 
-saveLogBtn.addEventListener("click", () => {
+if (saveLogBtn) saveLogBtn.addEventListener("click", () => {
   const text = logOutput.textContent;
   if (!text) return;
   const blob = new Blob([text], { type: "text/plain" });
