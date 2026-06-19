@@ -381,6 +381,7 @@ async function handleSubmit(mode, event) {
     const passcode = getValue(mode, "passcode");
     const payload = buildPayload(mode, imageBase64, audioBase64);
 
+    const tSubmit = Date.now();
     writeLog("POST /v1/videos/generate", payload);
     const createResponse = await fetch(`${apiEndpoint}/v1/videos/generate`, {
       method: "POST",
@@ -407,6 +408,16 @@ async function handleSubmit(mode, event) {
 
     const result = await pollUntilComplete(apiEndpoint, jobId, passcode);
     showCompletedVideo(result.url);
+    const wallClock = ((Date.now() - tSubmit) / 1000).toFixed(1);
+    if (result.timing) {
+      const t = result.timing;
+      const parts = [`download: ${t.download_s}s`, `generate: ${t.generate_s}s`];
+      if (t.upscale_s != null) parts.push(`upscale: ${t.upscale_s}s${t.sr_fps ? ` (${t.sr_fps} fps)` : ""}`);
+      parts.push(`upload: ${t.upload_s}s`, `total: ${t.total_s}s`);
+      const coldStart = (wallClock - t.total_s).toFixed(1);
+      appendLog(`\n⏱ ${parts.join("  |  ")}`);
+      appendLog(`\n⏱ wall clock: ${wallClock}s  (cold start + queue: ~${coldStart}s)`);
+    }
     enableSaveLog();
   } catch (error) {
     const message = normalizeFetchError(error);
