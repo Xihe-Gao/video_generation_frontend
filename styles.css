@@ -1195,3 +1195,54 @@ select:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Log Dialog ─────────────────────────────────────────────────────────── */
+#logDialog {
+  width: min(90vw, 860px);
+  max-height: 80vh;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  background: #0f0f0f;
+  color: #e0e0e0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#logDialog::backdrop {
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+}
+.log-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+.log-dialog-actions {
+  display: flex;
+  gap: 8px;
+}
+.log-dialog-actions button {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  color: #e0e0e0;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.log-dialog-actions button:hover {
+  background: rgba(255,255,255,0.14);
+}
+#logDialogContent {
+  padding: 16px 18px;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  flex: 1;
+}

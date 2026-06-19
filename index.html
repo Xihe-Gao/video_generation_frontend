@@ -378,6 +378,17 @@
         </aside>
       </section>
 
+      <dialog id="logDialog">
+        <div class="log-dialog-header">
+          <strong>Run Log</strong>
+          <div class="log-dialog-actions">
+            <button type="button" id="downloadLog">Download</button>
+            <button type="button" id="closeLog">✕</button>
+          </div>
+        </div>
+        <pre id="logDialogContent"></pre>
+      </dialog>
+
 
       <section class="api-section" id="api">
         <div class="section-heading">
@@ -388,6 +399,6 @@
       </section>
     </main>
 
-    <script src="./app.js?v=20260619-savelog-on" defer></script>
+    <script src="./app.js?v=20260619-log-dialog" defer></script>
   </body>
 </html>

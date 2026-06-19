@@ -482,19 +482,33 @@ function enableSaveLog() {
   saveLogBtn.classList.remove("disabled");
 }
 
-if (saveLogBtn) saveLogBtn.addEventListener("click", () => {
+const logDialog        = document.querySelector("#logDialog");
+const logDialogContent = document.querySelector("#logDialogContent");
+const downloadLogBtn   = document.querySelector("#downloadLog");
+const closeLogBtn      = document.querySelector("#closeLog");
+
+function downloadLogFile() {
   const text = logOutput.textContent;
   if (!text) return;
   const blob = new Blob([text], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
   a.download = `frameforge_log_${new Date().toISOString().replace(/[:.]/g, "-")}.txt`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+if (saveLogBtn) saveLogBtn.addEventListener("click", () => {
+  logDialogContent.textContent = logOutput.textContent;
+  logDialog.showModal();
 });
+
+downloadLogBtn.addEventListener("click", downloadLogFile);
+closeLogBtn.addEventListener("click", () => logDialog.close());
+logDialog.addEventListener("click", (e) => { if (e.target === logDialog) logDialog.close(); });
 
 downloadVideo.addEventListener("click", async (e) => {
   e.preventDefault();
