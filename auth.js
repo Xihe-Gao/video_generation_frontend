@@ -1,38 +1,33 @@
-// Shared Clerk auth + nav init — included on every page
+// Shared Clerk auth + nav init — included on every page after config.js
 
-const CLERK_PUBLISHABLE_KEY = "pk_test_YOUR_KEY_HERE"; // replace with your Clerk key
-const API_URL = "https://ltx-gateway.fly.dev";
-
-// Expose for other scripts
-window.API_URL = API_URL;
+const _cfg = window.FRAMEFORGE_CONFIG || {};
+window.API_URL = _cfg.API_URL || "https://ltx-gateway.fly.dev";
 
 async function initClerk() {
-  const clerk = window.Clerk;
+  const clerk = new window.Clerk(_cfg.CLERK_PUBLISHABLE_KEY);
   await clerk.load({ signInUrl: "/auth.html", signUpUrl: "/auth.html" });
+  window._clerk = clerk;
 
-  const nav          = document.querySelector(".nav-links");
-  const dashLink     = document.getElementById("nav-dashboard");
-  const signinLink   = document.getElementById("nav-signin");
-  const userMount    = document.getElementById("nav-user-mount");
-  const creditsEl    = document.getElementById("nav-credits");
+  const dashLink   = document.getElementById("nav-dashboard");
+  const signinLink = document.getElementById("nav-signin");
+  const userMount  = document.getElementById("nav-user-mount");
+  const creditsEl  = document.getElementById("nav-credits");
 
   if (clerk.user) {
     dashLink  && (dashLink.hidden   = false);
     signinLink && (signinLink.hidden = true);
     if (userMount) clerk.mountUserButton(userMount);
-    if (creditsEl) loadNavCredits(creditsEl);
+    if (creditsEl) _loadNavCredits(creditsEl);
   } else {
     dashLink  && (dashLink.hidden   = true);
     signinLink && (signinLink.hidden = false);
   }
-
-  window._clerk = clerk;
 }
 
-async function loadNavCredits(el) {
+async function _loadNavCredits(el) {
   try {
     const token = await window._clerk.session.getToken();
-    const r = await fetch(`${API_URL}/user/me`, {
+    const r = await fetch(`${window.API_URL}/user/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!r.ok) return;
@@ -42,7 +37,6 @@ async function loadNavCredits(el) {
   } catch {}
 }
 
-// Helper used by playground, dashboard, pricing pages
 window.getAuthToken = async () => {
   if (!window._clerk?.session) return null;
   return await window._clerk.session.getToken();

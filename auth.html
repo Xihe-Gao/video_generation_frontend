@@ -7,12 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_YOUR_KEY_HERE"
-    src="https://YOUR_CLERK_FRONTEND_API/.well-known/clerk.browser.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+  <script src="./config.js"></script>
 </head>
 <body>
 
@@ -38,7 +34,8 @@
 
 <script>
 window.addEventListener("load", async () => {
-  const clerk = window.Clerk;
+  const cfg   = window.FRAMEFORGE_CONFIG || {};
+  const clerk = new window.Clerk(cfg.CLERK_PUBLISHABLE_KEY);
   await clerk.load();
 
   if (clerk.user) {
