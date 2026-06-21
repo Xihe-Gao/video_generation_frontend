@@ -16,7 +16,7 @@ const heroVideoB   = document.querySelector("#heroVideoB");
 // Auth state — runs after auth.js initialises Clerk
 // ---------------------------------------------------------------------------
 window.addEventListener("load", async () => {
-  await new Promise(r => setTimeout(r, 400)); // let Clerk load
+  await window.clerkReady;
 
   const isPlayground = !!document.getElementById("generalForm");
   if (!isPlayground) return; // home page — skip playground-specific setup
@@ -442,16 +442,17 @@ async function handleSubmit(mode, event) {
     const tSubmit = Date.now();
 
     // Build auth headers + choose endpoint
-    let generateUrl, pollHeaders, generateHeaders;
+    // pollGetHeaders is a function (not object) so token is refreshed each poll iteration
+    let generateUrl, pollGetHeaders, generateHeaders;
     if (isLoggedIn) {
       const token = await window.getAuthToken();
       generateUrl     = `${apiEndpoint}/user/videos/generate`;
       generateHeaders = { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
-      pollHeaders     = { Authorization: `Bearer ${token}` };
+      pollGetHeaders  = async () => ({ Authorization: `Bearer ${await window.getAuthToken()}` });
     } else {
       generateUrl     = `${apiEndpoint}/v1/videos/generate`;
       generateHeaders = { "Content-Type": "application/json", "X-API-Key": guestPasscode };
-      pollHeaders     = { "X-API-Key": guestPasscode };
+      pollGetHeaders  = async () => ({ "X-API-Key": guestPasscode });
     }
 
     writeLog("POST generate", payload);
@@ -483,7 +484,7 @@ async function handleSubmit(mode, event) {
     const pollUrl = isLoggedIn
       ? `${apiEndpoint}/user/videos/${encodeURIComponent(jobId)}`
       : `${apiEndpoint}/v1/videos/${encodeURIComponent(jobId)}`;
-    const result = await pollUntilDone(pollUrl, pollHeaders);
+    const result = await pollUntilDone(pollUrl, pollGetHeaders);
     showCompletedVideo(result.url);
     const wallClock = ((Date.now() - tSubmit) / 1000).toFixed(1);
     if (result.timing) {
@@ -510,9 +511,10 @@ async function handleSubmit(mode, event) {
 document.querySelector("#generalForm").addEventListener("submit", (e) => handleSubmit("general", e));
 document.querySelector("#avatarForm").addEventListener("submit", (e) => handleSubmit("avatar", e));
 
-async function pollUntilDone(url, headers) {
+async function pollUntilDone(url, getHeaders) {
   while (true) {
     await wait(pollIntervalMs);
+    const headers  = await getHeaders();
     const response = await fetch(url, { headers });
     const data     = await readJson(response);
     writeLog(`GET status`, data);

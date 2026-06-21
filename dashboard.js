@@ -1,6 +1,5 @@
 window.addEventListener("load", async () => {
-  // Wait for Clerk to initialize (auth.js runs first)
-  await new Promise(r => setTimeout(r, 300));
+  await window.clerkReady;
 
   if (!window._clerk?.user) {
     document.getElementById("authGate").hidden = false;

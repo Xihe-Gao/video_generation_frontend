@@ -3,10 +3,15 @@
 const _cfg = window.FRAMEFORGE_CONFIG || {};
 window.API_URL = _cfg.API_URL || "https://ltx-gateway.fly.dev";
 
+// Promise other scripts await instead of using fixed sleep
+let _resolveClerkReady;
+window.clerkReady = new Promise(r => { _resolveClerkReady = r; });
+
 async function initClerk() {
   const clerk = new window.Clerk(_cfg.CLERK_PUBLISHABLE_KEY);
   await clerk.load({ signInUrl: "/auth.html", signUpUrl: "/auth.html" });
   window._clerk = clerk;
+  _resolveClerkReady(clerk);
 
   const dashLink   = document.getElementById("nav-dashboard");
   const signinLink = document.getElementById("nav-signin");
