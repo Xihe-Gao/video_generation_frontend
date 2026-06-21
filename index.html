@@ -1,27 +1,29 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FrameForge | Image to Video Generation</title>
-    <meta
-      name="description"
-      content="A polished single-page image-to-video generation frontend for Modal APIs."
-    />
+    <title>FrameForge — AI Video Generation</title>
+    <meta name="description" content="Turn images and audio into cinematic AI videos in seconds." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
+    <script
+      async
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_YOUR_KEY_HERE"
+      src="https://YOUR_CLERK_FRONTEND_API/.well-known/clerk.browser.js"
+    ></script>
   </head>
   <body>
+
     <header class="site-header">
-      <a class="brand" href="/" aria-label="FrameForge">
+      <a class="brand" href="/">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 32 32" fill="none" role="img">
-            <path d="M2 11 L2 2 L11 2"/>
-            <path d="M21 2 L30 2 L30 11"/>
-            <path d="M30 21 L30 30 L21 30"/>
-            <path d="M11 30 L2 30 L2 21"/>
+            <path d="M2 11 L2 2 L11 2"/><path d="M21 2 L30 2 L30 11"/>
+            <path d="M30 21 L30 30 L21 30"/><path d="M11 30 L2 30 L2 21"/>
             <circle cx="16" cy="16" r="4.5" stroke-width="1.5"/>
             <circle cx="16" cy="16" r="1.5" style="fill:currentColor;stroke:none"/>
           </svg>
@@ -29,376 +31,116 @@
         <span class="brand-name">FrameForge</span>
       </a>
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#showcase">Showcase</a>
-        <a href="#generator">Playground</a>
-        <a href="#api">API</a>
+        <a href="/playground.html">Playground</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/dashboard.html" id="nav-dashboard" hidden>Dashboard</a>
+        <a href="/auth.html" id="nav-signin" class="nav-signin-btn">Sign In</a>
+        <span class="nav-credits" id="nav-credits" hidden></span>
+        <div id="nav-user-mount"></div>
       </nav>
     </header>
 
     <main>
+      <!-- Hero -->
       <section class="hero">
         <video id="heroVideoA" class="hero-video hero-video-a" src="./videos/clip_1.mp4" autoplay muted playsinline></video>
         <video id="heroVideoB" class="hero-video hero-video-b" muted playsinline></video>
         <div class="hero-scrim"></div>
         <div class="hero-copy">
           <h1>Create Cinematic AI Videos</h1>
+          <p class="hero-sub">Transform images and audio into professional video — powered by LTX 2.3 on H100 GPUs.</p>
           <div class="hero-actions">
-            <a class="button primary" href="#generator">Try FrameForge</a>
+            <a class="button primary" href="/playground.html">Try FrameForge Free</a>
+            <a class="button ghost" href="/pricing.html">See Pricing</a>
           </div>
         </div>
       </section>
 
+      <!-- Showcase -->
       <section class="showcase" id="showcase">
         <div class="section-heading">
           <p class="eyebrow">Example library</p>
-          <h2></h2>
+          <h2>What you can create</h2>
         </div>
         <div class="example-grid">
-          <button
-            class="example-card"
-            type="button"
-            data-prompt="A serene mountain lake at golden hour, camera slowly panning right, cinematic natural light, realistic reflections"
-          >
-            <video
-              src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+          <a class="example-card" href="/playground.html?prompt=A+serene+mountain+lake+at+golden+hour%2C+camera+slowly+panning+right%2C+cinematic+natural+light">
+            <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
               poster="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
-              muted
-              loop
-              playsinline
-            ></video>
-          </button>
-          <button
-            class="example-card"
-            type="button"
-            data-prompt="A futuristic street in heavy rain, neon signs reflecting on pavement, handheld slow push forward"
-          >
-            <video
-              src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+              muted loop playsinline></video>
+            <span class="example-label">Mountain lake · cinematic pan</span>
+          </a>
+          <a class="example-card" href="/playground.html?prompt=A+futuristic+street+in+heavy+rain%2C+neon+signs+reflecting+on+pavement">
+            <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
               poster="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80"
-              muted
-              loop
-              playsinline
-            ></video>
-          </button>
-          <button
-            class="example-card"
-            type="button"
-            data-prompt="A luxury product shot on a dark reflective surface, camera orbiting slowly, studio lighting, shallow depth of field"
-          >
-            <video
-              src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
+              muted loop playsinline></video>
+            <span class="example-label">Cyberpunk rain · neon reflections</span>
+          </a>
+          <a class="example-card" href="/playground.html?prompt=A+luxury+product+shot+on+a+dark+reflective+surface%2C+studio+lighting">
+            <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
               poster="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80"
-              muted
-              loop
-              playsinline
-            ></video>
-          </button>
-          <button
-            class="example-card"
-            type="button"
-            data-prompt="A wide desert highway at sunrise, drone gliding forward, cinematic dust and long shadows"
-          >
-            <video
-              src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+              muted loop playsinline></video>
+            <span class="example-label">Product shot · studio orbit</span>
+          </a>
+          <a class="example-card" href="/playground.html?prompt=A+wide+desert+highway+at+sunrise%2C+drone+gliding+forward">
+            <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
               poster="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80"
-              muted
-              loop
-              playsinline
-            ></video>
-          </button>
+              muted loop playsinline></video>
+            <span class="example-label">Desert highway · aerial drift</span>
+          </a>
         </div>
       </section>
 
-      <section class="workspace" id="generator">
-        <div class="generator-col">
-          <div class="workspace-heading">
-            <div class="section-heading compact">
-              <p class="eyebrow">Playground</p>
-              <h2></h2>
-            </div>
-            <div class="mode-tabs" role="tablist" aria-label="Generation mode">
-              <button type="button" class="mode-tab active" data-mode="general" role="tab" aria-selected="true">General</button>
-              <button type="button" class="mode-tab" data-mode="avatar" role="tab" aria-selected="false">Avatar</button>
-            </div>
-          </div>
-
-          <form class="generator" id="generalForm" data-mode-panel="general">
-            <label class="field">
-              <span>Passcode</span>
-              <input
-                id="passcode-general"
-                type="password"
-                autocomplete="off"
-                placeholder="Required"
-                required
-              />
-            </label>
-
-            <label class="field">
-              <span>Prompt</span>
-              <textarea
-                id="prompt-general"
-                rows="5"
-              >a man is singing with groove, cinematic natural light</textarea>
-            </label>
-
-            <div class="field" id="imageDropZone-general">
-              <span>Image URL <span class="opt">(optional)</span></span>
-              <div class="field-row">
-                <input id="uploadLabel-general" type="text" readonly placeholder="Click Choose or drag an image" />
-                <button type="button" class="choose-btn" id="imageChooseBtn-general">Choose…</button>
-              </div>
-              <input id="imageInput-general" type="file" accept="image/*" />
-            </div>
-
-            <div class="field" id="audioDropZone-general">
-              <span>Audio URL <span class="opt">(optional)</span></span>
-              <div class="field-row">
-                <input id="audioUploadLabel-general" type="text" readonly placeholder="Click Choose or drag an audio file" />
-                <button type="button" class="choose-btn" id="audioChooseBtn-general">Choose…</button>
-              </div>
-              <input id="audioInput-general" type="file" accept="audio/*" />
-            </div>
-
-            <div class="toggle-field">
-              <span class="toggle-label-text">Match Audio Length</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="matchAudio-general" />
-                <span class="toggle-track"></span>
-              </label>
-            </div>
-
-            <div class="slider-field" id="durationField-general">
-              <span class="slider-label-text">Video Duration in Seconds</span>
-              <div class="slider-row">
-                <input type="range" id="durationRange-general" min="1" max="20" value="9" step="0.1" />
-                <input type="number" id="duration-general" min="1" max="20" value="9" step="0.1" class="duration-num" />
-              </div>
-            </div>
-
-            <div class="field">
-              <span>Resolution</span>
-              <div class="resolution-row">
-                <select id="resolutionPreset-general">
-                  <option value="landscape">Landscape 16:9</option>
-                  <option value="portrait">Portrait 9:16</option>
-                  <option value="custom">Custom</option>
-                </select>
-                <input id="width-general" type="number" value="1280" min="256" step="8" class="res-dim" readonly />
-                <span class="res-x">×</span>
-                <input id="height-general" type="number" value="720" min="256" step="8" class="res-dim" readonly />
-              </div>
-            </div>
-
-            <details class="advanced-settings">
-              <summary>Advanced Settings</summary>
-              <div class="advanced-body">
-                <div class="toggle-field">
-                  <span class="toggle-label-text">Prompt Enhance</span>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="promptEnhance-general" />
-                    <span class="toggle-track"></span>
-                  </label>
-                </div>
-
-                <div class="toggle-field">
-                  <span class="toggle-label-text">Upscale</span>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="upscale-general" />
-                    <span class="toggle-track"></span>
-                  </label>
-                </div>
-
-                <div class="settings-grid">
-                  <label class="field">
-                    <span>FPS</span>
-                    <input id="fps-general" type="number" value="24" min="1" />
-                  </label>
-                  <label class="field">
-                    <span>Seed</span>
-                    <input id="seed-general" type="number" value="42" />
-                  </label>
-                </div>
-
-                <label class="field">
-                  <span>Negative Prompt</span>
-                  <textarea id="negativePrompt-general" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
-                </label>
-              </div>
-            </details>
-
-            <button class="submit-button" id="submitButton-general" type="submit">
-              Generate video
-            </button>
-          </form>
-
-          <form class="generator" id="avatarForm" data-mode-panel="avatar" hidden>
-            <label class="field">
-              <span>Passcode</span>
-              <input
-                id="passcode-avatar"
-                type="password"
-                autocomplete="off"
-                placeholder="Required"
-                required
-              />
-            </label>
-
-            <label class="field">
-              <span>Prompt</span>
-              <textarea
-                id="prompt-avatar"
-                rows="5"
-              >a women is talking to the viewer, static background, only lip moving, no body movement, look front, locked camera</textarea>
-            </label>
-
-            <div class="field" id="imageDropZone-avatar">
-              <span>Image URL <span class="opt">(optional)</span></span>
-              <div class="field-row">
-                <input id="uploadLabel-avatar" type="text" readonly placeholder="Click Choose or drag an image" />
-                <button type="button" class="choose-btn" id="imageChooseBtn-avatar">Choose…</button>
-              </div>
-              <input id="imageInput-avatar" type="file" accept="image/*" />
-            </div>
-
-            <div class="field" id="audioDropZone-avatar">
-              <span>Audio URL</span>
-              <div class="field-row">
-                <input id="audioUploadLabel-avatar" type="text" readonly placeholder="Click Choose or drag an audio file" />
-                <button type="button" class="choose-btn" id="audioChooseBtn-avatar">Choose…</button>
-              </div>
-              <input id="audioInput-avatar" type="file" accept="audio/*" />
-            </div>
-
-            <div class="toggle-field">
-              <span class="toggle-label-text">Match Audio Length</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="matchAudio-avatar" />
-                <span class="toggle-track"></span>
-              </label>
-            </div>
-
-            <div class="slider-field" id="durationField-avatar">
-              <span class="slider-label-text">Video Duration in Seconds</span>
-              <div class="slider-row">
-                <input type="range" id="durationRange-avatar" min="1" max="20" value="9" step="0.1" />
-                <input type="number" id="duration-avatar" min="1" max="20" value="9" step="0.1" class="duration-num" />
-              </div>
-            </div>
-
-            <div class="field">
-              <span>Resolution</span>
-              <div class="resolution-row">
-                <select id="resolutionPreset-avatar">
-                  <option value="landscape">Landscape 16:9</option>
-                  <option value="portrait">Portrait 9:16</option>
-                  <option value="custom">Custom</option>
-                </select>
-                <input id="width-avatar" type="number" value="1280" min="256" step="8" class="res-dim" readonly />
-                <span class="res-x">×</span>
-                <input id="height-avatar" type="number" value="720" min="256" step="8" class="res-dim" readonly />
-              </div>
-            </div>
-
-            <details class="advanced-settings">
-              <summary>Advanced Settings</summary>
-              <div class="advanced-body">
-                <div class="toggle-field" style="opacity:0.4;pointer-events:none;">
-                  <span class="toggle-label-text">Prompt Enhance</span>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="promptEnhance-avatar" disabled />
-                    <span class="toggle-track"></span>
-                  </label>
-                </div>
-
-                <div class="toggle-field">
-                  <span class="toggle-label-text">Upscale</span>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="upscale-avatar" />
-                    <span class="toggle-track"></span>
-                  </label>
-                </div>
-
-                <div class="settings-grid">
-                  <label class="field">
-                    <span>FPS</span>
-                    <input id="fps-avatar" type="number" value="24" min="1" />
-                  </label>
-                  <label class="field">
-                    <span>Seed</span>
-                    <input id="seed-avatar" type="number" value="42" />
-                  </label>
-                </div>
-
-                <label class="field">
-                  <span>Negative Prompt</span>
-                  <textarea id="negativePrompt-avatar" rows="3">scene change, people walking, body movement, gesture, camera movement</textarea>
-                </label>
-              </div>
-            </details>
-
-            <button class="submit-button" id="submitButton-avatar" type="submit">
-              Generate video
-            </button>
-          </form>
-        </div>
-
-        <aside class="result-panel">
-          <div class="result-header">
-            <div class="result-title-row">
-              <strong class="result-label">Result</strong>
-              <span class="result-badge" id="statusBadge">Idle</span>
-            </div>
-            <div class="progress-track" id="progressTrack" hidden>
-              <div class="progress-fill" id="progressFill"></div>
-            </div>
-          </div>
-
-          <div class="media-result" id="mediaResult">
-            <video id="videoPreview" src="./materials/output_ia2v.mp4" controls playsinline></video>
-          </div>
-
-          <div class="result-footer">
-            <a class="result-download disabled" id="downloadVideo" href="#" download="output_ia2v.mp4">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-                <path d="M7.5 1v8.5M3.5 6.5l4 4 4-4M1.5 13.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Download
-            </a>
-            <button type="button" class="result-download disabled" id="saveLog" disabled>
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-                <path d="M2 2h8l3 3v8H2V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                <path d="M5 2v3h5V2M4 8h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-              Save Log
-            </button>
-          </div>
-
-          <pre class="log-output" id="logOutput" hidden></pre>
-        </aside>
-      </section>
-
-      <dialog id="logDialog">
-        <div class="log-dialog-header">
-          <strong>Run Log</strong>
-          <div class="log-dialog-actions">
-            <button type="button" id="downloadLog">Download</button>
-            <button type="button" id="closeLog">✕</button>
-          </div>
-        </div>
-        <pre id="logDialogContent"></pre>
-      </dialog>
-
-
-      <section class="api-section" id="api">
+      <!-- Features -->
+      <section class="features-section">
         <div class="section-heading">
-          <p class="eyebrow">API flow</p>
-          <h2></h2>
+          <p class="eyebrow">Why FrameForge</p>
+          <h2>Professional quality, production speed</h2>
         </div>
-        <pre><code>to add later</code></pre>
+        <div class="features-grid">
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <h3>Fast generation</h3>
+            <p>9-second clip at 720p in under 2 minutes on H100 GPU. No queue on paid plans.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">🎵</span>
+            <h3>Audio-driven avatar</h3>
+            <p>Upload a voice recording to animate any portrait — lips sync to speech automatically.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">🔍</span>
+            <h3>4× super-resolution</h3>
+            <p>Real-ESRGAN upscale included free on paid plans. Sharper detail, no extra wait.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">💳</span>
+            <h3>Pay for what you use</h3>
+            <p>Credit-based system. Short clips cost less. Credits roll over — they never expire.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing teaser -->
+      <section class="pricing-teaser">
+        <h2>Start free, scale when you're ready</h2>
+        <p>10 free credits on signup. No credit card required.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="/auth.html">Create Free Account</a>
+          <a class="button ghost" href="/pricing.html">Compare Plans</a>
+        </div>
       </section>
     </main>
 
-    <script src="./app.js?v=20260619-log-dialog" defer></script>
+    <footer class="site-footer">
+      <span class="brand-name" style="font-family:'Cinzel',serif;font-size:13px;">FrameForge</span>
+      <span class="footer-copy">© 2026 · AI Video Generation</span>
+      <nav class="footer-links">
+        <a href="/pricing.html">Pricing</a>
+        <a href="/playground.html">Playground</a>
+      </nav>
+    </footer>
+
+    <script src="./auth.js" defer></script>
+    <script src="./app.js?v=home" defer></script>
   </body>
 </html>

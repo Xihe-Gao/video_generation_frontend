@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — FrameForge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_YOUR_KEY_HERE"
+    src="https://YOUR_CLERK_FRONTEND_API/.well-known/clerk.browser.js"
+  ></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M2 11 L2 2 L11 2"/><path d="M21 2 L30 2 L30 11"/><path d="M30 21 L30 30 L21 30"/><path d="M11 30 L2 30 L2 21"/><circle cx="16" cy="16" r="4.5" stroke-width="1.5"/><circle cx="16" cy="16" r="1.5" style="fill:currentColor;stroke:none"/></svg>
+    </span>
+    <span class="brand-name">FrameForge</span>
+  </a>
+  <nav class="nav-links">
+    <a href="/playground.html">Playground</a>
+    <a href="/pricing.html" class="nav-active">Pricing</a>
+    <a href="/dashboard.html" id="nav-dashboard" hidden>Dashboard</a>
+    <a href="/auth.html" id="nav-signin">Sign In</a>
+    <span class="nav-credits" id="nav-credits" hidden></span>
+    <div id="nav-user-mount"></div>
+  </nav>
+</header>
+
+<main class="pricing-page">
+  <div class="pricing-header">
+    <p class="eyebrow">Simple pricing</p>
+    <h1>Credits you use, plans that scale</h1>
+    <p class="pricing-sub">Credits accumulate month to month. Unused credits never expire while your plan is active.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- Free -->
+    <div class="plan-card">
+      <div class="plan-header">
+        <span class="plan-name">Free</span>
+        <div class="plan-price"><span class="price-amount">$0</span><span class="price-period">/mo</span></div>
+      </div>
+      <ul class="plan-features">
+        <li><span class="feat-check">✓</span> 10 signup credits</li>
+        <li><span class="feat-check">✓</span> LTX 2.3 model</li>
+        <li><span class="feat-check">✓</span> Up to 720p</li>
+        <li class="feat-off"><span>✗</span> Super-resolution upscale</li>
+        <li class="feat-off"><span>✗</span> Priority queue</li>
+      </ul>
+      <button class="plan-cta secondary" onclick="window.location.href='/playground.html'">Try Free</button>
+    </div>
+
+    <!-- Starter -->
+    <div class="plan-card plan-card-featured">
+      <div class="plan-badge">Most popular</div>
+      <div class="plan-header">
+        <span class="plan-name">Starter</span>
+        <div class="plan-price"><span class="price-amount">$9</span><span class="price-period">/mo</span></div>
+      </div>
+      <p class="plan-credits-note">500 credits / month</p>
+      <ul class="plan-features">
+        <li><span class="feat-check">✓</span> 500 credits/month</li>
+        <li><span class="feat-check">✓</span> All models (LTX, Wan 2.2)</li>
+        <li><span class="feat-check">✓</span> Up to 1080p</li>
+        <li><span class="feat-check">✓</span> Super-resolution upscale free</li>
+        <li class="feat-off"><span>✗</span> Priority queue</li>
+      </ul>
+      <button class="plan-cta primary" data-plan="starter">Get Starter</button>
+    </div>
+
+    <!-- Pro -->
+    <div class="plan-card">
+      <div class="plan-header">
+        <span class="plan-name">Pro</span>
+        <div class="plan-price"><span class="price-amount">$39</span><span class="price-period">/mo</span></div>
+      </div>
+      <p class="plan-credits-note">2,500 credits / month</p>
+      <ul class="plan-features">
+        <li><span class="feat-check">✓</span> 2,500 credits/month</li>
+        <li><span class="feat-check">✓</span> All models incl. Kling, Seedance</li>
+        <li><span class="feat-check">✓</span> Up to 4K</li>
+        <li><span class="feat-check">✓</span> Super-resolution upscale free</li>
+        <li><span class="feat-check">✓</span> Priority queue</li>
+      </ul>
+      <button class="plan-cta primary" data-plan="pro">Get Pro</button>
+    </div>
+  </div>
+
+  <!-- Credit calculator -->
+  <div class="credit-table-wrap">
+    <h2 class="credit-table-title">How credits work</h2>
+    <p class="credit-table-sub">1 credit = 1 second of video at 720p with LTX 2.3</p>
+    <table class="credit-table">
+      <thead>
+        <tr><th>Resolution</th><th>Duration</th><th>Model</th><th>Credits</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>720p</td><td>9s</td><td>LTX 2.3</td><td>9</td></tr>
+        <tr><td>1080p</td><td>9s</td><td>LTX 2.3</td><td>23</td></tr>
+        <tr><td>720p</td><td>9s</td><td>Wan 2.2</td><td>11</td></tr>
+        <tr><td>1080p</td><td>20s</td><td>LTX 2.3</td><td>51</td></tr>
+        <tr><td>720p</td><td>9s</td><td>Kling</td><td>36</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<div id="checkout-loading" class="modal-overlay" hidden>
+  <div class="modal-spinner">
+    <div class="spinner"></div>
+    <p>Redirecting to checkout…</p>
+  </div>
+</div>
+
+<script src="./auth.js" defer></script>
+<script>
+document.querySelectorAll(".plan-cta[data-plan]").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    if (!window.requireAuth()) return;
+    const plan = btn.dataset.plan;
+    btn.disabled = true;
+    btn.textContent = "Loading…";
+    document.getElementById("checkout-loading").hidden = false;
+    try {
+      const token = await window.getAuthToken();
+      const r = await fetch(`${window.API_URL}/user/billing/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ plan }),
+      });
+      const data = await r.json();
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert(data.detail || "Failed to start checkout");
+        btn.disabled = false;
+        btn.textContent = plan === "starter" ? "Get Starter" : "Get Pro";
+        document.getElementById("checkout-loading").hidden = true;
+      }
+    } catch (e) {
+      alert("Network error: " + e.message);
+      btn.disabled = false;
+      btn.textContent = plan === "starter" ? "Get Starter" : "Get Pro";
+      document.getElementById("checkout-loading").hidden = true;
+    }
+  });
+});
+</script>
+</body>
+</html>

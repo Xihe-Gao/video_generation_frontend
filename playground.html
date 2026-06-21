@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playground — FrameForge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script
+      async
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_YOUR_KEY_HERE"
+      src="https://YOUR_CLERK_FRONTEND_API/.well-known/clerk.browser.js"
+    ></script>
+  </head>
+  <body>
+
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M2 11 L2 2 L11 2"/><path d="M21 2 L30 2 L30 11"/>
+            <path d="M30 21 L30 30 L21 30"/><path d="M11 30 L2 30 L2 21"/>
+            <circle cx="16" cy="16" r="4.5" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="1.5" style="fill:currentColor;stroke:none"/>
+          </svg>
+        </span>
+        <span class="brand-name">FrameForge</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/playground.html" class="nav-active">Playground</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/dashboard.html" id="nav-dashboard" hidden>Dashboard</a>
+        <a href="/auth.html" id="nav-signin">Sign In</a>
+        <span class="nav-credits" id="nav-credits" hidden></span>
+        <div id="nav-user-mount"></div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="workspace" id="generator">
+        <div class="generator-col">
+          <div class="workspace-heading">
+            <div class="section-heading compact">
+              <p class="eyebrow">Playground</p>
+            </div>
+            <div class="mode-tabs" role="tablist">
+              <button type="button" class="mode-tab active" data-mode="general" role="tab" aria-selected="true">General</button>
+              <button type="button" class="mode-tab" data-mode="avatar" role="tab" aria-selected="false">Avatar</button>
+            </div>
+          </div>
+
+          <!-- Auth notice (shown when not signed in) -->
+          <div class="auth-notice" id="authNotice" hidden>
+            <p>Using guest API key — <a href="/auth.html?redirect=/playground.html">sign in</a> to use your credits and save history.</p>
+          </div>
+
+          <!-- Credit estimate badge -->
+          <div class="credit-estimate" id="creditEstimate" hidden>
+            <span>Estimated cost: <strong id="creditCost">—</strong> credits</span>
+            <span class="credit-balance">Balance: <strong id="creditBalance">—</strong></span>
+          </div>
+
+          <!-- GENERAL FORM -->
+          <form class="generator" id="generalForm" data-mode-panel="general">
+            <label class="field" id="passcodeFieldGeneral">
+              <span>API Key <span class="opt">(guest mode)</span></span>
+              <input id="passcode-general" type="password" autocomplete="off" placeholder="Required for guest" />
+            </label>
+
+            <label class="field">
+              <span>Prompt</span>
+              <textarea id="prompt-general" rows="5">a man is singing with groove, cinematic natural light</textarea>
+            </label>
+
+            <div class="field" id="imageDropZone-general">
+              <span>Image <span class="opt">(optional — enables image-to-video)</span></span>
+              <div class="field-row">
+                <input id="uploadLabel-general" type="text" readonly placeholder="Click Choose or drag an image" />
+                <button type="button" class="choose-btn" id="imageChooseBtn-general">Choose…</button>
+              </div>
+              <input id="imageInput-general" type="file" accept="image/*" />
+            </div>
+
+            <div class="field" id="audioDropZone-general">
+              <span>Audio <span class="opt">(optional)</span></span>
+              <div class="field-row">
+                <input id="audioUploadLabel-general" type="text" readonly placeholder="Click Choose or drag an audio file" />
+                <button type="button" class="choose-btn" id="audioChooseBtn-general">Choose…</button>
+              </div>
+              <input id="audioInput-general" type="file" accept="audio/*" />
+            </div>
+
+            <div class="toggle-field">
+              <span class="toggle-label-text">Match Audio Length</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="matchAudio-general" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="slider-field" id="durationField-general">
+              <span class="slider-label-text">Duration (seconds)</span>
+              <div class="slider-row">
+                <input type="range" id="durationRange-general" min="1" max="20" value="9" step="0.1" />
+                <input type="number" id="duration-general" min="1" max="20" value="9" step="0.1" class="duration-num" />
+              </div>
+            </div>
+
+            <div class="field">
+              <span>Resolution</span>
+              <div class="resolution-row">
+                <select id="resolutionPreset-general">
+                  <option value="landscape">Landscape 16:9</option>
+                  <option value="portrait">Portrait 9:16</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <input id="width-general" type="number" value="1280" min="256" step="8" class="res-dim" readonly />
+                <span class="res-x">×</span>
+                <input id="height-general" type="number" value="720" min="256" step="8" class="res-dim" readonly />
+              </div>
+            </div>
+
+            <details class="advanced-settings">
+              <summary>Advanced Settings</summary>
+              <div class="advanced-body">
+                <div class="toggle-field">
+                  <span class="toggle-label-text">Prompt Enhance</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="promptEnhance-general" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+                <div class="toggle-field" id="upscaleField-general">
+                  <span class="toggle-label-text">Upscale 4×</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="upscale-general" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+                <div class="settings-grid">
+                  <label class="field"><span>FPS</span><input id="fps-general" type="number" value="24" min="1" /></label>
+                  <label class="field"><span>Seed</span><input id="seed-general" type="number" value="42" /></label>
+                </div>
+                <label class="field">
+                  <span>Negative Prompt</span>
+                  <textarea id="negativePrompt-general" rows="3">pc game, console game, video game, cartoon, childish, ugly</textarea>
+                </label>
+              </div>
+            </details>
+
+            <button class="submit-button" id="submitButton-general" type="submit">Generate video</button>
+          </form>
+
+          <!-- AVATAR FORM -->
+          <form class="generator" id="avatarForm" data-mode-panel="avatar" hidden>
+            <label class="field" id="passcodeFieldAvatar">
+              <span>API Key <span class="opt">(guest mode)</span></span>
+              <input id="passcode-avatar" type="password" autocomplete="off" placeholder="Required for guest" />
+            </label>
+
+            <label class="field">
+              <span>Prompt</span>
+              <textarea id="prompt-avatar" rows="5">a woman is talking to the viewer, static background, only lip moving, no body movement, look front, locked camera</textarea>
+            </label>
+
+            <div class="field" id="imageDropZone-avatar">
+              <span>Portrait Image <span class="opt">(optional)</span></span>
+              <div class="field-row">
+                <input id="uploadLabel-avatar" type="text" readonly placeholder="Click Choose or drag an image" />
+                <button type="button" class="choose-btn" id="imageChooseBtn-avatar">Choose…</button>
+              </div>
+              <input id="imageInput-avatar" type="file" accept="image/*" />
+            </div>
+
+            <div class="field" id="audioDropZone-avatar">
+              <span>Audio (voice to sync)</span>
+              <div class="field-row">
+                <input id="audioUploadLabel-avatar" type="text" readonly placeholder="Click Choose or drag an audio file" />
+                <button type="button" class="choose-btn" id="audioChooseBtn-avatar">Choose…</button>
+              </div>
+              <input id="audioInput-avatar" type="file" accept="audio/*" />
+            </div>
+
+            <div class="toggle-field">
+              <span class="toggle-label-text">Match Audio Length</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="matchAudio-avatar" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+
+            <div class="slider-field" id="durationField-avatar">
+              <span class="slider-label-text">Duration (seconds)</span>
+              <div class="slider-row">
+                <input type="range" id="durationRange-avatar" min="1" max="20" value="9" step="0.1" />
+                <input type="number" id="duration-avatar" min="1" max="20" value="9" step="0.1" class="duration-num" />
+              </div>
+            </div>
+
+            <div class="field">
+              <span>Resolution</span>
+              <div class="resolution-row">
+                <select id="resolutionPreset-avatar">
+                  <option value="landscape">Landscape 16:9</option>
+                  <option value="portrait">Portrait 9:16</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <input id="width-avatar" type="number" value="1280" min="256" step="8" class="res-dim" readonly />
+                <span class="res-x">×</span>
+                <input id="height-avatar" type="number" value="720" min="256" step="8" class="res-dim" readonly />
+              </div>
+            </div>
+
+            <details class="advanced-settings">
+              <summary>Advanced Settings</summary>
+              <div class="advanced-body">
+                <div class="toggle-field" id="upscaleField-avatar">
+                  <span class="toggle-label-text">Upscale 4×</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="upscale-avatar" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+                <div class="settings-grid">
+                  <label class="field"><span>FPS</span><input id="fps-avatar" type="number" value="24" min="1" /></label>
+                  <label class="field"><span>Seed</span><input id="seed-avatar" type="number" value="42" /></label>
+                </div>
+                <label class="field">
+                  <span>Negative Prompt</span>
+                  <textarea id="negativePrompt-avatar" rows="3">scene change, people walking, body movement, gesture, camera movement</textarea>
+                </label>
+              </div>
+            </details>
+
+            <button class="submit-button" id="submitButton-avatar" type="submit">Generate video</button>
+          </form>
+        </div>
+
+        <aside class="result-panel">
+          <div class="result-header">
+            <div class="result-title-row">
+              <strong class="result-label">Result</strong>
+              <span class="result-badge" id="statusBadge">Idle</span>
+            </div>
+            <div class="progress-track" id="progressTrack" hidden>
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </div>
+
+          <div class="media-result" id="mediaResult">
+            <video id="videoPreview" src="./materials/output_ia2v.mp4" controls playsinline></video>
+          </div>
+
+          <div class="result-footer">
+            <a class="result-download disabled" id="downloadVideo" href="#" download="output_ia2v.mp4">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                <path d="M7.5 1v8.5M3.5 6.5l4 4 4-4M1.5 13.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Download
+            </a>
+            <button type="button" class="result-download disabled" id="saveLog" disabled>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                <path d="M2 2h8l3 3v8H2V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M5 2v3h5V2M4 8h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              Save Log
+            </button>
+          </div>
+
+          <pre class="log-output" id="logOutput" hidden></pre>
+        </aside>
+      </section>
+
+      <dialog id="logDialog">
+        <div class="log-dialog-header">
+          <strong>Run Log</strong>
+          <div class="log-dialog-actions">
+            <button type="button" id="downloadLog">Download</button>
+            <button type="button" id="closeLog">✕</button>
+          </div>
+        </div>
+        <pre id="logDialogContent"></pre>
+      </dialog>
+    </main>
+
+    <script src="./auth.js" defer></script>
+    <script src="./app.js?v=playground" defer></script>
+  </body>
+</html>

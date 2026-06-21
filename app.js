@@ -1,16 +1,71 @@
-const apiEndpoint = "https://ltx-gateway.fly.dev";
+const apiEndpoint = window.API_URL || "https://ltx-gateway.fly.dev";
 const pollIntervalMs = 5000;
 const DEFAULT_IMAGE = "./materials/song.png";
 const DEFAULT_AUDIO = "./materials/song.mp3";
 
-const statusBadge = document.querySelector("#statusBadge");
-const logOutput = document.querySelector("#logOutput");
+const statusBadge  = document.querySelector("#statusBadge");
+const logOutput    = document.querySelector("#logOutput");
 const videoPreview = document.querySelector("#videoPreview");
 const downloadVideo = document.querySelector("#downloadVideo");
 const progressTrack = document.querySelector("#progressTrack");
-const progressFill = document.querySelector("#progressFill");
-const heroVideoA = document.querySelector("#heroVideoA");
-const heroVideoB = document.querySelector("#heroVideoB");
+const progressFill  = document.querySelector("#progressFill");
+const heroVideoA   = document.querySelector("#heroVideoA");
+const heroVideoB   = document.querySelector("#heroVideoB");
+
+// ---------------------------------------------------------------------------
+// Auth state — runs after auth.js initialises Clerk
+// ---------------------------------------------------------------------------
+window.addEventListener("load", async () => {
+  await new Promise(r => setTimeout(r, 400)); // let Clerk load
+
+  const isPlayground = !!document.getElementById("generalForm");
+  if (!isPlayground) return; // home page — skip playground-specific setup
+
+  const isLoggedIn = !!window._clerk?.user;
+
+  // Show/hide guest API key fields
+  const guestFieldIds = ["passcodeFieldGeneral", "passcodeFieldAvatar"];
+  guestFieldIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = isLoggedIn;
+  });
+
+  if (isLoggedIn) {
+    document.getElementById("authNotice") && (document.getElementById("authNotice").hidden = false);
+    document.getElementById("creditEstimate") && (document.getElementById("creditEstimate").hidden = false);
+    loadCreditBalance();
+
+    // Seed prompt from URL ?prompt=...
+    const urlPrompt = new URLSearchParams(location.search).get("prompt");
+    if (urlPrompt) {
+      const pf = document.getElementById("prompt-general");
+      if (pf) pf.value = urlPrompt;
+    }
+  }
+});
+
+async function loadCreditBalance() {
+  try {
+    const token = await window.getAuthToken();
+    const r = await fetch(`${apiEndpoint}/user/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const d = await r.json();
+    const el = document.getElementById("creditBalance");
+    if (el) el.textContent = d.credits_balance;
+  } catch {}
+}
+
+function updateCreditEstimate(mode) {
+  if (!window._clerk?.user) return;
+  const duration = Number(document.getElementById(`duration-${mode}`)?.value || 9);
+  const width    = Number(document.getElementById(`width-${mode}`)?.value  || 1280);
+  const height   = Number(document.getElementById(`height-${mode}`)?.value || 720);
+  // mirrors credits.py: ceil(duration * (w*h / 921600))
+  const cost = Math.max(1, Math.ceil(duration * (width * height) / 921600));
+  const el   = document.getElementById("creditCost");
+  if (el) el.textContent = cost;
+}
 
 const RESOLUTION_PRESETS = {
   landscape: { w: 1280, h: 720 },
@@ -338,9 +393,12 @@ function buildPayload(mode, imageBase64, audioBase64) {
 async function handleSubmit(mode, event) {
   event.preventDefault();
 
-  if (!getValue(mode, "passcode")) {
+  // Determine auth mode: Clerk JWT or guest API key
+  const isLoggedIn   = !!window._clerk?.user;
+  const guestPasscode = getValue(mode, "passcode");
+  if (!isLoggedIn && !guestPasscode) {
     setStatus("error", "Error");
-    appendLog("\nError: API key missing");
+    appendLog("\nError: Sign in or enter an API key");
     return;
   }
 
@@ -382,31 +440,50 @@ async function handleSubmit(mode, event) {
     const payload = buildPayload(mode, imageBase64, audioBase64);
 
     const tSubmit = Date.now();
-    writeLog("POST /v1/videos/generate", payload);
-    const createResponse = await fetch(`${apiEndpoint}/v1/videos/generate`, {
+
+    // Build auth headers + choose endpoint
+    let generateUrl, pollHeaders, generateHeaders;
+    if (isLoggedIn) {
+      const token = await window.getAuthToken();
+      generateUrl     = `${apiEndpoint}/user/videos/generate`;
+      generateHeaders = { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
+      pollHeaders     = { Authorization: `Bearer ${token}` };
+    } else {
+      generateUrl     = `${apiEndpoint}/v1/videos/generate`;
+      generateHeaders = { "Content-Type": "application/json", "X-API-Key": guestPasscode };
+      pollHeaders     = { "X-API-Key": guestPasscode };
+    }
+
+    writeLog("POST generate", payload);
+    const createResponse = await fetch(generateUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": passcode,
-      },
+      headers: generateHeaders,
       body: JSON.stringify(payload),
     });
 
     const createData = await readJson(createResponse);
     if (!createResponse.ok) {
-      throw new Error(createData.error || `Generate request failed: ${createResponse.status}`);
+      throw new Error(createData.detail || createData.error || `Generate request failed: ${createResponse.status}`);
     }
 
     const jobId = createData.job_id;
-    if (!jobId) {
-      throw new Error("Generate response did not include job_id.");
+    if (!jobId) throw new Error("Generate response did not include job_id.");
+
+    // Show credit deduction
+    if (createData.credits_cost != null) {
+      appendLog(`\nCredits deducted: ${createData.credits_cost} (remaining: ${createData.credits_remaining})`);
+      const balEl = document.getElementById("creditBalance");
+      if (balEl && createData.credits_remaining != null) balEl.textContent = createData.credits_remaining;
     }
 
     startProgress(createData.estimated_s || 120);
     setStatus("running", "Running");
     appendLog(`\njob_id: ${jobId}\n`);
 
-    const result = await pollUntilComplete(apiEndpoint, jobId, passcode);
+    const pollUrl = isLoggedIn
+      ? `${apiEndpoint}/user/videos/${encodeURIComponent(jobId)}`
+      : `${apiEndpoint}/v1/videos/${encodeURIComponent(jobId)}`;
+    const result = await pollUntilDone(pollUrl, pollHeaders);
     showCompletedVideo(result.url);
     const wallClock = ((Date.now() - tSubmit) / 1000).toFixed(1);
     if (result.timing) {
@@ -433,32 +510,19 @@ async function handleSubmit(mode, event) {
 document.querySelector("#generalForm").addEventListener("submit", (e) => handleSubmit("general", e));
 document.querySelector("#avatarForm").addEventListener("submit", (e) => handleSubmit("avatar", e));
 
-async function pollUntilComplete(apiEndpoint, jobId, passcode) {
+async function pollUntilDone(url, headers) {
   while (true) {
     await wait(pollIntervalMs);
+    const response = await fetch(url, { headers });
+    const data     = await readJson(response);
+    writeLog(`GET status`, data);
 
-    const response = await fetch(`${apiEndpoint}/v1/videos/${encodeURIComponent(jobId)}`, {
-      headers: { "X-API-Key": passcode },
-    });
-    const data = await readJson(response);
-
-    writeLog(`GET /v1/videos/${jobId}`, data);
-
-    if (!response.ok) {
-      throw new Error(data.error || `Status request failed: ${response.status}`);
-    }
-
+    if (!response.ok) throw new Error(data.detail || data.error || `Status ${response.status}`);
     if (data.status === "completed") {
-      if (!data.url) {
-        throw new Error(data.error || "Completed response did not include url.");
-      }
-      return data;
+      if (!data.url && !data.video_url) throw new Error("Completed but no video URL returned.");
+      return { ...data, url: data.url || data.video_url };
     }
-
-    if (data.status === "failed") {
-      throw new Error(data.error || "Remote job failed.");
-    }
-
+    if (data.status === "failed") throw new Error(data.error || "Remote job failed.");
     setStatus("running", "Running");
   }
 }

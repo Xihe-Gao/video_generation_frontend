@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — FrameForge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_YOUR_KEY_HERE"
+    src="https://YOUR_CLERK_FRONTEND_API/.well-known/clerk.browser.js"
+  ></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M2 11 L2 2 L11 2"/><path d="M21 2 L30 2 L30 11"/><path d="M30 21 L30 30 L21 30"/><path d="M11 30 L2 30 L2 21"/><circle cx="16" cy="16" r="4.5" stroke-width="1.5"/><circle cx="16" cy="16" r="1.5" style="fill:currentColor;stroke:none"/></svg>
+    </span>
+    <span class="brand-name">FrameForge</span>
+  </a>
+  <nav class="nav-links">
+    <a href="/pricing.html">Pricing</a>
+  </nav>
+</header>
+
+<main class="auth-page">
+  <div class="auth-card">
+    <h1 class="auth-title">Welcome to FrameForge</h1>
+    <p class="auth-sub">Sign in to generate videos and manage your credits.</p>
+    <div id="clerk-mount"></div>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", async () => {
+  const clerk = window.Clerk;
+  await clerk.load();
+
+  if (clerk.user) {
+    const params = new URLSearchParams(location.search);
+    location.href = params.get("redirect") || "/dashboard.html";
+    return;
+  }
+
+  clerk.mountSignIn(document.getElementById("clerk-mount"), {
+    afterSignInUrl: new URLSearchParams(location.search).get("redirect") || "/dashboard.html",
+    afterSignUpUrl: "/dashboard.html",
+    signUpUrl: location.href,
+  });
+});
+</script>
+</body>
+</html>
