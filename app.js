@@ -5,6 +5,7 @@ const DEFAULT_AUDIO = "./materials/song.mp3";
 
 const statusBadge  = document.querySelector("#statusBadge");
 const logOutput    = document.querySelector("#logOutput");
+
 const videoPreview = document.querySelector("#videoPreview");
 const downloadVideo = document.querySelector("#downloadVideo");
 const progressTrack = document.querySelector("#progressTrack");
@@ -555,13 +556,8 @@ function enableSaveLog() {
   saveLogBtn.classList.remove("disabled");
 }
 
-const logDialog        = document.querySelector("#logDialog");
-const logDialogContent = document.querySelector("#logDialogContent");
-const downloadLogBtn   = document.querySelector("#downloadLog");
-const closeLogBtn      = document.querySelector("#closeLog");
-
-function downloadLogFile() {
-  const text = logOutput.textContent;
+if (saveLogBtn) saveLogBtn.addEventListener("click", () => {
+  const text = logOutput ? logOutput.textContent : "";
   if (!text) return;
   const blob = new Blob([text], { type: "text/plain" });
   const url  = URL.createObjectURL(blob);
@@ -572,16 +568,9 @@ function downloadLogFile() {
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 5000);
-}
-
-if (saveLogBtn) saveLogBtn.addEventListener("click", () => {
-  logDialogContent.textContent = logOutput.textContent;
-  logDialog.showModal();
 });
 
-if (downloadLogBtn) downloadLogBtn.addEventListener("click", downloadLogFile);
-if (closeLogBtn) closeLogBtn.addEventListener("click", () => logDialog.close());
-if (logDialog) logDialog.addEventListener("click", (e) => { if (e.target === logDialog) logDialog.close(); });
+
 
 downloadVideo.addEventListener("click", async (e) => {
   e.preventDefault();
