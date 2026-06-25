@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
   const isPlayground = !!document.getElementById("generalForm");
   if (!isPlayground) return; // home page — skip playground-specific setup
 
-  const isLoggedIn = !!window._clerk?.user;
+  const isLoggedIn = !!window._currentUser;
 
   // Show/hide guest API key fields
   const guestFieldIds = ["passcodeFieldGeneral", "passcodeFieldAvatar"];
@@ -34,6 +34,7 @@ window.addEventListener("load", async () => {
     document.getElementById("authNotice") && (document.getElementById("authNotice").hidden = false);
     document.getElementById("creditEstimate") && (document.getElementById("creditEstimate").hidden = false);
     loadCreditBalance();
+    updateCreditEstimate(activeMode);
 
     // Seed prompt from URL ?prompt=...
     const urlPrompt = new URLSearchParams(location.search).get("prompt");
@@ -57,7 +58,7 @@ async function loadCreditBalance() {
 }
 
 function updateCreditEstimate(mode) {
-  if (!window._clerk?.user) return;
+  if (!window._currentUser) return;
   const duration = Number(document.getElementById(`duration-${mode}`)?.value || 9);
   const width    = Number(document.getElementById(`width-${mode}`)?.value  || 1280);
   const height   = Number(document.getElementById(`height-${mode}`)?.value || 720);
@@ -205,7 +206,7 @@ function attachHeroListeners(video) {
   video.addEventListener("ended", crossfadeToNext, { once: true });
 }
 
-attachHeroListeners(heroVideoA);
+if (heroVideoA) attachHeroListeners(heroVideoA);
 
 document.querySelectorAll(".example-card video").forEach((video) => {
   const card = video.closest(".example-card");
@@ -229,8 +230,8 @@ document.querySelectorAll(".example-card[data-prompt]").forEach((card) => {
 function setupFormMode(mode, { hasAudio }) {
   const durationRange = el(mode, "durationRange");
   const durationNum = el(mode, "duration");
-  durationRange.addEventListener("input", () => { durationNum.value = durationRange.value; });
-  durationNum.addEventListener("input", () => { durationRange.value = durationNum.value; });
+  durationRange.addEventListener("input", () => { durationNum.value = durationRange.value; updateCreditEstimate(mode); });
+  durationNum.addEventListener("input", () => { durationRange.value = durationNum.value; updateCreditEstimate(mode); });
 
   const resolutionPreset = el(mode, "resolutionPreset");
   const widthInput = el(mode, "width");
@@ -247,7 +248,10 @@ function setupFormMode(mode, { hasAudio }) {
       widthInput.setAttribute("readonly", "");
       heightInput.setAttribute("readonly", "");
     }
+    updateCreditEstimate(mode);
   });
+  widthInput.addEventListener("input", () => updateCreditEstimate(mode));
+  heightInput.addEventListener("input", () => updateCreditEstimate(mode));
 
   const imageInput = el(mode, "imageInput");
   const uploadLabel = el(mode, "uploadLabel");
@@ -358,8 +362,10 @@ function setupFormMode(mode, { hasAudio }) {
   });
 }
 
-setupFormMode("general", { hasAudio: true });
-setupFormMode("avatar",  { hasAudio: true });
+if (document.getElementById("generalForm")) {
+  setupFormMode("general", { hasAudio: true });
+  setupFormMode("avatar",  { hasAudio: true });
+}
 
 // ---------------------------------------------------------------------------
 // Submit handling (shared logic, parameterized by mode)
@@ -394,7 +400,7 @@ async function handleSubmit(mode, event) {
   event.preventDefault();
 
   // Determine auth mode: Clerk JWT or guest API key
-  const isLoggedIn   = !!window._clerk?.user;
+  const isLoggedIn   = !!window._currentUser;
   const guestPasscode = getValue(mode, "passcode");
   if (!isLoggedIn && !guestPasscode) {
     setStatus("error", "Error");
@@ -436,7 +442,6 @@ async function handleSubmit(mode, event) {
     setStatus("running", "Running");
     const imageBase64 = file ? await fileToBase64(file) : null;
     const audioBase64 = audioFile ? await fileToBase64(audioFile) : null;
-    const passcode = getValue(mode, "passcode");
     const payload = buildPayload(mode, imageBase64, audioBase64);
 
     const tSubmit = Date.now();
@@ -508,8 +513,10 @@ async function handleSubmit(mode, event) {
   }
 }
 
-document.querySelector("#generalForm").addEventListener("submit", (e) => handleSubmit("general", e));
-document.querySelector("#avatarForm").addEventListener("submit", (e) => handleSubmit("avatar", e));
+if (document.getElementById("generalForm")) {
+  document.querySelector("#generalForm").addEventListener("submit", (e) => handleSubmit("general", e));
+  document.querySelector("#avatarForm").addEventListener("submit", (e) => handleSubmit("avatar", e));
+}
 
 async function pollUntilDone(url, getHeaders) {
   while (true) {
@@ -572,9 +579,9 @@ if (saveLogBtn) saveLogBtn.addEventListener("click", () => {
   logDialog.showModal();
 });
 
-downloadLogBtn.addEventListener("click", downloadLogFile);
-closeLogBtn.addEventListener("click", () => logDialog.close());
-logDialog.addEventListener("click", (e) => { if (e.target === logDialog) logDialog.close(); });
+if (downloadLogBtn) downloadLogBtn.addEventListener("click", downloadLogFile);
+if (closeLogBtn) closeLogBtn.addEventListener("click", () => logDialog.close());
+if (logDialog) logDialog.addEventListener("click", (e) => { if (e.target === logDialog) logDialog.close(); });
 
 downloadVideo.addEventListener("click", async (e) => {
   e.preventDefault();

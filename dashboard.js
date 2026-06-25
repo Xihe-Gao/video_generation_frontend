@@ -1,7 +1,7 @@
 window.addEventListener("load", async () => {
   await window.clerkReady;
 
-  if (!window._clerk?.user) {
+  if (!window._currentUser) {
     document.getElementById("authGate").hidden = false;
     return;
   }

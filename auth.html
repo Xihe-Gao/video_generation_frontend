@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="./config.js"></script>
 </head>
 <body>
@@ -21,6 +21,7 @@
   </a>
   <nav class="nav-links">
     <a href="/pricing.html">Pricing</a>
+    <a href="/playground.html">Playground</a>
   </nav>
 </header>
 
@@ -28,26 +29,107 @@
   <div class="auth-card">
     <h1 class="auth-title">Welcome to FrameForge</h1>
     <p class="auth-sub">Sign in to generate videos and manage your credits.</p>
-    <div id="clerk-mount"></div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="signin">Sign In</button>
+      <button class="auth-tab" data-tab="signup">Create Account</button>
+    </div>
+
+    <form id="authForm" class="auth-form" novalidate>
+      <div class="auth-error" id="authError" hidden></div>
+      <label class="field">
+        <span>Email</span>
+        <input type="email" id="authEmail" autocomplete="email" placeholder="you@example.com" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="authPassword" autocomplete="current-password" placeholder="Min. 6 characters" minlength="6" required />
+      </label>
+      <button type="submit" class="button primary auth-submit" id="authSubmit">Sign In</button>
+    </form>
+
+    <div class="auth-divider"><span>or</span></div>
+
+    <button class="button ghost auth-oauth" id="googleBtn">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <p class="auth-check-email" id="authCheckEmail" hidden>
+      Check your email — we sent a confirmation link to complete sign up. You can close this tab.
+    </p>
   </div>
 </main>
 
 <script>
 window.addEventListener("load", async () => {
-  const cfg   = window.FRAMEFORGE_CONFIG || {};
-  const clerk = new window.Clerk(cfg.CLERK_PUBLISHABLE_KEY);
-  await clerk.load();
-
-  if (clerk.user) {
-    const params = new URLSearchParams(location.search);
-    location.href = params.get("redirect") || "/dashboard.html";
+  const cfg = window.FRAMEFORGE_CONFIG || {};
+  if (!cfg.SUPABASE_URL || cfg.SUPABASE_URL.includes("YOUR_PROJECT")) {
+    document.getElementById("authError").textContent = "Supabase not configured in config.js";
+    document.getElementById("authError").hidden = false;
     return;
   }
 
-  clerk.mountSignIn(document.getElementById("clerk-mount"), {
-    afterSignInUrl: new URLSearchParams(location.search).get("redirect") || "/dashboard.html",
-    afterSignUpUrl: "/dashboard.html",
-    signUpUrl: location.href,
+  const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+  const redirectParam = new URLSearchParams(location.search).get("redirect") || "/dashboard.html";
+
+  // Already signed in — go straight to destination
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) { location.href = redirectParam; return; }
+
+  // Tab switching
+  let mode = "signin";
+  document.querySelectorAll(".auth-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      mode = tab.dataset.tab;
+      document.querySelectorAll(".auth-tab").forEach(t => t.classList.toggle("active", t.dataset.tab === mode));
+      document.getElementById("authSubmit").textContent = mode === "signin" ? "Sign In" : "Create Account";
+      document.getElementById("authError").hidden = true;
+    });
+  });
+
+  // Form submit
+  document.getElementById("authForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email    = document.getElementById("authEmail").value.trim();
+    const password = document.getElementById("authPassword").value;
+    const errEl    = document.getElementById("authError");
+    const submitBtn = document.getElementById("authSubmit");
+
+    errEl.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Loading…";
+
+    try {
+      if (mode === "signin") {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        location.href = redirectParam;
+      } else {
+        const { error } = await sb.auth.signUp({ email, password });
+        if (error) throw error;
+        document.getElementById("authForm").hidden = true;
+        document.getElementById("authCheckEmail").hidden = false;
+      }
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = mode === "signin" ? "Sign In" : "Create Account";
+    }
+  });
+
+  // Google OAuth
+  document.getElementById("googleBtn").addEventListener("click", async () => {
+    await sb.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: location.origin + redirectParam },
+    });
   });
 });
 </script>

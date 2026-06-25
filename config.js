@@ -1,8 +1,9 @@
 // ── FrameForge Config ─────────────────────────────────────────────────────
-// Fill in these values after setting up Clerk and deploying the gateway.
-// This is the ONLY file you need to update.
+// Fill in these values after creating your Supabase project.
+// This is the ONLY file you need to update for local/prod config.
 
 window.FRAMEFORGE_CONFIG = {
-  CLERK_PUBLISHABLE_KEY: "pk_test_YOUR_KEY_HERE",
-  API_URL: "https://ltx-gateway.fly.dev",
+  SUPABASE_URL:      "https://qwmycrcykdsuxxecvhzj.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_92n8wXx49XX1apaJVM5ygQ_7D-TYOu2",
+  API_URL:           "https://ltx-gateway.fly.dev",
 };

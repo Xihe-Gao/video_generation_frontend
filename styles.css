@@ -1634,3 +1634,151 @@ select:focus {
   margin: 0 auto 16px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── User menu (nav) ──────────────────────────────────────────────────────── */
+
+.user-menu { position: relative; }
+
+.user-avatar-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-strong);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+}
+.user-avatar-btn:hover { border-color: var(--gold); }
+
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 180px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 6px;
+  z-index: 100;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+.user-email-label {
+  display: block;
+  padding: 6px 10px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.user-dropdown-item:hover { background: rgba(255,255,255,0.07); }
+
+/* ── Auth form (auth.html) ────────────────────────────────────────────────── */
+
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 4px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.auth-tab.active {
+  background: var(--gold);
+  color: #050505;
+}
+
+.auth-form { text-align: left; margin-bottom: 16px; }
+
+.auth-error {
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border-radius: 7px;
+  background: rgba(255,107,107,0.1);
+  border: 1px solid rgba(255,107,107,0.3);
+  color: var(--red);
+  font-size: 13px;
+}
+
+.auth-submit {
+  width: 100%;
+  min-height: 46px;
+  font-size: 15px;
+  margin-top: 4px;
+  border-radius: 9px;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.auth-oauth {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-check-email {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(85,227,142,0.3);
+  background: rgba(85,227,142,0.07);
+  color: var(--green);
+  font-size: 14px;
+  text-align: center;
+}
