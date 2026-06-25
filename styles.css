@@ -197,8 +197,8 @@ main {
 
 .hero-scrim {
   background:
-    linear-gradient(180deg, rgba(5, 5, 5, 0.12), rgba(5, 5, 5, 0.26) 48%, rgba(5, 5, 5, 0.68)),
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.025), transparent 34rem);
+    linear-gradient(180deg, rgba(5,5,5,0.18) 0%, rgba(5,5,5,0.42) 45%, rgba(5,5,5,0.86) 100%),
+    radial-gradient(circle at center, rgba(255,255,255,0.03), transparent 34rem);
 }
 
 .eyebrow {
@@ -224,6 +224,15 @@ h1 {
   line-height: 1.1;
   letter-spacing: 0;
   white-space: nowrap;
+}
+
+.hero h1 {
+  max-width: 860px;
+  font-size: clamp(44px, 6.5vw, 88px);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  white-space: normal;
+  margin-bottom: 20px;
 }
 
 h2 {
@@ -1276,12 +1285,55 @@ select:focus {
 
 /* ── Hero additions ────────────────────────────────────────────────────────── */
 
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 28px;
+  padding: 7px 18px;
+  border: 1px solid rgba(212,175,106,0.38);
+  border-radius: 999px;
+  background: rgba(212,175,106,0.08);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .hero-sub {
-  color: var(--muted);
-  font-size: 17px;
-  max-width: 480px;
-  margin: 0 auto 32px;
+  color: rgba(247,247,242,0.65);
+  font-size: clamp(16px, 2vw, 20px);
+  max-width: 520px;
+  margin: 0 auto 36px;
   line-height: 1.6;
+}
+
+.hero-specs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 28px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-specs span {
+  padding: 8px 20px;
+  border-right: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.03);
+}
+.hero-specs span:last-child { border-right: none; }
+
+.button.large {
+  min-height: 54px;
+  padding: 0 32px;
+  font-size: 16px;
+  border-radius: 10px;
 }
 
 .button.ghost {
@@ -1313,6 +1365,71 @@ select:focus {
   background: linear-gradient(transparent, rgba(0,0,0,0.75));
   font-size: 12px;
   color: var(--muted);
+}
+
+/* ── How it works ─────────────────────────────────────────────────────────── */
+
+.how-it-works {
+  padding: 80px clamp(18px, 6vw, 80px);
+  border-top: 1px solid var(--line);
+}
+
+.hiw-heading {
+  text-align: center;
+  margin: 0 auto 56px;
+}
+
+.steps-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.step-card {
+  padding: 36px 28px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.step-card:hover {
+  border-color: rgba(212,175,106,0.45);
+  transform: translateY(-3px);
+}
+
+.step-num {
+  font-size: 48px;
+  font-weight: 900;
+  color: rgba(212,175,106,0.18);
+  line-height: 1;
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+
+.step-card h3 { font-size: 17px; margin: 0 0 10px; }
+.step-card p  { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.65; }
+
+.step-arrow {
+  color: var(--gold);
+  font-size: 22px;
+  padding: 0 24px;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+@media (max-width: 760px) {
+  .steps-row {
+    grid-template-columns: 1fr;
+  }
+  .step-arrow {
+    text-align: center;
+    padding: 8px 0;
+    transform: rotate(90deg);
+  }
 }
 
 /* ── Features section ─────────────────────────────────────────────────────── */
