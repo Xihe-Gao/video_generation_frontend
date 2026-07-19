@@ -461,7 +461,7 @@ async function handleSubmit(mode, event) {
       pollGetHeaders  = async () => ({ "X-API-Key": guestPasscode });
     }
 
-    writeLog("POST generate", payload);
+    writeLog(`POST ${generateUrl}`, payload);
     const createResponse = await fetch(generateUrl, {
       method: "POST",
       headers: generateHeaders,
@@ -520,19 +520,31 @@ if (document.getElementById("generalForm")) {
 }
 
 async function pollUntilDone(url, getHeaders) {
+  let networkErrors = 0;
   while (true) {
     await wait(pollIntervalMs);
-    const headers  = await getHeaders();
-    const response = await fetch(url, { headers });
-    const data     = await readJson(response);
-    writeLog(`GET status`, data);
-
+    let response, data;
+    try {
+      const headers = await getHeaders();
+      response = await fetch(url, { headers });
+      data     = await readJson(response);
+      networkErrors = 0;
+    } catch (e) {
+      networkErrors++;
+      if (networkErrors >= 3) throw e;
+      appendLog(`\n⚠ Network error (retry ${networkErrors}/3)…`);
+      continue;
+    }
     if (!response.ok) throw new Error(data.detail || data.error || `Status ${response.status}`);
     if (data.status === "completed") {
       if (!data.url && !data.video_url) throw new Error("Completed but no video URL returned.");
+      appendLog(`\n\nGET status\n${JSON.stringify(redactImage(data), null, 2)}`);
       return { ...data, url: data.url || data.video_url };
     }
-    if (data.status === "failed") throw new Error(data.error || "Remote job failed.");
+    if (data.status === "failed") {
+      appendLog(`\n\nGET status\n${JSON.stringify(redactImage(data), null, 2)}`);
+      throw new Error(data.error || "Remote job failed.");
+    }
     setStatus("running", "Running");
   }
 }
@@ -675,7 +687,7 @@ function formatJobStatus(status) {
 function normalizeFetchError(error) {
   const message = error.message || String(error);
   if (message === "Failed to fetch") {
-    return "The browser could not reach the API. This is usually caused by CORS: the Modal API must allow OPTIONS preflight and return Access-Control-Allow-Origin for this frontend domain.";
+    return `The browser could not reach the API (${apiEndpoint}). Possible causes: (1) gateway is down or restarting — retry in a few seconds; (2) CORS — your page origin must be in the gateway's allow-list.`;
   }
   return message;
 }
