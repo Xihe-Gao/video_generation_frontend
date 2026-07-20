@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
 
 :root {
   color-scheme: dark;
@@ -96,35 +96,41 @@ video {
 }
 
 .brand {
-  gap: 8px;
+  gap: 6px;
   font-weight: 400;
+  align-items: center;
 }
 
 .brand-mark {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   place-items: center;
   color: var(--gold);
   flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(212,175,106,0.45));
 }
 
 .brand-mark svg {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.5;
+  stroke-width: 1.4;
 }
 
 .brand-name {
-  font-family: 'Great Vibes', cursive;
-  font-size: 30px;
-  letter-spacing: 0.01em;
+  font-family: 'Pinyon Script', cursive;
+  font-size: 46px;
   line-height: 1;
-  color: var(--text);
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #c9a55a 0%, #f5e098 45%, #c9a55a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 1px 8px rgba(212,175,106,0.3));
 }
 
 .nav-links {
