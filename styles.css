@@ -114,13 +114,14 @@ video {
   height: 26px;
   fill: none;
   stroke: currentColor;
-  stroke-linecap: square;
-  stroke-linejoin: miter;
-  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
 }
 
 .brand-name {
-  font-family: 'Cinzel', serif;
+  font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  font-style: italic;
   font-size: 17px;
   letter-spacing: 0.04em;
 }
