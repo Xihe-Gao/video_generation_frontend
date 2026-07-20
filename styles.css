@@ -114,11 +114,6 @@ video {
 .brand-mark svg {
   width: 36px;
   height: 36px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.4;
 }
 
 .brand-name {
