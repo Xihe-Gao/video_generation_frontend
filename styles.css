@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
 
 :root {
   color-scheme: dark;
@@ -117,11 +117,12 @@ video {
 }
 
 .brand-name {
-  height: 52px;
-  width: auto;
-  overflow: visible;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 14px rgba(212,175,106,0.45));
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  line-height: 1;
 }
 
 .nav-links {
