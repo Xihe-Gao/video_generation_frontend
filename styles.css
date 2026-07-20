@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 :root {
   color-scheme: dark;
@@ -117,10 +117,10 @@ video {
 }
 
 .brand-name {
-  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.04em;
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   color: #ffffff;
   line-height: 1;
 }
