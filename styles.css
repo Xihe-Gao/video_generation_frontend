@@ -103,24 +103,24 @@ video {
 
 .brand-mark {
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   place-items: center;
   color: var(--gold);
   flex-shrink: 0;
-  filter: drop-shadow(0 0 8px rgba(212,175,106,0.45));
+  filter: drop-shadow(0 0 10px rgba(212,175,106,0.5));
 }
 
 .brand-mark svg {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
 }
 
 .brand-name {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 17px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
   color: #ffffff;
   line-height: 1;
 }
