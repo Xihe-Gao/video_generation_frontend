@@ -15,7 +15,19 @@
     <span class="brand-mark" aria-hidden="true">
       <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke-width="0.7" opacity="0.4"/><path d="M19.875 8.74 A10 10 0 1 0 19.875 23.26 A7.5 7.5 0 0 1 19.875 8.74 Z" style="fill:currentColor;stroke:none"/></svg>
     </span>
-    <span class="brand-name">mooncanvas</span>
+    <svg class="brand-name" viewBox="0 0 240 62" aria-label="mooncanvas">
+      <defs>
+        <path id="mc-arc" d="M2,42 C55,26 95,52 132,36 C169,20 205,46 238,32"/>
+        <linearGradient id="mc-gld" x1="0" y1="0" x2="240" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#b8922e"/>
+          <stop offset="50%"  stop-color="#f5e49a"/>
+          <stop offset="100%" stop-color="#b8922e"/>
+        </linearGradient>
+      </defs>
+      <text font-family="'Pinyon Script', cursive" font-size="38" fill="url(#mc-gld)">
+        <textPath href="#mc-arc">mooncanvas</textPath>
+      </text>
+    </svg>
   </a>
   <nav class="nav-links">
     <a href="/playground.html">Playground</a>

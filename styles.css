@@ -122,15 +122,11 @@ video {
 }
 
 .brand-name {
-  font-family: 'Pinyon Script', cursive;
-  font-size: 46px;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  background: linear-gradient(135deg, #c9a55a 0%, #f5e098 45%, #c9a55a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 1px 8px rgba(212,175,106,0.3));
+  height: 52px;
+  width: auto;
+  overflow: visible;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 14px rgba(212,175,106,0.45));
 }
 
 .nav-links {
