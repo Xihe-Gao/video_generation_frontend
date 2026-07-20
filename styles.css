@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 :root {
   color-scheme: dark;
   --bg: #050505;
@@ -94,24 +96,22 @@ video {
 }
 
 .brand {
-  gap: 11px;
-  font-weight: 800;
+  gap: 8px;
+  font-weight: 400;
 }
 
 .brand-mark {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   place-items: center;
-  border: 1px solid rgba(212, 175, 106, 0.38);
-  border-radius: 9px;
-  background: linear-gradient(145deg, #1d1508 0%, #0c0a06 100%);
   color: var(--gold);
+  flex-shrink: 0;
 }
 
 .brand-mark svg {
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -120,10 +120,11 @@ video {
 }
 
 .brand-name {
-  font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
-  font-style: italic;
-  font-size: 17px;
-  letter-spacing: 0.04em;
+  font-family: 'Great Vibes', cursive;
+  font-size: 30px;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--text);
 }
 
 .nav-links {
