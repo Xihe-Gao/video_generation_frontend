@@ -386,7 +386,6 @@ function buildPayload(mode, imageBase64, audioBase64) {
     seed: getOptionalNumber(mode, "seed"),
     negative_prompt: getValue(mode, "negativePrompt"),
     mode: mode === "general" ? "a2v_general" : mode === "avatar" ? "a2v_avatar" : mode,
-    workflow: mode,
     verbose: true,
     ...(imageBase64 ? { image_base64: imageBase64 } : {}),
   };
