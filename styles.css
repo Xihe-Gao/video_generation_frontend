@@ -108,7 +108,6 @@ video {
   place-items: center;
   color: var(--gold);
   flex-shrink: 0;
-  filter: drop-shadow(0 0 10px rgba(212,175,106,0.5));
 }
 
 .brand-mark svg {
