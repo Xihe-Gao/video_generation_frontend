@@ -1647,7 +1647,9 @@ select:focus {
 }
 .pricing-header h1 {
   font-size: clamp(40px, 5vw, 64px);
-  margin: 0 0 22px;
+  max-width: none;
+  white-space: normal;
+  margin: 0 auto 22px;
   letter-spacing: -0.035em;
   line-height: 1.08;
   text-align: center;
