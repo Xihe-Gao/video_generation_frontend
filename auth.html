@@ -81,7 +81,7 @@
   (function(){
     var v = document.getElementById('authBgVideo');
     if (!v) return;
-    var skip = 12;
+    var skip = 16;
     v.playbackRate = 0.5;
     v.addEventListener('loadedmetadata', function(){ v.currentTime = skip; });
     v.addEventListener('ended', function(){ v.currentTime = skip; v.play(); });
