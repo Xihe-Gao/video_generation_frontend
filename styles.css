@@ -1588,8 +1588,9 @@ select:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 78% center;
   z-index: 0;
-  filter: brightness(0.55) saturate(1.2);
+  filter: brightness(0.6) saturate(1.1);
 }
 .auth-bg-scrim {
   position: absolute;
