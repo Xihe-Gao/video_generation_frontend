@@ -1650,14 +1650,21 @@ select:focus {
   margin: 0 0 22px;
   letter-spacing: -0.035em;
   line-height: 1.08;
-  color: var(--text);
+  text-align: center;
+}
+.heading-gradient {
+  background: linear-gradient(90deg, #ffffff 0%, rgba(212,175,106,0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .pricing-sub {
   color: var(--muted);
-  max-width: 600px;
+  max-width: 780px;
   margin: 0 auto 40px;
   font-size: 17px;
   line-height: 1.6;
+  text-align: center;
 }
 
 /* ── Billing toggle ──────────────────────────────────────────────────────── */
