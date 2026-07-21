@@ -1448,7 +1448,7 @@ select:focus {
   border: 1px solid var(--line);
   border-radius: 12px;
 }
-.feature-icon { font-size: 24px; display: block; margin-bottom: 12px; }
+.feature-icon { display: block; margin-bottom: 16px; color: var(--gold); opacity: 0.9; }
 .feature-card h3 { margin: 0 0 8px; font-size: 15px; }
 .feature-card p  { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
 
