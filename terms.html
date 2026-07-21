@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — MoonCanvas</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/png" href="./moon-icon.png">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="./config.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="mc"><circle cx="20" cy="20" r="18.5"/></clipPath></defs><image href="./moon-icon.png" x="1" y="1" width="38" height="38" clip-path="url(#mc)" preserveAspectRatio="xMidYMid slice"/></svg>
+    </span>
+    <span class="brand-name">MoonCanvas</span>
+  </a>
+  <nav class="nav-links">
+    <a href="/playground.html">Playground</a>
+    <a href="/pricing.html">Pricing</a>
+    <a href="/dashboard.html" id="nav-dashboard" hidden>Dashboard</a>
+    <a href="/auth.html" id="nav-signin" class="nav-cta">Start Free</a>
+    <span class="nav-credits" id="nav-credits" hidden></span>
+    <div id="nav-user-mount"></div>
+  </nav>
+  <button class="hamburger" id="navToggle" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <a href="/playground.html">Playground</a>
+    <a href="/pricing.html">Pricing</a>
+    <a href="/auth.html" class="mobile-nav-cta">Sign In</a>
+  </div>
+</div>
+
+<main class="legal-page">
+  <div class="legal-inner">
+    <div class="legal-header">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of Service</h1>
+      <p class="legal-updated">Last updated: July 21, 2026</p>
+    </div>
+
+    <div class="legal-body">
+
+      <p>These Terms of Service ("Terms") govern your access to and use of MoonCanvas ("Service"), operated by MoonCanvas ("we", "us", or "our"). By creating an account or using the Service, you agree to these Terms.</p>
+
+      <h2>1. Eligibility</h2>
+      <p>You must be at least 18 years old to use MoonCanvas. By using the Service you represent that you meet this requirement. If you are using MoonCanvas on behalf of an organization, you represent that you have authority to bind that organization to these Terms.</p>
+
+      <h2>2. Your Account</h2>
+      <p>You are responsible for maintaining the security of your account credentials and for all activity that occurs under your account. Notify us immediately at <a href="mailto:hi@mooncanvas.ai">hi@mooncanvas.ai</a> if you suspect unauthorized access. We are not liable for losses caused by unauthorized use of your account.</p>
+
+      <h2>3. Credits and Billing</h2>
+      <p>MoonCanvas uses a credit-based system. Credits are consumed when you generate videos. Credit costs vary by model, resolution, and duration — see the <a href="/pricing.html">Pricing page</a> for current rates.</p>
+      <ul>
+        <li>Credits on paid plans roll over each billing cycle and never expire while your plan is active.</li>
+        <li>If you cancel, your remaining credits stay accessible for 90 days from cancellation.</li>
+        <li>Credits are non-refundable except as required by law or at our sole discretion.</li>
+        <li>We reserve the right to adjust credit pricing with 30 days' notice.</li>
+      </ul>
+      <p>Paid subscriptions renew automatically. You may cancel at any time from your dashboard and retain access through the end of your current billing period.</p>
+
+      <h2>4. Acceptable Use</h2>
+      <p>You may use MoonCanvas to create videos for personal, commercial, or educational purposes, subject to the restrictions below. You agree <strong>not</strong> to use the Service to:</p>
+      <ul>
+        <li>Generate non-consensual intimate imagery (NCII) or deepfakes of real people without their explicit consent</li>
+        <li>Create content that sexualizes minors (CSAM) — zero tolerance, immediate account termination and reporting to authorities</li>
+        <li>Produce content designed to harass, defame, or incite violence against individuals or groups</li>
+        <li>Generate disinformation or synthetic media intended to deceive viewers about its AI origin in a harmful context</li>
+        <li>Infringe third-party copyrights, trademarks, or other intellectual property rights</li>
+        <li>Circumvent usage limits, share API keys, or resell access to the platform</li>
+        <li>Use automated scripts to abuse the generation queue</li>
+      </ul>
+
+      <h2>5. Ownership of Generated Content</h2>
+      <p>You own the videos you generate with MoonCanvas. We do not claim any intellectual property rights over your outputs. You grant us a limited, non-exclusive license to store and transmit your content solely for the purpose of operating the Service.</p>
+      <p>You are responsible for ensuring that your inputs (prompts, images, audio) do not infringe third-party rights, and that your outputs comply with applicable law.</p>
+
+      <h2>6. AI Limitations</h2>
+      <p>AI-generated video is an emerging technology. Outputs may be inconsistent, unexpected, or imperfect. We do not guarantee that any generation will meet your expectations. Credits consumed in failed or unsatisfactory generations may be refunded at our discretion — contact support.</p>
+
+      <h2>7. Termination</h2>
+      <p>We may suspend or terminate your account if you violate these Terms, engage in fraudulent activity, or abuse the Service. We will provide notice where reasonably practicable. Upon termination, your access to the Service ends and unused credits are forfeited.</p>
+      <p>You may delete your account at any time from your dashboard settings.</p>
+
+      <h2>8. Disclaimer of Warranties</h2>
+      <p>The Service is provided "as is" and "as available" without warranties of any kind, express or implied, including but not limited to merchantability, fitness for a particular purpose, or uninterrupted availability. We do not warrant that the Service will be error-free or that defects will be corrected.</p>
+
+      <h2>9. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, MoonCanvas shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, arising out of or in connection with your use of the Service. Our total liability to you for any claim shall not exceed the amount you paid us in the 12 months preceding the claim.</p>
+
+      <h2>10. Governing Law</h2>
+      <p>These Terms are governed by the laws of the State of Delaware, United States, without regard to conflict of law principles. Any dispute shall be resolved by binding arbitration in Delaware, except that either party may seek injunctive relief in any court of competent jurisdiction.</p>
+
+      <h2>11. Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. We will notify you of material changes by email or in-product notice at least 14 days before they take effect. Continued use of the Service after the effective date constitutes acceptance of the revised Terms.</p>
+
+      <h2>12. Contact</h2>
+      <p>Questions about these Terms? Email us at <a href="mailto:hi@mooncanvas.ai">hi@mooncanvas.ai</a>.</p>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand-col">
+      <a class="footer-brand-link" href="/">
+        <span class="brand-mark" aria-hidden="true" style="width:28px;height:28px;display:inline-flex;flex-shrink:0">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="mcft"><circle cx="20" cy="20" r="18.5"/></clipPath></defs><image href="./moon-icon.png" x="1" y="1" width="38" height="38" clip-path="url(#mcft)" preserveAspectRatio="xMidYMid slice"/></svg>
+        </span>
+        <span class="brand-name">MoonCanvas</span>
+      </a>
+      <p class="footer-tagline">AI video generation for every creator.<br>From text to cinema in minutes.</p>
+    </div>
+    <nav class="footer-nav">
+      <div class="footer-nav-col">
+        <h5 class="footer-nav-head">Product</h5>
+        <a href="/playground.html">Playground</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="mailto:hi@mooncanvas.ai">Contact</a>
+      </div>
+      <div class="footer-nav-col">
+        <h5 class="footer-nav-head">Legal</h5>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    © 2026 MoonCanvas · All rights reserved
+  </div>
+</footer>
+
+<script src="./auth.js" defer></script>
+<script>
+  (function(){var t=document.getElementById('navToggle'),n=document.getElementById('mobileNav');if(!t||!n)return;function c(){n.classList.remove('open');t.classList.remove('open');document.body.style.overflow='';}t.addEventListener('click',function(){var o=n.classList.toggle('open');t.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';});n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',c);});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();
+</script>
+</body>
+</html>

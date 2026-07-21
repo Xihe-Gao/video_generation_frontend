@@ -2624,3 +2624,64 @@ select:focus {
   font-size: 14px;
   line-height: 1.75;
 }
+
+/* ── Legal pages (privacy, terms) ────────────────────────────────────────── */
+.legal-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 72px clamp(18px, 5vw, 48px) 100px;
+}
+.legal-header {
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.legal-header h1 {
+  max-width: none;
+  white-space: normal;
+  font-size: clamp(32px, 4vw, 48px);
+  margin: 8px 0 12px;
+  letter-spacing: -0.025em;
+}
+.legal-updated {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+.legal-body h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 44px 0 12px;
+  color: var(--text);
+}
+.legal-body h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 24px 0 8px;
+}
+.legal-body p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.legal-body ul {
+  margin: 0 0 16px 0;
+  padding-left: 20px;
+}
+.legal-body ul li {
+  font-size: 15px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.75;
+  margin-bottom: 6px;
+}
+.legal-body a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-body a:hover { opacity: 0.8; }
