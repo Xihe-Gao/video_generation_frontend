@@ -82,7 +82,7 @@
     var v = document.getElementById('authBgVideo');
     if (!v) return;
     var skip = 16;
-    v.playbackRate = 0.23;
+    v.playbackRate = 0.25;
     v.addEventListener('loadedmetadata', function(){ v.currentTime = skip; });
     v.addEventListener('ended', function(){ v.currentTime = skip; v.play(); });
   })();
