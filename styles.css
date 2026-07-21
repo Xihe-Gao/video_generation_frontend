@@ -1782,7 +1782,6 @@ select:focus {
   margin-bottom: 10px;
 }
 .price-amount { font-size: 64px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-.price-custom { font-size: 36px; letter-spacing: -0.02em; }
 .price-period { color: var(--muted); font-size: 14px; }
 .plan-credit-line {
   font-size: 13px;
