@@ -38,8 +38,9 @@
           <h1>Paint your imagination with AI</h1>
           <p class="hero-sub">Create cinematic AI videos from text, images, and audio</p>
           <div class="hero-actions">
-            <a class="button primary large" href="/playground.html">Try MoonCanvas Free →</a>
+            <a class="button primary large" href="/playground.html">Try MoonCanvas Free</a>
           </div>
+          <p class="hero-stat">No credit card required · Powered by LTX &amp; Wan 2.2</p>
         </div>
       </section>
 
@@ -127,15 +128,27 @@
     </main>
 
     <footer class="site-footer">
-      <span class="brand-name" style="font-size:13px;">MoonCanvas</span>
-      <span class="footer-copy">© 2026 · AI Video Generation</span>
+      <div class="footer-brand">
+        <span class="brand-name" style="font-size:13px;">MoonCanvas</span>
+        <span class="footer-copy">© 2026 · AI Video Generation</span>
+      </div>
       <nav class="footer-links">
-        <a href="/pricing.html">Pricing</a>
         <a href="/playground.html">Playground</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="mailto:hi@mooncanvas.ai">Contact</a>
       </nav>
     </footer>
 
     <script src="./auth.js" defer></script>
     <script src="./app.js?v=home" defer></script>
+    <script>
+      document.querySelectorAll('.example-card').forEach(card => {
+        const v = card.querySelector('video');
+        if (!v) return;
+        card.addEventListener('mouseenter', () => v.play().catch(() => {}));
+        card.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
+      });
+    </script>
   </body>
 </html>

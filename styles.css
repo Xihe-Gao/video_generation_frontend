@@ -565,7 +565,7 @@ h3 {
 .showcase,
 .workflow,
 .api-section {
-  padding: 64px 0;
+  padding: 100px 0;
 }
 
 .example-grid {
@@ -1309,6 +1309,13 @@ select:focus {
   line-height: 1.6;
 }
 
+.hero-stat {
+  margin: 20px 0 0;
+  color: rgba(247,247,242,0.35);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
 .hero-specs {
   display: flex;
   flex-wrap: wrap;
@@ -1437,7 +1444,8 @@ select:focus {
 /* ── Features section ─────────────────────────────────────────────────────── */
 
 .features-section {
-  padding: 80px clamp(18px, 6vw, 80px);
+  padding: 100px clamp(18px, 6vw, 80px);
+  border-top: 1px solid var(--line);
 }
 .features-grid {
   display: grid;
@@ -1470,14 +1478,16 @@ select:focus {
 .site-footer {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 24px clamp(18px, 4vw, 56px);
+  gap: 28px;
+  padding: 32px clamp(18px, 4vw, 56px);
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 13px;
+  flex-wrap: wrap;
 }
-.footer-copy { margin-left: 4px; }
-.footer-links { margin-left: auto; display: flex; gap: 20px; }
+.footer-brand { display: flex; align-items: center; gap: 14px; }
+.footer-copy { font-size: 12px; }
+.footer-links { display: flex; gap: 24px; margin-left: auto; }
 .footer-links a:hover { color: var(--text); }
 
 /* ── Auth page ────────────────────────────────────────────────────────────── */
