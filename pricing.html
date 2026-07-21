@@ -56,130 +56,71 @@
     </div>
   </div>
 
-  <!-- Plan cards -->
+  <!-- Plan cards — identical structure across all 3 for equal sizing -->
   <div class="pricing-grid">
 
     <!-- Free -->
     <div class="plan-card">
-      <div class="plan-tier-row">
-        <span class="plan-name">Free</span>
+      <p class="plan-name">Free</p>
+      <div class="plan-price-block">
+        <span class="price-amount">$0</span>
+        <span class="price-period">/mo</span>
       </div>
-      <div class="plan-price-row">
-        <div class="plan-price">
-          <span class="price-amount">$0</span>
-          <span class="price-period">/mo</span>
-        </div>
-      </div>
-      <p class="plan-desc">For anyone curious about AI video. No card required.</p>
+      <p class="plan-credit-line">10 credits on sign-up</p>
+      <p class="plan-annual-note">Always $0 &middot; no commitment</p>
+      <p class="plan-desc">Explore what AI video can do — no card required.</p>
+      <hr class="plan-hr">
       <ul class="plan-features">
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          10 free credits on sign-up
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          LTX 2.3 model
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          Up to 720p resolution
-        </li>
-        <li class="feat-off">
-          <span class="feat-x"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(255,255,255,0.04)"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="rgba(255,255,255,0.2)" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-          Super-resolution upscale
-        </li>
-        <li class="feat-off">
-          <span class="feat-x"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(255,255,255,0.04)"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="rgba(255,255,255,0.2)" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-          Priority queue
-        </li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>LTX 2.3 model</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 720p resolution</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Text &amp; image-to-video</li>
+        <li class="feat-off"><span class="feat-x"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(255,255,255,0.04)"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="rgba(255,255,255,0.2)" stroke-width="1.6" stroke-linecap="round"/></svg></span>Super-resolution upscale</li>
+        <li class="feat-off"><span class="feat-x"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(255,255,255,0.04)"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="rgba(255,255,255,0.2)" stroke-width="1.6" stroke-linecap="round"/></svg></span>Priority queue</li>
       </ul>
-      <div class="plan-cta-wrap">
-        <button class="plan-cta secondary" onclick="window.location.href='/playground.html'">Try Free</button>
-      </div>
+      <button class="plan-cta secondary" onclick="window.location.href='/playground.html'">Try Free</button>
     </div>
 
     <!-- Starter (featured) -->
     <div class="plan-card plan-card-featured">
       <div class="plan-badge">Most popular</div>
-      <div class="plan-tier-row">
-        <span class="plan-name">Starter</span>
+      <p class="plan-name">Starter</p>
+      <div class="plan-price-block">
+        <span class="price-amount" data-monthly="$9" data-annual="$7">$9</span>
+        <span class="price-period">/mo</span>
       </div>
-      <div class="plan-price-row">
-        <div class="plan-price">
-          <span class="price-amount" data-monthly="$9" data-annual="$7">$9</span>
-          <span class="price-period">/mo</span>
-        </div>
-        <span class="plan-credits-note">500 credits/mo</span>
-      </div>
-      <p class="plan-annual-note" hidden>Billed $84/year &middot; 2 months free</p>
+      <p class="plan-credit-line">500 credits per month</p>
+      <p class="plan-annual-note">Billed $84/year &middot; 2 months free</p>
       <p class="plan-desc">For individual creators producing content regularly.</p>
+      <hr class="plan-hr">
       <ul class="plan-features">
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          500 credits per month
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          All models — LTX 2.3 &amp; Wan 2.2
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          Up to 1080p resolution
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          4&times; super-resolution free
-        </li>
-        <li class="feat-off">
-          <span class="feat-x"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(255,255,255,0.04)"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="rgba(255,255,255,0.2)" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-          Priority queue
-        </li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All models — LTX 2.3 &amp; Wan 2.2</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 1080p resolution</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Text, image &amp; audio-to-video</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4&times; super-resolution free</li>
+        <li class="feat-off"><span class="feat-x"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(255,255,255,0.04)"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="rgba(255,255,255,0.2)" stroke-width="1.6" stroke-linecap="round"/></svg></span>Priority queue</li>
       </ul>
-      <div class="plan-cta-wrap">
-        <button class="plan-cta primary" data-plan="starter">Get Starter</button>
-      </div>
+      <button class="plan-cta primary" data-plan="starter">Get Starter</button>
     </div>
 
     <!-- Pro -->
     <div class="plan-card">
-      <div class="plan-tier-row">
-        <span class="plan-name">Pro</span>
-        <span class="plan-tag">Best value</span>
+      <p class="plan-name">Pro</p>
+      <div class="plan-price-block">
+        <span class="price-amount" data-monthly="$39" data-annual="$31">$39</span>
+        <span class="price-period">/mo</span>
       </div>
-      <div class="plan-price-row">
-        <div class="plan-price">
-          <span class="price-amount" data-monthly="$39" data-annual="$31">$39</span>
-          <span class="price-period">/mo</span>
-        </div>
-        <span class="plan-credits-note">2,500 credits/mo</span>
-      </div>
-      <p class="plan-annual-note" hidden>Billed $372/year &middot; 2 months free</p>
-      <p class="plan-desc">For studios and power creators who demand the best.</p>
+      <p class="plan-credit-line">2,500 credits per month</p>
+      <p class="plan-annual-note">Billed $372/year &middot; 2 months free</p>
+      <p class="plan-desc">For power creators and studios who demand the best.</p>
+      <hr class="plan-hr">
       <ul class="plan-features">
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          2,500 credits per month
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          All models incl. Kling &amp; Seedance
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          Up to 4K resolution
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          4&times; super-resolution free
-        </li>
-        <li>
-          <span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          Priority queue &amp; API access
-        </li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All models incl. Kling &amp; Seedance</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Up to 4K resolution</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Text, image &amp; audio-to-video</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4&times; super-resolution free</li>
+        <li><span class="feat-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="rgba(85,227,142,0.12)"/><path d="M5 8l2 2 4-4" stroke="#55e38e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority queue &amp; API access</li>
       </ul>
-      <div class="plan-cta-wrap">
-        <button class="plan-cta primary" data-plan="pro">Get Pro</button>
-      </div>
+      <button class="plan-cta primary" data-plan="pro">Get Pro</button>
     </div>
 
   </div><!-- /.pricing-grid -->
@@ -294,7 +235,7 @@
       el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
     });
     document.querySelectorAll('.plan-annual-note').forEach(function(el) {
-      el.hidden = !isAnnual;
+      el.classList.toggle('visible', isAnnual);
     });
   });
 })();
