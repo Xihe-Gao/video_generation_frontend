@@ -35,7 +35,7 @@
 </div>
 
 <main class="auth-page">
-  <video class="auth-bg-video" src="https://videos.pexels.com/video-files/12627156/12627156-hd_1920_1080_24fps.mp4" autoplay muted loop playsinline></video>
+  <video class="auth-bg-video" id="authBgVideo" src="https://videos.pexels.com/video-files/12627156/12627156-hd_1920_1080_24fps.mp4" autoplay muted loop playsinline></video>
   <div class="auth-bg-scrim"></div>
   <div class="auth-card">
     <h1 class="auth-title">Welcome to MoonCanvas</h1>
@@ -78,6 +78,7 @@
 </main>
 
 <script>
+  (function(){var v=document.getElementById('authBgVideo');if(v)v.playbackRate=0.5;})();
   (function(){var t=document.getElementById('navToggle'),n=document.getElementById('mobileNav');if(!t||!n)return;function c(){n.classList.remove('open');t.classList.remove('open');document.body.style.overflow='';}t.addEventListener('click',function(){var o=n.classList.toggle('open');t.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';});n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',c);});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();
 </script>
 <script>
