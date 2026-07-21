@@ -1352,6 +1352,35 @@ select:focus {
 }
 .button.ghost:hover { color: var(--text); border-color: var(--line-strong); }
 
+/* ── Showcase tabs ────────────────────────────────────────────────────────── */
+
+.showcase-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.showcase-tab {
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.showcase-tab:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+.showcase-tab.active {
+  background: var(--gold);
+  color: #0a0805;
+  border-color: transparent;
+  font-weight: 700;
+}
+
 /* ── Showcase additions ───────────────────────────────────────────────────── */
 
 .example-card {
@@ -2153,9 +2182,13 @@ select:focus {
   opacity: 1;
   transform: translateY(0);
 }
-.example-grid .fade-up:nth-child(2) { transition-delay: 0.1s; }
-.example-grid .fade-up:nth-child(3) { transition-delay: 0.2s; }
-.example-grid .fade-up:nth-child(4) { transition-delay: 0.3s; }
+.example-grid .fade-up:nth-child(2) { transition-delay: 0.07s; }
+.example-grid .fade-up:nth-child(3) { transition-delay: 0.14s; }
+.example-grid .fade-up:nth-child(4) { transition-delay: 0.21s; }
+.example-grid .fade-up:nth-child(5) { transition-delay: 0.08s; }
+.example-grid .fade-up:nth-child(6) { transition-delay: 0.15s; }
+.example-grid .fade-up:nth-child(7) { transition-delay: 0.22s; }
+.example-grid .fade-up:nth-child(8) { transition-delay: 0.29s; }
 .features-grid .fade-up:nth-child(2) { transition-delay: 0.1s; }
 .features-grid .fade-up:nth-child(3) { transition-delay: 0.2s; }
 .features-grid .fade-up:nth-child(4) { transition-delay: 0.3s; }

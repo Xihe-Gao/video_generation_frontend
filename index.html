@@ -109,30 +109,60 @@
           <p class="eyebrow">Example library</p>
           <h2>What you can create</h2>
         </div>
+        <div class="showcase-tabs fade-up">
+          <button class="showcase-tab active" data-filter="all">All</button>
+          <button class="showcase-tab" data-filter="cinematic">Cinematic</button>
+          <button class="showcase-tab" data-filter="product">Product</button>
+          <button class="showcase-tab" data-filter="landscape">Landscape</button>
+        </div>
         <div class="example-grid">
-          <a class="example-card fade-up" href="/playground.html?prompt=Earth+from+orbit+at+night%2C+cinematic+rotating+globe%2C+city+lights+glowing+below%2C+blue+atmosphere">
+          <a class="example-card fade-up" data-category="cinematic" href="/playground.html?prompt=Earth+from+orbit+at+night%2C+cinematic+rotating+globe%2C+city+lights+glowing+below%2C+blue+atmosphere">
             <video src="https://videos.pexels.com/video-files/1851190/1851190-hd_1920_1080_25fps.mp4"
               poster="https://images.pexels.com/videos/1851190/free-video-1851190.jpg?auto=compress&h=630&w=1200"
               muted loop playsinline></video>
             <span class="example-label">Earth from orbit · city lights at night</span>
           </a>
-          <a class="example-card fade-up" href="/playground.html?prompt=Abstract+neon+light+vortex%2C+spiraling+tunnel%2C+deep+purple+and+electric+blue%2C+dreamlike">
+          <a class="example-card fade-up" data-category="cinematic" href="/playground.html?prompt=Abstract+neon+light+vortex%2C+spiraling+tunnel%2C+deep+purple+and+electric+blue%2C+dreamlike">
             <video src="https://videos.pexels.com/video-files/7550828/7550828-hd_1920_1080_25fps.mp4"
               poster="https://images.pexels.com/videos/7550828/pictures/preview-0.jpg"
               muted loop playsinline></video>
             <span class="example-label">Neon abstract · light vortex</span>
           </a>
-          <a class="example-card fade-up" href="/playground.html?prompt=Extreme+close-up+product+shot%2C+vivid+candy+texture%2C+macro+studio+lighting%2C+pastel+background">
+          <a class="example-card fade-up" data-category="product" href="/playground.html?prompt=Extreme+close-up+product+shot%2C+vivid+candy+texture%2C+macro+studio+lighting%2C+pastel+background">
             <video src="https://videos.pexels.com/video-files/7034536/7034536-hd_1920_1080_25fps.mp4"
               poster="https://images.pexels.com/videos/7034536/pictures/preview-0.jpg"
               muted loop playsinline></video>
             <span class="example-label">Product close-up · macro studio</span>
           </a>
-          <a class="example-card fade-up" href="/playground.html?prompt=Cinematic+aerial+landscape%2C+golden+hour%2C+slow+drone+glide%2C+dramatic+natural+light">
+          <a class="example-card fade-up" data-category="landscape" href="/playground.html?prompt=Cinematic+aerial+landscape%2C+golden+hour%2C+slow+drone+glide%2C+dramatic+natural+light">
             <video src="https://videos.pexels.com/video-files/9001850/9001850-hd_1920_1080_25fps.mp4"
               poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80"
               muted loop playsinline></video>
             <span class="example-label">Aerial landscape · golden hour</span>
+          </a>
+          <a class="example-card fade-up" data-category="landscape" href="/playground.html?prompt=Mountain+landscape+aerial+shot%2C+misty+valleys%2C+slow+drone+glide%2C+cinematic+color+grade">
+            <video src="https://videos.pexels.com/video-files/3195392/3195392-hd_1920_1080_25fps.mp4"
+              poster="https://images.pexels.com/videos/3195392/pictures/preview-0.jpg"
+              muted loop playsinline></video>
+            <span class="example-label">Mountain landscape · misty valleys</span>
+          </a>
+          <a class="example-card fade-up" data-category="cinematic" href="/playground.html?prompt=Cinematic+bokeh+slow+motion%2C+shallow+depth+of+field%2C+warm+light+trails%2C+film+grain">
+            <video src="https://videos.pexels.com/video-files/3195393/3195393-hd_1920_1080_25fps.mp4"
+              poster="https://images.pexels.com/videos/3195393/pictures/preview-0.jpg"
+              muted loop playsinline></video>
+            <span class="example-label">Cinematic · shallow depth of field</span>
+          </a>
+          <a class="example-card fade-up" data-category="landscape" href="/playground.html?prompt=Ocean+coast+timelapse%2C+crashing+waves%2C+sunset+glow%2C+wide+angle+cinematic+drone">
+            <video src="https://videos.pexels.com/video-files/3195396/3195396-hd_1920_1080_25fps.mp4"
+              poster="https://images.pexels.com/videos/3195396/pictures/preview-0.jpg"
+              muted loop playsinline></video>
+            <span class="example-label">Ocean coast · sunset timelapse</span>
+          </a>
+          <a class="example-card fade-up" data-category="product" href="/playground.html?prompt=Luxury+cosmetic+product+close-up%2C+studio+lighting%2C+soft+bokeh+background%2C+premium+macro">
+            <video src="https://videos.pexels.com/video-files/7034540/7034540-hd_1920_1080_25fps.mp4"
+              poster="https://images.pexels.com/videos/7034540/pictures/preview-0.jpg"
+              muted loop playsinline></video>
+            <span class="example-label">Luxury product · studio macro</span>
           </a>
         </div>
       </section>
@@ -277,6 +307,20 @@
         card.addEventListener('mouseenter', function() { v.play().catch(function(){}); });
         card.addEventListener('mouseleave', function() { v.pause(); v.currentTime = 0; });
       });
+      // Showcase category tabs
+      (function() {
+        var tabs = document.querySelectorAll('.showcase-tab');
+        tabs.forEach(function(tab) {
+          tab.addEventListener('click', function() {
+            tabs.forEach(function(t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            var filter = tab.dataset.filter;
+            document.querySelectorAll('.example-card').forEach(function(card) {
+              card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+            });
+          });
+        });
+      })();
       // Scroll-in animation
       (function() {
         var obs = new IntersectionObserver(function(entries) {
