@@ -1588,7 +1588,7 @@ select:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 22% center;
+  object-position: 82% center;
   z-index: 0;
   filter: brightness(0.4) saturate(1.1);
 }
