@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — MoonCanvas</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/png" href="./moon-icon.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="./config.js"></script>
 </head>
@@ -25,7 +26,19 @@
     <span class="nav-credits" id="nav-credits" hidden></span>
     <div id="nav-user-mount"></div>
   </nav>
+  <button class="hamburger" id="navToggle" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <a href="/playground.html">Playground</a>
+    <a href="/pricing.html">Pricing</a>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/auth.html" class="mobile-nav-cta">Sign In</a>
+  </div>
+</div>
 
 <main class="dashboard-page" id="dashMain" hidden>
 
@@ -79,5 +92,8 @@
 
 <script src="./auth.js" defer></script>
 <script src="./dashboard.js" defer></script>
+<script>
+  (function(){var t=document.getElementById('navToggle'),n=document.getElementById('mobileNav');if(!t||!n)return;function c(){n.classList.remove('open');t.classList.remove('open');document.body.style.overflow='';}t.addEventListener('click',function(){var o=n.classList.toggle('open');t.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';});n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',c);});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();
+</script>
 </body>
 </html>

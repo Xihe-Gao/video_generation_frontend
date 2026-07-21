@@ -6,6 +6,7 @@
     <title>MoonCanvas — AI Video Generation</title>
     <meta name="description" content="Turn images and audio into cinematic AI videos in seconds." />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" type="image/png" href="./moon-icon.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="./config.js"></script>
 </head>
@@ -26,7 +27,19 @@
         <span class="nav-credits" id="nav-credits" hidden></span>
         <div id="nav-user-mount"></div>
       </nav>
+      <button class="hamburger" id="navToggle" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
     </header>
+
+    <div class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-inner">
+        <a href="/playground.html">Playground</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/auth.html" class="mobile-nav-cta">Sign In</a>
+      </div>
+    </div>
 
     <main>
       <!-- Hero -->
@@ -39,6 +52,7 @@
           <p class="hero-sub">Create cinematic AI videos from text, images, and audio</p>
           <div class="hero-actions">
             <a class="button primary large" href="/playground.html">Try MoonCanvas Free</a>
+            <a class="button ghost large" href="#showcase">Watch examples</a>
           </div>
           <p class="hero-stat">No credit card required · Powered by LTX &amp; Wan 2.2</p>
         </div>
@@ -46,30 +60,30 @@
 
       <!-- Showcase -->
       <section class="showcase" id="showcase">
-        <div class="section-heading">
+        <div class="section-heading fade-up">
           <p class="eyebrow">Example library</p>
           <h2>What you can create</h2>
         </div>
         <div class="example-grid">
-          <a class="example-card" href="/playground.html?prompt=A+serene+mountain+lake+at+golden+hour%2C+camera+slowly+panning+right%2C+cinematic+natural+light">
+          <a class="example-card fade-up" href="/playground.html?prompt=A+serene+mountain+lake+at+golden+hour%2C+camera+slowly+panning+right%2C+cinematic+natural+light">
             <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
               poster="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
               muted loop playsinline></video>
             <span class="example-label">Mountain lake · cinematic pan</span>
           </a>
-          <a class="example-card" href="/playground.html?prompt=A+futuristic+street+in+heavy+rain%2C+neon+signs+reflecting+on+pavement">
+          <a class="example-card fade-up" href="/playground.html?prompt=A+futuristic+street+in+heavy+rain%2C+neon+signs+reflecting+on+pavement">
             <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
               poster="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80"
               muted loop playsinline></video>
             <span class="example-label">Cyberpunk rain · neon reflections</span>
           </a>
-          <a class="example-card" href="/playground.html?prompt=A+luxury+product+shot+on+a+dark+reflective+surface%2C+studio+lighting">
+          <a class="example-card fade-up" href="/playground.html?prompt=A+luxury+product+shot+on+a+dark+reflective+surface%2C+studio+lighting">
             <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
               poster="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80"
               muted loop playsinline></video>
             <span class="example-label">Product shot · studio orbit</span>
           </a>
-          <a class="example-card" href="/playground.html?prompt=A+wide+desert+highway+at+sunrise%2C+drone+gliding+forward">
+          <a class="example-card fade-up" href="/playground.html?prompt=A+wide+desert+highway+at+sunrise%2C+drone+gliding+forward">
             <video src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
               poster="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80"
               muted loop playsinline></video>
@@ -80,12 +94,12 @@
 
 <!-- Features -->
       <section class="features-section">
-        <div class="section-heading">
+        <div class="section-heading fade-up">
           <p class="eyebrow">Why MoonCanvas</p>
           <h2>Professional quality, production speed</h2>
         </div>
         <div class="features-grid">
-          <div class="feature-card">
+          <div class="feature-card fade-up">
             <span class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
@@ -94,7 +108,7 @@
             <h3>Fast generation</h3>
             <p>9-second clip at 720p in under 2 minutes on H100 GPU. No queue on paid plans.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card fade-up">
             <span class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="2" width="6" height="12" rx="3"/>
@@ -104,7 +118,7 @@
             <h3>Audio-driven avatar</h3>
             <p>Upload a voice recording to animate any portrait — lips sync to speech automatically.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card fade-up">
             <span class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
@@ -113,7 +127,7 @@
             <h3>4× super-resolution</h3>
             <p>Real-ESRGAN upscale included free on paid plans. Sharper detail, no extra wait.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card fade-up">
             <span class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -143,12 +157,32 @@
     <script src="./auth.js" defer></script>
     <script src="./app.js?v=home" defer></script>
     <script>
-      document.querySelectorAll('.example-card').forEach(card => {
-        const v = card.querySelector('video');
+      // Hover-play showcase videos
+      document.querySelectorAll('.example-card').forEach(function(card) {
+        var v = card.querySelector('video');
         if (!v) return;
-        card.addEventListener('mouseenter', () => v.play().catch(() => {}));
-        card.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
+        card.addEventListener('mouseenter', function() { v.play().catch(function(){}); });
+        card.addEventListener('mouseleave', function() { v.pause(); v.currentTime = 0; });
       });
+      // Scroll-in animation
+      (function() {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-up').forEach(function(el) { obs.observe(el); });
+      })();
+      // Mobile hamburger
+      (function() {
+        var t = document.getElementById('navToggle');
+        var n = document.getElementById('mobileNav');
+        if (!t || !n) return;
+        function close() { n.classList.remove('open'); t.classList.remove('open'); document.body.style.overflow = ''; }
+        t.addEventListener('click', function() { var o = n.classList.toggle('open'); t.classList.toggle('open', o); document.body.style.overflow = o ? 'hidden' : ''; });
+        n.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', close); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+      })();
     </script>
   </body>
 </html>

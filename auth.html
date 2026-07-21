@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In — MoonCanvas</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/png" href="./moon-icon.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="./config.js"></script>
 </head>
@@ -21,7 +22,17 @@
     <a href="/pricing.html">Pricing</a>
     <a href="/playground.html">Playground</a>
   </nav>
+  <button class="hamburger" id="navToggle" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <a href="/playground.html">Playground</a>
+    <a href="/pricing.html">Pricing</a>
+  </div>
+</div>
 
 <main class="auth-page">
   <div class="auth-card">
@@ -64,6 +75,9 @@
   </div>
 </main>
 
+<script>
+  (function(){var t=document.getElementById('navToggle'),n=document.getElementById('mobileNav');if(!t||!n)return;function c(){n.classList.remove('open');t.classList.remove('open');document.body.style.overflow='';}t.addEventListener('click',function(){var o=n.classList.toggle('open');t.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';});n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',c);});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();
+</script>
 <script>
 window.addEventListener("load", async () => {
   const cfg = window.FRAMEFORGE_CONFIG || {};
