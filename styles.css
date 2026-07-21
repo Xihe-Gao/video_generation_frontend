@@ -1537,21 +1537,36 @@ select:focus {
 }
 
 .pricing-header {
+  position: relative;
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 72px;
+  padding: 16px 0 0;
+  overflow: visible;
 }
+.pricing-header::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 360px;
+  background: radial-gradient(ellipse at 50% 40%, rgba(212,175,106,0.07) 0%, transparent 68%);
+  pointer-events: none;
+}
+.pricing-header > * { position: relative; }
 .pricing-header h1 {
-  font-size: clamp(30px, 4.5vw, 56px);
-  margin: 10px 0 18px;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-size: clamp(48px, 6.5vw, 80px);
+  margin: 12px 0 22px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 .pricing-sub {
   color: var(--muted);
-  max-width: 460px;
-  margin: 0 auto 32px;
-  font-size: 15px;
-  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto 36px;
+  font-size: 18px;
+  line-height: 1.55;
 }
 
 /* ── Billing toggle ──────────────────────────────────────────────────────── */
@@ -1565,7 +1580,7 @@ select:focus {
   padding: 8px 20px;
 }
 .billing-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -1626,10 +1641,10 @@ select:focus {
 
 .plan-card {
   position: relative;
-  padding: 36px 32px 32px;
+  padding: 40px 36px 36px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1670,7 +1685,7 @@ select:focus {
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.plan-name { font-size: 15px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.plan-name { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .plan-tag {
   font-size: 10px;
   font-weight: 700;
@@ -1689,7 +1704,7 @@ select:focus {
   margin-bottom: 6px;
 }
 .plan-price { display: flex; align-items: baseline; gap: 2px; }
-.price-amount { font-size: 52px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.price-amount { font-size: 64px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
 .price-period { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
 .plan-credits-note {
   font-size: 11px;
@@ -1710,11 +1725,11 @@ select:focus {
 }
 
 .plan-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
   margin: 0 0 20px;
   line-height: 1.55;
-  padding-bottom: 20px;
+  padding-bottom: 22px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -1724,8 +1739,8 @@ select:focus {
   margin: 0 0 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 13.5px;
+  gap: 13px;
+  font-size: 14px;
   flex: 1;
 }
 .plan-features li { display: flex; align-items: center; gap: 10px; line-height: 1.4; }
@@ -1735,10 +1750,10 @@ select:focus {
 .plan-cta-wrap { margin-top: auto; }
 .plan-cta {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   border: 1px solid var(--line-strong);
   transition: opacity 0.15s, transform 0.15s;
