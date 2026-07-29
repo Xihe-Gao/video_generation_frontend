@@ -432,9 +432,24 @@ document.querySelectorAll(".plan-cta[data-plan], .compare-plan-btn[data-plan]").
     btn.disabled = true;
     btn.textContent = "Loading…";
     document.getElementById("checkout-loading").hidden = false;
+    let token;
     try {
-      const token = await window.getAuthToken();
-      const r = await fetch(`${window.API_URL}/user/billing/checkout`, {
+      token = await window.getAuthToken();
+    } catch (e) {
+      alert("[1] Token error: " + e.message);
+      btn.disabled = false;
+      btn.textContent = plan === "starter" ? "Get Starter" : "Get Pro";
+      document.getElementById("checkout-loading").hidden = true;
+      return;
+    }
+    if (!token) {
+      alert("[2] No token — please sign in again");
+      window.location.href = "/auth.html?redirect=/pricing.html";
+      return;
+    }
+    try {
+      const url = `${window.API_URL}/user/billing/checkout`;
+      const r = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ plan }),
@@ -449,7 +464,7 @@ document.querySelectorAll(".plan-cta[data-plan], .compare-plan-btn[data-plan]").
         document.getElementById("checkout-loading").hidden = true;
       }
     } catch (e) {
-      alert("Network error: " + e.message);
+      alert("[3] Fetch error (" + window.API_URL + "): " + e.message);
       btn.disabled = false;
       btn.textContent = plan === "starter" ? "Get Starter" : "Get Pro";
       document.getElementById("checkout-loading").hidden = true;
