@@ -33,9 +33,13 @@ async function loadDashboard() {
     if (user.plan === "free") {
       document.getElementById("btn-upgrade").hidden = false;
       document.getElementById("btn-portal").hidden  = true;
+    } else {
+      document.getElementById("btn-upgrade").hidden = true;
+      document.getElementById("btn-portal").hidden  = false;
     }
   } catch (e) {
     console.error("Failed to load user info", e);
+    document.getElementById("btn-upgrade").hidden = false;
   }
 
   // Load job history
@@ -64,9 +68,13 @@ async function loadDashboard() {
         headers: { Authorization: `Bearer ${t}` },
       });
       const d = await r.json();
-      if (d.portal_url) window.location.href = d.portal_url;
+      if (d.portal_url) {
+        window.location.href = d.portal_url;
+        return;
+      }
+      alert(d.detail || "Could not open billing portal.");
     } catch {
-      alert("Could not open billing portal.");
+      alert("Network error — please try again.");
     }
     btn.disabled = false;
     btn.textContent = "Manage Subscription";
