@@ -436,14 +436,13 @@ document.querySelectorAll(".plan-cta[data-plan], .compare-plan-btn[data-plan]").
     try {
       token = await window.getAuthToken();
     } catch (e) {
-      alert("[1] Token error: " + e.message);
+      alert("Authentication error: " + e.message);
       btn.disabled = false;
       btn.textContent = plan === "starter" ? "Get Starter" : "Get Pro";
       document.getElementById("checkout-loading").hidden = true;
       return;
     }
     if (!token) {
-      alert("[2] No token — please sign in again");
       window.location.href = "/auth.html?redirect=/pricing.html";
       return;
     }
@@ -464,7 +463,7 @@ document.querySelectorAll(".plan-cta[data-plan], .compare-plan-btn[data-plan]").
         document.getElementById("checkout-loading").hidden = true;
       }
     } catch (e) {
-      alert("[3] Fetch error (" + window.API_URL + "): " + e.message);
+      alert("Checkout error: " + e.message);
       btn.disabled = false;
       btn.textContent = plan === "starter" ? "Get Starter" : "Get Pro";
       document.getElementById("checkout-loading").hidden = true;
